@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#332CAB</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="background_color">#EBEFF8</color>
+    <color name="link_blue">#0645AD</color>
+    <color name="tabUnChecked">#E9E9E9</color>
+    <color name="tabFont">#727272</color>
+    <color name="rippleColor">#32332CAB</color>
+
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="gray">#545454</color>
+
+</resources>

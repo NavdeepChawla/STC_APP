@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/nav_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home"/>
+
+    <item
+        android:id="@+id/nav_resources"
+        android:icon="@drawable/ic_resources"
+        android:title="Resources" />
+
+    <item
+        android:id="@+id/nav_archive"
+        android:icon="@drawable/ic_highlight"
+        android:title="Highlights" />
+
+    <item
+        android:id="@+id/nav_exclusive"
+        android:icon="@drawable/ic_exclusive"
+        android:title="Exclusive" />
+
+
+    <item
+        android:id="@+id/nav_info"
+        android:icon="@drawable/ic_info"
+        android:title="Information" />
+
+</menu>

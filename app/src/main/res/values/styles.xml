@@ -1,0 +1,18 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/white</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/rippleColor</item>
+        <item name="fontFamily">@font/montserrat</item>
+    </style>
+
+    <style name="tab_font" parent="@android:style/TextAppearance.Widget.TabWidget">
+        <item name="fontFamily">@font/montserrat</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+</resources>

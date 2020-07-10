@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+    app:contentPadding="4dp"
+    app:cardUseCompatPadding="true"
+    android:padding="8dp">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/eventPicture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+             />
+
+        <TextView
+            android:id="@+id/eventTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eventPicture"
+            android:layout_marginTop="16dp"
+            android:fontFamily="@font/montserrat"
+            android:text="This is the text"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eventTitle"
+            android:layout_marginTop="4dp"
+            android:id="@+id/eventDesc"
+            android:fontFamily="@font/montserrat"
+            android:textColor="#545454"
+            android:textSize="16dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/eventDesc"
+            android:id="@+id/eventLink"
+            android:layout_marginTop="4dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="@color/link_blue"
+        android:textSize="16dp"/>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
