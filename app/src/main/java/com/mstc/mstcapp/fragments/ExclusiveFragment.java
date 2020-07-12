@@ -15,6 +15,9 @@ import com.google.android.material.tabs.TabLayout;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.ExclusiveAdapter;
+import com.mstc.mstcapp.fragments.exclusives.AttendanceFragment;
+import com.mstc.mstcapp.fragments.exclusives.MomFragment;
+import com.mstc.mstcapp.fragments.exclusives.UpdatesFragment;
 import com.mstc.mstcapp.fragments.highlights.EventFragment;
 import com.mstc.mstcapp.fragments.highlights.GithubFragment;
 import com.mstc.mstcapp.fragments.highlights.ProjectFragment;
@@ -40,9 +43,9 @@ public class ExclusiveFragment extends Fragment {
         exclusiveViewPager.setOffscreenPageLimit(3);
 
         ExclusiveAdapter adapter=new ExclusiveAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProjectFragment(),"MOM");
-        adapter.addFragment(new EventFragment(),"Attendance");
-        adapter.addFragment(new GithubFragment(),"Notifications");
+        adapter.addFragment(new MomFragment(),"MOM");
+        adapter.addFragment(new AttendanceFragment(),"Attendance");
+        adapter.addFragment(new UpdatesFragment(),"Updates");
         exclusiveViewPager.setAdapter(adapter);
 
         exclusiveViewPager.setPageTransformer(true, new HighlightFragment.DepthPageTransformer());

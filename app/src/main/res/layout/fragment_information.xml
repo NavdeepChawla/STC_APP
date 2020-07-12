@@ -191,18 +191,348 @@
 
                 <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
+                    app:cardElevation="0dp"
                     android:layout_height="400dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp">
 
-                    <TextView
+                    <androidx.core.widget.NestedScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Information About Board"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"/>
+                        android:layout_height="match_parent"
+                        android:background="@color/background_color">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+
+                        <androidx.cardview.widget.CardView
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="3dp"
+                            app:cardUseCompatPadding="true"
+                            android:id="@+id/cViewPresident">
+
+
+                            <RelativeLayout
+                                android:id="@+id/rPresident"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/photoPresident"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_centerVertical="false"
+                                    android:layout_margin="5dp"
+                                    android:padding="5dp"
+                                    android:src="@drawable/sample_fill_image" />
+
+                                <TextView
+                                    android:id="@+id/namePresident"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_toRightOf="@id/photoPresident"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/postPresident"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/namePresident"
+                                    android:layout_alignLeft="@id/namePresident"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="PRESIDENT"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/domainPresident"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/postPresident"
+                                    android:layout_alignLeft="@id/postPresident"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="DOMAIN"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cViewProjectLead"
+                            android:layout_below="@id/cViewPresident"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="3dp"
+                            app:cardUseCompatPadding="true"
+                            >
+
+                            <RelativeLayout
+                                android:id="@+id/rProjectLead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/photoProLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/sample_fill_image" />
+
+                                <TextView
+                                    android:id="@+id/nameProLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_toRightOf="@id/photoProLead"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/postProLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/nameProLead"
+                                    android:layout_alignLeft="@id/nameProLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="PROJECT LEAD"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/domainProLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/postProLead"
+                                    android:layout_alignLeft="@id/nameProLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="DOMAIN"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cViewTechMentor"
+                            android:layout_below="@id/cViewProjectLead"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="3dp"
+                            app:cardUseCompatPadding="true">
+
+
+                            <RelativeLayout
+                                android:id="@+id/rTechMentor"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/photoTechMentor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/sample_fill_image" />
+
+                                <TextView
+                                    android:id="@+id/nameTechMentor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_toRightOf="@id/photoTechMentor"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/postTechMentor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/nameTechMentor"
+                                    android:layout_alignLeft="@id/nameTechMentor"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="TECH MENTOR"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/domainTechMentor"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/postTechMentor"
+                                    android:layout_alignLeft="@id/nameTechMentor"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="DOMAIN"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cViewManageLead"
+                            android:layout_below="@id/cViewTechMentor"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="3dp"
+                            app:cardUseCompatPadding="true">
+
+                            <RelativeLayout
+                                android:id="@+id/rManageLead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/photoManageLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/sample_fill_image" />
+
+                                <TextView
+                                    android:id="@+id/nameManageLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_toRightOf="@id/photoManageLead"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/postManageLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/nameManageLead"
+                                    android:layout_alignLeft="@id/nameManageLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="MANAGEMENT LEAD"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/domainManageLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/postManageLead"
+                                    android:layout_alignLeft="@id/nameManageLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="DOMAIN"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                            </RelativeLayout>
+                        </androidx.cardview.widget.CardView>
+
+                        <androidx.cardview.widget.CardView
+                            android:id="@+id/cViewFinanceLead"
+                            android:layout_below="@id/cViewManageLead"
+                            xmlns:android="http://schemas.android.com/apk/res/android"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
+                            app:cardCornerRadius="4dp"
+                            app:cardElevation="3dp"
+                            app:cardUseCompatPadding="true">
+
+                            <RelativeLayout
+                                android:id="@+id/rFinanceLead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content">
+
+                                <ImageView
+                                    android:id="@+id/photoFinanceLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:padding="5dp"
+                                    android:layout_margin="5dp"
+                                    android:src="@drawable/sample_fill_image" />
+
+                                <TextView
+                                    android:id="@+id/nameFinanceLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="20dp"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_toRightOf="@id/photoFinanceLead"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="NAME"
+                                    android:textColor="@color/black"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold" />
+
+                                <TextView
+                                    android:id="@+id/postFinanceLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/nameFinanceLead"
+                                    android:layout_alignLeft="@id/nameFinanceLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="FINANCE LEAD"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                                <TextView
+                                    android:id="@+id/domainFinanceLead"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/postFinanceLead"
+                                    android:layout_alignLeft="@id/nameFinanceLead"
+                                    android:layout_marginTop="7dp"
+                                    android:fontFamily="@font/montserrat_medium"
+                                    android:text="DOMAIN"
+                                    android:textColor="@color/black"
+                                    android:textSize="16sp" />
+
+                            </RelativeLayout>
+
+                        </androidx.cardview.widget.CardView>
+
+                    </RelativeLayout>
+                    </androidx.core.widget.NestedScrollView>
 
                 </androidx.cardview.widget.CardView>
 

@@ -1,6 +1,8 @@
 package com.mstc.mstcapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,12 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.activity.ResourcesActivity;
 import com.mstc.mstcapp.model.ResourceModel;
 
 import java.util.List;
 
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourcesView> {
-   List<ResourceModel> domains;
+   static List<ResourceModel> domains;
    Context context;
 
     public ResourceAdapter(Context mContext, List<ResourceModel> domain) {
@@ -70,9 +73,10 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Intent i =new Intent(v.getContext(), resourcesDetails.class);
-                    //i.putExtra("test",domains.get(getAdapterPosition()));
-                    //v.getContext().startActivity(i);
+                    Intent i =new Intent(v.getContext(), ResourcesActivity.class);
+                    i.putExtra("test", String.valueOf(domains.get(getAdapterPosition()).getResourceTitle()));
+                    Log.i("DOmain",String.valueOf(domains.get(getAdapterPosition()).getResourceTitle()));
+                    v.getContext().startActivity(i);
                 }
             });
 
