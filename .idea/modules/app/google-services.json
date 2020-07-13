@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "847719333877",
+    "firebase_url": "https://stc-app-66d35.firebaseio.com",
+    "project_id": "stc-app-66d35",
+    "storage_bucket": "stc-app-66d35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:847719333877:android:48eaced09d8b54436baabc",
+        "android_client_info": {
+          "package_name": "com.mstc.mstcapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "847719333877-5rkai2viqpenbd5pivd2ph306h45u81k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mstc.mstcapp",
+            "certificate_hash": "38e167da18a2a08d71d9e07f5bd97710f4586348"
+          }
+        },
+        {
+          "client_id": "847719333877-ho54uv8o3ua4js944p8aq16ren132qk8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBPkO4HKZRyfG27ZTMLDoeODJIfwkFOpxw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "847719333877-ho54uv8o3ua4js944p8aq16ren132qk8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
