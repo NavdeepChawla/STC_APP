@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/projectSwipeRefresh"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/articleSwipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <RelativeLayout
@@ -10,9 +9,8 @@
     android:padding="16dp">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/projectRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
+        android:layout_height="wrap_content"
+        android:id="@+id/resourcesarticle_recyclerview"/>
 </RelativeLayout>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

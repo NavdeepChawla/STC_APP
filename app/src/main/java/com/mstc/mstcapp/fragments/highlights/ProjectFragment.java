@@ -7,7 +7,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,5 +44,19 @@ public class ProjectFragment extends Fragment {
         ProjectAdapter projectAdapter = new ProjectAdapter(getContext(),projectList);
         projectRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         projectRecyclerView.setAdapter(projectAdapter);
+
+        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.projectSwipeRefresh);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        swipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 2000);
+            }
+        });
     }
 }

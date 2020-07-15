@@ -2,12 +2,13 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#EBEFF8">
+    android:background="@color/background_color">
 
 
     <androidx.cardview.widget.CardView
@@ -72,7 +73,8 @@
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="#EBEFF8"
+            android:textSize="18dp"
+            android:background="@color/background_color"
             android:drawableStart="@drawable/ic_linkedin"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
@@ -84,7 +86,8 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="#EBEFF8"
+            android:textSize="18dp"
+            android:background="@color/background_color"
             android:drawableStart="@drawable/ic_medium"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
@@ -110,7 +113,8 @@
             android:layout_height="48dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            android:background="#EBEFF8"
+            android:textSize="18dp"
+            android:background="@color/background_color"
             android:drawableStart="@drawable/ic_facebook"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
@@ -123,7 +127,8 @@
             android:layout_height="48dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="#EBEFF8"
+            android:textSize="18dp"
+            android:background="@color/background_color"
             android:drawableStart="@drawable/ic_instagram"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
@@ -147,12 +152,14 @@
         <TabWidget
             android:id="@android:id/tabs"
             android:layout_width="match_parent"
-            android:layout_height="42dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
             android:layout_marginEnd="32dp"
-            android:hapticFeedbackEnabled="true"
+            android:elevation="4dp"
             android:background="@drawable/info_tab_bg"
-            android:padding="2dp" />
+            android:padding="4dp"
+            android:hapticFeedbackEnabled="true"
+            />
 
         <FrameLayout
             android:id="@android:id/tabcontent"
@@ -183,6 +190,7 @@
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
+
             <LinearLayout
                 android:id="@+id/infoTab2"
                 android:layout_width="match_parent"
@@ -190,23 +198,158 @@
                 android:orientation="vertical">
 
                 <androidx.cardview.widget.CardView
+                    android:id="@+id/cViewPresident"
                     android:layout_width="match_parent"
-                    android:layout_height="400dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
-                    android:layout_marginBottom="8dp">
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
 
-                    <TextView
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/rPresident"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Information About Board"
-                        android:layout_gravity="center"
-                        android:textAlignment="center"/>
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/photoPresident"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerVertical="false"
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/contentDescription"
+                            android:padding="4dp"
+                            android:src="@drawable/sample_fill_image"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/namePresident"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="NAME"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/photoPresident"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/postPresident"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/namePresident"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="PRESIDENT"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/photoPresident"
+                            app:layout_constraintTop_toBottomOf="@id/namePresident" />
+
+                        <TextView
+                            android:id="@+id/domainPresident"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/postPresident"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="DOMAIN"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/photoPresident"
+                            app:layout_constraintTop_toBottomOf="@id/postPresident" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cViewTechHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/rTechHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/photoTechHead"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerVertical="false"
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/contentDescription"
+                            android:padding="4dp"
+                            android:src="@drawable/sample_fill_image"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameTechHead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="NAME"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechHead"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/postTechHead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/nameTechHead"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="PRESIDENT"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechHead"
+                            app:layout_constraintTop_toBottomOf="@id/nameTechHead" />
+
+                        <TextView
+                            android:id="@+id/domainTechHead"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/postTechHead"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="DOMAIN"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechHead"
+                            app:layout_constraintTop_toBottomOf="@id/postTechHead" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
 
             </LinearLayout>
+
         </FrameLayout>
         </LinearLayout>
     </TabHost>

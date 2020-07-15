@@ -14,5 +14,8 @@
         <item name="fontFamily">@font/montserrat</item>
         <item name="android:textSize">16dp</item>
     </style>
+    <style name="BottomNavigationViewTitle" parent="@style/TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">16dp</item>
+    </style>
 
 </resources>

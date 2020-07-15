@@ -7,14 +7,24 @@ import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.fragments.ExclusiveFragment;
 import com.mstc.mstcapp.fragments.FeedFragment;
@@ -27,6 +37,11 @@ public class NavActivity extends AppCompatActivity {
 
     public static TextView appBarTitle;
     public static ConstraintLayout appBar;
+    public static CircularImageView appBarProfilePicture;
+    public static ImageView stcLogo;
+    private static StorageReference storeRef;
+    private static String email, userEmail;
+    private static FirebaseUser user;
     private int backButtonCount = 0;
     private int prevPage=0;
     private int currentPage=0;
@@ -36,6 +51,8 @@ public class NavActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
 
+        appBarProfilePicture=findViewById(R.id.appBarProfilePicture);
+        stcLogo=findViewById(R.id.stcLogo);
         appBarTitle = findViewById(R.id.appBarTitle);
         appBar = findViewById(R.id.appBar);
         BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
@@ -45,13 +62,59 @@ public class NavActivity extends AppCompatActivity {
         if(firebaseAuth.getCurrentUser()==null)
         {
             bottomNavigationView.getMenu().removeItem(R.id.nav_exclusive);
+            appBarProfilePicture.setVisibility(View.INVISIBLE);
+            stcLogo.setEnabled(false);
+        }
+        else
+        {
+            user=firebaseAuth.getCurrentUser();
+            email =user.getEmail();
+
+            assert email != null;
+            userEmail = email.replace('.','_');
+            storeRef= FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
+            storeRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    stcLogo.setVisibility(View.INVISIBLE);
+                    appBarProfilePicture.setVisibility(View.VISIBLE);
+                    Glide.with(getApplicationContext()).load(uri).into(appBarProfilePicture);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Snackbar.make(findViewById(android.R.id.content),"Unable to download picture.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(getColor(R.color.colorPrimary)).setActionTextColor(getColor(R.color.white)).show();
+                }
+            });
         }
 
+        //Intent To Profile Activity
+        appBarProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, new FeedFragment())
-                .commit();
+        Intent intent = getIntent();
+        boolean resource = intent.getBooleanExtra("Resource",false);
+        if(resource)
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, new ResourcesFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_resources);
+        }
+        else
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, new FeedFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -110,7 +173,6 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
-       // bottomNavigationView.getMenu().removeItem(R.id.nav_exclusive);
     }
 
     @Override

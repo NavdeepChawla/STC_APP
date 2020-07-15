@@ -1,6 +1,9 @@
 package com.mstc.mstcapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +15,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.activity.ResourcesActivity;
 import com.mstc.mstcapp.model.ResourceModel;
 
 import java.util.List;
 
+import static java.security.AccessController.getContext;
+
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourcesView> {
-   List<ResourceModel> domains;
-   Context context;
+   static List<ResourceModel> domains;
+   static Context context;
 
     public ResourceAdapter(Context mContext, List<ResourceModel> domain) {
         domains = domain;
@@ -48,6 +54,17 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
                 });
             }
         }).start();
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity =(Activity) holder.itemView.getContext();
+                Intent i =new Intent(v.getContext(), ResourcesActivity.class);
+                i.putExtra("domain", String.valueOf(domains.get(position).getResourceTitle()));
+                Log.i("Domain",String.valueOf(domains.get(position).getResourceTitle()));
+                holder.itemView.getContext().startActivity(i);
+                activity.overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
 
     }
 
@@ -63,19 +80,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
         public ResourcesView(@NonNull View itemView) {
             super(itemView);
             texttitle=(TextView)itemView.findViewById(R.id.domaintitle);
-            domain_bgImage=(ImageView)itemView.findViewById(R.id.res_domainImage) ;
-
-            //OnClick Listener to go to the resource page of the particular domain when clicked
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //Intent i =new Intent(v.getContext(), resourcesDetails.class);
-                    //i.putExtra("test",domains.get(getAdapterPosition()));
-                    //v.getContext().startActivity(i);
-                }
-            });
-
+            domain_bgImage=(ImageView)itemView.findViewById(R.id.res_domainImage);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.mstc.mstcapp.fragments;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -10,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.google.android.material.tabs.TabLayout;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
+
+import java.util.Objects;
 
 
 public class InformationFragment extends Fragment {
@@ -115,14 +119,24 @@ public class InformationFragment extends Fragment {
         int tab = infoTabHost.getCurrentTab();
         for (int i = 0; i < infoTabHost.getTabWidget().getChildCount(); i++) {
             // When tab is not selected
-            infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#EEEEF0"));
+            infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.white));
             TextView tv = infoTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-            tv.setTextColor(getResources().getColor(R.color.tabFont));
+            tv.setTextColor(getResources().getColor(R.color.black));
+            tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
         }
         // When tab is selected
-        infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#FFFFFF"));
+        if(Objects.equals(infoTabHost.getCurrentTabTag(), "TAB ONE"))
+        {
+            infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackground(getResources().getDrawable(R.drawable.tab_left_select));
+        }
+        else
+        {
+            infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackground(getResources().getDrawable(R.drawable.tab_right_select));
+        }
+        infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
         TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
-        tv.setTextColor(Color.BLACK);
+        tv.setTextColor(getResources().getColor(R.color.white));
+        tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
     }
 
     private void onTabChangedListener()
@@ -133,16 +147,24 @@ public class InformationFragment extends Fragment {
                 int tab = infoTabHost.getCurrentTab();
                 for (int i = 0; i < infoTabHost.getTabWidget().getChildCount(); i++) {
                     // When tab is not selected
-                    infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(Color.parseColor("#EEEEF0"));
+                    infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.white));
                     TextView tv = infoTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-                    tv.setTextColor(getResources().getColor(R.color.tabFont));
-                    tv.setTextSize(14);
+                    tv.setTextColor(getResources().getColor(R.color.black));
+                    tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
                 }
                 // When tab is selected
-                infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackgroundColor(Color.parseColor("#FFFFFF"));
+                if(Objects.equals(infoTabHost.getCurrentTabTag(), "TAB ONE"))
+                {
+                    infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackground(getResources().getDrawable(R.drawable.tab_left_select));
+                }
+                else
+                {
+                    infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setBackground(getResources().getDrawable(R.drawable.tab_right_select));
+                }
+                infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
                 TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
-                tv.setTextColor(Color.BLACK);
-                tv.setTextSize(14);
+                tv.setTextColor(getResources().getColor(R.color.white));
+                tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
             }
         });
     }

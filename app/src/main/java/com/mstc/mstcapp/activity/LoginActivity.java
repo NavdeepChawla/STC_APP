@@ -51,6 +51,13 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onClickListener()
     {
+        loginForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ForgotPasswordActivity.class));
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
