@@ -2,7 +2,10 @@ package com.mstc.mstcapp.adapter.highlights;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +51,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.myViewHolder
                 holder.eventPicture.post(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.with(mContext).load(mData.get(position).getEventPicture()).into(holder.eventPicture);
+                        String pic= mData.get(position).getEventPicture();
+                        byte[] decodedString = Base64.decode(pic, Base64.DEFAULT);
+                        Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        holder.eventPicture.setImageBitmap(picture);
                     }
                 });
             }

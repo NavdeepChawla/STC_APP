@@ -6,7 +6,6 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,7 +30,6 @@ import com.mstc.mstcapp.fragments.FeedFragment;
 import com.mstc.mstcapp.fragments.HighlightFragment;
 import com.mstc.mstcapp.fragments.InformationFragment;
 import com.mstc.mstcapp.fragments.ResourcesFragment;
-import com.mstc.mstcapp.fragments.highlights.EventFragment;
 
 public class NavActivity extends AppCompatActivity {
 

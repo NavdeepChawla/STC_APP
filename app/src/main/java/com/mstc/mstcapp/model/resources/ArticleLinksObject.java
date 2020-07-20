@@ -1,15 +1,30 @@
 package com.mstc.mstcapp.model.resources;
 
+import com.google.gson.annotations.SerializedName;
+
 public class ArticleLinksObject {
+    @SerializedName("name")
     String articlelinksTitle;
+    @SerializedName("link")
     String articlelinksLink;
+    @SerializedName("desc")
+    String articlelinksDesc;
 
     public ArticleLinksObject() {
     }
 
-    public ArticleLinksObject(String articlelinksTitle, String articlelinksLink) {
+    public ArticleLinksObject(String articlelinksTitle, String articlelinksLink, String articlelinksDesc) {
         this.articlelinksTitle = articlelinksTitle;
         this.articlelinksLink = articlelinksLink;
+        this.articlelinksDesc = articlelinksDesc;
+    }
+
+    public String getArticlelinksDesc() {
+        return articlelinksDesc;
+    }
+
+    public void setArticlelinksDesc(String articlelinksDesc) {
+        this.articlelinksDesc = articlelinksDesc;
     }
 
     public String getArticlelinksTitle() {

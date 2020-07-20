@@ -26,12 +26,23 @@
             android:textColor="@color/black"
             android:textSize="20dp" />
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/resourcefolder_title"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:textSize="16dp"
+            android:fontFamily="@font/montserrat"
+            android:id="@+id/resourcefolder_desc"
+            android:text="Sample line goes here"/>
+
+        <TextView
             android:id="@+id/resourcefolder_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat"
             android:layout_marginTop="8dp"
-            android:layout_below="@+id/resourcefolder_title"
+            android:layout_below="@+id/resourcefolder_desc"
             android:textColor="@color/link_blue"
             android:text="//https.bitly.linkgoeshere.com"
             android:textSize="16dp" />

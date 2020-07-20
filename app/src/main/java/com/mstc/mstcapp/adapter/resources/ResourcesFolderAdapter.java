@@ -37,9 +37,12 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
     public void onBindViewHolder(@NonNull ResourcesFolderView holder, final int position) {
         holder.resourcesfolderTitle.setText(resourcesFolderObjects_list.get(position).getResourcesfolderTitle());
         holder.resourcesfolderLink.setText(resourcesFolderObjects_list.get(position).getResourcefolderLink());
+        holder.resourcefolderDesc.setText(resourcesFolderObjects_list.get(position).getResourcefolderDesc());
         final boolean isExpanded = position==mExpandedPosition;
+        holder.resourcefolderDesc.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.resourcesfolderLink.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.itemView.setActivated(isExpanded);
+
         if (isExpanded)
             previousExpandedPosition = position;
 
@@ -59,13 +62,15 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
     }
 
     public class ResourcesFolderView  extends RecyclerView.ViewHolder {
-        TextView resourcesfolderTitle,resourcesfolderLink;
+        TextView resourcesfolderTitle,resourcesfolderLink,resourcefolderDesc;
 
         public ResourcesFolderView(@NonNull View itemView) {
             super(itemView);
             resourcesfolderTitle=itemView.findViewById(R.id.resourcefolder_title);
             resourcesfolderLink=itemView.findViewById(R.id.resourcefolder_link);
+            resourcefolderDesc=itemView.findViewById(R.id.resourcefolder_desc);
 
+            resourcefolderDesc.setVisibility(View.GONE);
             resourcesfolderLink.setVisibility(View.GONE);
         }
     }

@@ -1,14 +1,20 @@
 package com.mstc.mstcapp.model.highlights;
 
+import com.google.gson.annotations.SerializedName;
+
 public class EventObject
 {
 
+    @SerializedName("title")
     private String eventTitle;
-    private String eventDesc;
+    @SerializedName("pic")
+    private String eventPicture;
+    @SerializedName("link")
     private String eventLink;
-    private int eventPicture;
+    @SerializedName("desc")
+    private String eventDesc;
 
-    public EventObject(String eventTitle, String eventDesc, String eventLink, int eventPicture) {
+    public EventObject(String eventTitle, String eventDesc, String eventLink, String eventPicture) {
         this.eventTitle = eventTitle;
         this.eventDesc = eventDesc;
         this.eventLink = eventLink;
@@ -39,11 +45,11 @@ public class EventObject
         this.eventLink = eventLink;
     }
 
-    public int getEventPicture() {
+    public String getEventPicture() {
         return eventPicture;
     }
 
-    public void setEventPicture(int eventPicture) {
+    public void setEventPicture(String eventPicture) {
         this.eventPicture = eventPicture;
     }
 

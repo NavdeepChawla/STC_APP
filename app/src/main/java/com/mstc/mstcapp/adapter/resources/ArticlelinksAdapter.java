@@ -39,6 +39,7 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
     public void onBindViewHolder(@NonNull ArticlelinkView holder, final int position) {
         holder.articlelinksTitle.setText(articleLinksObject_list.get(position).getArticlelinksTitle());
         holder.articlelinksLink.setText(articleLinksObject_list.get(position).getArticlelinksLink());
+        holder.articleslinkDesc.setText(articleLinksObject_list.get(position).getArticlelinksDesc());
         holder.articlelinksLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +50,7 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
             }
         });
         final boolean isExpanded = position==mExpandedPosition;
+        holder.articleslinkDesc.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.articlelinksLink.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.itemView.setActivated(isExpanded);
         if (isExpanded)
@@ -70,12 +72,14 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
     }
 
     public class ArticlelinkView extends RecyclerView.ViewHolder{
-        TextView articlelinksTitle,articlelinksLink;
+        TextView articlelinksTitle,articlelinksLink,articleslinkDesc;
         public ArticlelinkView(@NonNull View itemView) {
             super(itemView);
             articlelinksTitle=itemView.findViewById(R.id.articlelink_title);
             articlelinksLink=itemView.findViewById(R.id.articlelink_link);
+            articleslinkDesc=itemView.findViewById(R.id.articlelink_desc);
 
+            articleslinkDesc.setVisibility(View.GONE);
             articlelinksLink.setVisibility(View.GONE);
         }
     }

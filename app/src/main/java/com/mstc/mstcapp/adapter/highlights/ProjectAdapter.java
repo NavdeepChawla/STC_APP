@@ -13,18 +13,18 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.highlights.ProjectObject;
+import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
 import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHolder> {
 
     Context mContext1;
-    List<ProjectObject> mData1;
+    List<ProjectsObject> mData1;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 
-    public ProjectAdapter(Context mContext1, List<ProjectObject> mData) {
+    public ProjectAdapter(Context mContext1, List<ProjectsObject> mData) {
         this.mContext1 = mContext1;
         this.mData1 = mData;
     }
@@ -41,10 +41,10 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder holder, final int position) {
-        holder.proj_name.setText(mData1.get(position).getProjectTitle());
-        holder.proj_descrip.setText(mData1.get(position).getProjectDescription());
-        holder.proj_mediumLink.setText(mData1.get(position).getProjectLink());
-        holder.proj_contributors.setText("Contributors : "+mData1.get(position).getProjectContributors());
+        holder.proj_name.setText(mData1.get(position).getTitle());
+        holder.proj_descrip.setText(mData1.get(position).getDesc());
+        holder.proj_mediumLink.setText(mData1.get(position).getLink());
+        holder.proj_contributors.setText("Contributors : "+mData1.get(position).getContributors());
 
         final boolean isExpanded = position==mExpandedPosition;
         holder.proj_descrip.setVisibility(isExpanded?View.VISIBLE:View.GONE);
@@ -65,7 +65,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
         holder.proj_mediumLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link=mData1.get(position).getProjectLink();
+                String link=mData1.get(position).getLink();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse(link)));
                 mContext1.startActivity(intent);

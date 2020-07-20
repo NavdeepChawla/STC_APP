@@ -1,27 +1,31 @@
 package com.mstc.mstcapp.model.highlights;
 
+import com.google.gson.annotations.SerializedName;
+
 public class GithubObject {
-    private String githubTitle;
-    private String githubLink;
+    @SerializedName("title")
+    private String title;
+    @SerializedName("link")
+    private String link;
 
-    public GithubObject(String githubTitle, String githubLink) {
-        this.githubTitle = githubTitle;
-        this.githubLink = githubLink;
+    public GithubObject(String title, String link) {
+        this.title = title;
+        this.link = link;
     }
 
-    public String getGithubTitle() {
-        return githubTitle;
+    public String getTitle() {
+        return title;
     }
 
-    public void setGithubTitle(String githubTitle) {
-        this.githubTitle = githubTitle;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getGithubLink() {
-        return githubLink;
+    public String getLink() {
+        return link;
     }
 
-    public void setGithubLink(String githubLink) {
-        this.githubLink = githubLink;
+    public void setLink(String link) {
+        this.link = link;
     }
 }

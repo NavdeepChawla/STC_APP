@@ -7,6 +7,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -21,12 +22,24 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.adapter.resources.ViewPagerResourcesAdapter;
 import com.mstc.mstcapp.fragments.HighlightFragment;
 import com.mstc.mstcapp.fragments.resources.ArticleLinksFragment;
 import com.mstc.mstcapp.fragments.resources.ResourcesFolderFragment;
 import com.mstc.mstcapp.fragments.resources.RoadmapFragment;
+import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ResourcesActivity extends AppCompatActivity {
 
@@ -38,6 +51,8 @@ public class ResourcesActivity extends AppCompatActivity {
     private static FirebaseUser user;
     CircularImageView res_appBarProfilePicture;
     ImageView resourcesStcLogo;
+    String domain;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,10 +64,16 @@ public class ResourcesActivity extends AppCompatActivity {
         resappbarTitle=findViewById(R.id.resappBarTitle);
         resourcesTablayout=findViewById(R.id.tab_view_resources);
         resourcesViewPager=findViewById(R.id.viewpager_res);
+
+        Intent i =getIntent();
+        domain= i.getStringExtra("domain");
+        resappbarTitle.setText(domain);
+
+
         ViewPagerResourcesAdapter adapter=new ViewPagerResourcesAdapter(getSupportFragmentManager());
         adapter.addFragment(new RoadmapFragment(),"Roadmap");
-        adapter.addFragment(new ResourcesFolderFragment(),"Resources");
-        adapter.addFragment(new ArticleLinksFragment(),"Articles");
+        adapter.addFragment(new ResourcesFolderFragment(domain.toLowerCase()),"Resources");
+        adapter.addFragment(new ArticleLinksFragment(domain.toLowerCase()),"Articles");
         resourcesViewPager.setOffscreenPageLimit(3);
 
         resourcesViewPager.setAdapter(adapter);
@@ -88,11 +109,9 @@ public class ResourcesActivity extends AppCompatActivity {
             });
         }
 
-
-        Intent i =getIntent();
-        String test= i.getStringExtra("domain");
-        resappbarTitle.setText(test);
     }
+
+
     public static class DepthPageTransformer implements ViewPager.PageTransformer {
         private static final float MIN_SCALE = 0.75f;
 
@@ -102,6 +121,7 @@ public class ResourcesActivity extends AppCompatActivity {
             if (position < -1) { // [-Infinity,-1)
                 // This page is way off-screen to the left.
                 view.setAlpha(0f);
+
 
             } else if (position <= 0) { // [-1,0]
                 // Use the default slide transition when moving to the left page
