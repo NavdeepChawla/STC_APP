@@ -146,6 +146,7 @@ public class GithubFragment extends Fragment {
                     }
                 }
                 List<GithubObject> githubObjects = response.body();
+                assert githubObjects != null;
                 for (GithubObject githubObject : githubObjects) {
                     String title = githubObject.getTitle();
                     String content = githubObject.getLink();

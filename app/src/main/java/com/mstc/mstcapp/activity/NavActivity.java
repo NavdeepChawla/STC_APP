@@ -54,12 +54,17 @@ public class NavActivity extends AppCompatActivity {
     public static ConstraintLayout appBar;
     public static CircularImageView appBarProfilePicture;
     public static ImageView stcLogo;
+
     private static StorageReference storeRef;
     private static String email, userEmail;
     private static FirebaseUser user;
     private int backButtonCount = 0;
     private int prevPage=0;
     private int currentPage=0;
+
+    //Feed Fragment
+    public static ArrayList<FeedObject> feedList = new ArrayList<>();
+    public static boolean sharedFeed=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
