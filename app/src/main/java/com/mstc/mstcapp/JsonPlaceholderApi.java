@@ -1,5 +1,6 @@
 package com.mstc.mstcapp;
 
+import com.mstc.mstcapp.model.FeedObject;
 import com.mstc.mstcapp.model.highlights.EventObject;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
@@ -9,7 +10,10 @@ import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.HTTP;
+import retrofit2.http.Query;
 import retrofit2.http.Url;
 
 public interface JsonPlaceholderApi {
@@ -23,6 +27,9 @@ public interface JsonPlaceholderApi {
 
     @GET("events")
     Call<List<EventObject>> getEvents();
+
+    @GET()
+    Call<List<FeedObject>> getFeed(@Url String url);
 
     @GET()
     Call<List<ArticleLinksObject>>  getArticleLinksObject(@Url String url);

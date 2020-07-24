@@ -2,7 +2,10 @@ package com.mstc.mstcapp.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +50,10 @@ public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
                 holder.feed_imageView.post(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.with(mContext).load(mData_feed.get(position).getFeedPicture()).into(holder.feed_imageView);
-                    }
+                        String pic= mData_feed.get(position).getFeedPicture();
+                        byte[] decodedString = Base64.decode(pic, Base64.DEFAULT);
+                        Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        holder.feed_imageView.setImageBitmap(picture);                    }
                 });
             }
         }).start();

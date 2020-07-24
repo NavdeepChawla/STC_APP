@@ -1,13 +1,22 @@
 package com.mstc.mstcapp.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class FeedObject {
 
+    @SerializedName("title")
     private String feedTitle;
-    private String feedDesc;
-    private String feedLink;
-    private int feedPicture;
 
-    public FeedObject(String feedTitle, String feedDesc, String feedLink, int feedPicture) {
+    @SerializedName("desc")
+    private String feedDesc;
+
+    @SerializedName("link")
+    private String feedLink;
+
+    @SerializedName("pic")
+    private String feedPicture;
+
+    public FeedObject(String feedTitle, String feedDesc, String feedLink, String feedPicture) {
         this.feedTitle = feedTitle;
         this.feedDesc = feedDesc;
         this.feedLink = feedLink;
@@ -38,11 +47,11 @@ public class FeedObject {
         this.feedLink = feedLink;
     }
 
-    public int getFeedPicture() {
+    public String getFeedPicture() {
         return feedPicture;
     }
 
-    public void setFeedPicture(int feedPicture) {
+    public void setFeedPicture(String feedPicture) {
         this.feedPicture = feedPicture;
     }
 }

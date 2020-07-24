@@ -9,10 +9,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -23,13 +25,28 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.adapter.FeedAdapter;
+import com.mstc.mstcapp.adapter.highlights.EventAdapter;
 import com.mstc.mstcapp.fragments.ExclusiveFragment;
 import com.mstc.mstcapp.fragments.FeedFragment;
 import com.mstc.mstcapp.fragments.HighlightFragment;
 import com.mstc.mstcapp.fragments.InformationFragment;
 import com.mstc.mstcapp.fragments.ResourcesFragment;
+import com.mstc.mstcapp.model.FeedObject;
+import com.mstc.mstcapp.model.highlights.EventObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavActivity extends AppCompatActivity {
 
@@ -48,7 +65,6 @@ public class NavActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
-
         appBarProfilePicture=findViewById(R.id.appBarProfilePicture);
         stcLogo=findViewById(R.id.stcLogo);
         appBarTitle = findViewById(R.id.appBarTitle);
@@ -85,6 +101,8 @@ public class NavActivity extends AppCompatActivity {
                 }
             });
         }
+        Log.i("RETROFIT :","Starting");
+
 
         //Intent To Profile Activity
         appBarProfilePicture.setOnClickListener(new View.OnClickListener() {
@@ -172,6 +190,8 @@ public class NavActivity extends AppCompatActivity {
         });
 
     }
+
+
 
     @Override
     public void onBackPressed() {
