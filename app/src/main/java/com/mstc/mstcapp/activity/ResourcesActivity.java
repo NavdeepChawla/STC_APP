@@ -30,6 +30,7 @@ import com.mstc.mstcapp.fragments.HighlightFragment;
 import com.mstc.mstcapp.fragments.resources.ArticleLinksFragment;
 import com.mstc.mstcapp.fragments.resources.ResourcesFolderFragment;
 import com.mstc.mstcapp.fragments.resources.RoadmapFragment;
+import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 
 import java.util.ArrayList;
@@ -52,6 +53,13 @@ public class ResourcesActivity extends AppCompatActivity {
     CircularImageView res_appBarProfilePicture;
     ImageView resourcesStcLogo;
     String domain;
+
+    // ResourcesFolder Fragment
+
+
+    // ArticleLinks Fragment
+    public static  ArrayList<ArticleLinksObject> articleLinksObjectList=new ArrayList<>();
+
 
 
     @Override

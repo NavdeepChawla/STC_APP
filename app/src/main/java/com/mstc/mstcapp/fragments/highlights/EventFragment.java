@@ -18,13 +18,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.EventAdapter;
+import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
 import com.mstc.mstcapp.adapter.resources.ArticlelinksAdapter;
 import com.mstc.mstcapp.model.highlights.EventObject;
 import com.mstc.mstcapp.model.resources.ArticleLinksObject;
@@ -42,12 +45,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class EventFragment extends Fragment {
 
     RecyclerView eventRecyclerView;
-    List<EventObject> eventList=new ArrayList<>();
     ProgressBar eventProgressbar;
     String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    TextView internetCheck;
 
     public EventFragment(){}
 
@@ -79,16 +82,15 @@ public class EventFragment extends Fragment {
         eventProgressbar=view.findViewById(R.id.progressbarEvent);
         eventRecyclerView = view.findViewById(R.id.eventsRecyclerView);
         eventRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        internetCheck=view.findViewById(R.id.internetcheckEvent);
 
-        if(sharedPreferences.contains("data")){
-            sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
-            Log.i("SHARED","Yes Data");
-            eventList=new ArrayList<>();
-            loadShared();
+        if(NavActivity.projectList.size()==0){
+            loadData(retrofit);
         }
         else{
-            Log.i("SHARED","No Data");
-            loadData(retrofit);
+            EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
+            eventRecyclerView.setAdapter(eventAdapter);
+            eventProgressbar.setVisibility(View.GONE);
         }
 
         final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.eventSwipeRefresh);
@@ -108,7 +110,6 @@ public class EventFragment extends Fragment {
     }
 
     private void loadData(Retrofit retrofit ){
-        eventList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<EventObject>> call= jsonPlaceholderapi.getEvents();
         call.enqueue(new Callback<List<EventObject>>() {
@@ -134,24 +135,32 @@ public class EventFragment extends Fragment {
                     String desc = events1.getEventDesc();
                     String link= events1.getEventLink();
                     String picture=events1.getEventPicture();
-                    eventList.add(new EventObject(title,desc,link,picture));
+                    NavActivity.eventList.add(new EventObject(title,desc,link,picture));
 
                 }
 
                 Gson gson=new Gson();
-                String json=gson.toJson(eventList);
+                String json=gson.toJson(NavActivity.eventList);
                 Log.i("JSON",json);
                 editor.putString("data",json);
                 editor.commit();
                 eventProgressbar.setVisibility(View.INVISIBLE);
-                EventAdapter eventAdapter=new EventAdapter(getContext(),eventList);
+                EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
                 eventRecyclerView.setAdapter(eventAdapter);
             }
 
             @Override
             public void onFailure(Call<List<EventObject>> call, Throwable t) {
                 Log.i("FAILED : ",t.getMessage());
-                loadData(retrofit);
+                if(sharedPreferences.contains("data")){
+                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    Log.i("SHARED","Yes Data");
+                    loadShared();
+                }
+                else {
+                    eventProgressbar.setVisibility(View.INVISIBLE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -163,14 +172,14 @@ public class EventFragment extends Fragment {
         Log.i("GETDATA ",json);
 
         Type type=new TypeToken<List<EventObject>>(){}.getType();
-        eventList=gson.fromJson(json,type);
+        NavActivity.eventList=gson.fromJson(json,type);
 
         eventProgressbar.setVisibility(View.INVISIBLE);
-        EventAdapter adapter=new EventAdapter(getContext(),eventList);
+        EventAdapter adapter=new EventAdapter(getContext(),NavActivity.eventList);
         eventRecyclerView.setAdapter(adapter);
 
-        //if updates are there
-        loadData(retrofit);
+
+
 
     }
 }

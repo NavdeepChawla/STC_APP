@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,6 +59,7 @@ public class ArticleLinksFragment extends Fragment {
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    TextView internetCheck;
     public ArticleLinksFragment(String domain) {
         this.domain=domain;
     }
@@ -68,7 +70,7 @@ public class ArticleLinksFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         domain=domain.replaceAll("\\s","");
-                retrofit=new Retrofit.Builder()
+        retrofit=new Retrofit.Builder()
                 .baseUrl(base_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -91,6 +93,7 @@ public class ArticleLinksFragment extends Fragment {
         articlelinksProgressbar=view.findViewById(R.id.progressbarArticlelinks);
         articlelinksRecyclerView=view.findViewById(R.id.resourcesarticle_recyclerview);
         articlelinksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        internetCheck=view.findViewById(R.id.internetcheckArticles);
 
         if(sharedPreferences.contains("data")){
             sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -117,7 +120,7 @@ public class ArticleLinksFragment extends Fragment {
             }
         });
 
-        }
+    }
 
     private void loadData(Retrofit retrofit, String domain, SharedPreferences.Editor editor) {
         articleLinksObjectList=new ArrayList<>();
@@ -159,10 +162,18 @@ public class ArticleLinksFragment extends Fragment {
             @Override
             public void onFailure(Call<List<ArticleLinksObject>> call, Throwable t) {
                 Log.i("FAILED : ",t.getMessage());
-                loadData(retrofit,domain,editor);
+                if(sharedPreferences.contains("data")){
+                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    Log.i("SHARED","Yes Data");
+                    loadShared();
+                }
+                else {
+                    articlelinksProgressbar.setVisibility(View.INVISIBLE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                }
 
             }
-    });
+        });
 
     }
     private void loadShared(){

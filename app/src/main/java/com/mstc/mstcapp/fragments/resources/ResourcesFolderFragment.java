@@ -62,6 +62,7 @@ public class ResourcesFolderFragment extends Fragment {
     String base_url = "https://stc-app-backend.herokuapp.com/api/resources/";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    TextView internetCheck;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -91,7 +92,7 @@ public class ResourcesFolderFragment extends Fragment {
         resouurcesfolderProgressbar=view.findViewById(R.id.progressbarResourcesFolder);
         resourcesfolderRecyclerview=view.findViewById(R.id.resourcesfolder_recyclerview);
         resourcesfolderRecyclerview.setLayoutManager(new LinearLayoutManager(getContext()));
-
+        internetCheck=view.findViewById(R.id.internetcheckResourcesFolder);
         if(sharedPreferences.contains("data")){
             sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
             Log.i("SHARED","Yes Data");
@@ -135,33 +136,40 @@ public class ResourcesFolderFragment extends Fragment {
                     Log.i("CODE", String.valueOf(response.code()));
                     return;
                 }
-                    List<ResourcesFolderObject> resourcesFolderObjects=response.body();
-                    editor.clear();
-                    for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
-                        String title=resourcesFolderObject.getResourcesfolderTitle();
-                        String desc=resourcesFolderObject.getResourcefolderDesc();
-                        String link= resourcesFolderObject.getResourcefolderLink();
-                        resourcesFolderObjectsList.add(new ResourcesFolderObject(title,link,desc));
-
-                    }
-                    Gson gson=new Gson();
-                    String json=gson.toJson(resourcesFolderObjectsList);
-                    Log.i("JSON",json);
-                    editor.putString("data",json);
-                    editor.commit();
-                    resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
-                    ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList);
-                    resourcesfolderRecyclerview.setAdapter(adapter);
+                List<ResourcesFolderObject> resourcesFolderObjects=response.body();
+                editor.clear();
+                for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
+                    String title=resourcesFolderObject.getResourcesfolderTitle();
+                    String desc=resourcesFolderObject.getResourcefolderDesc();
+                    String link= resourcesFolderObject.getResourcefolderLink();
+                    resourcesFolderObjectsList.add(new ResourcesFolderObject(title,link,desc));
 
                 }
+                Gson gson=new Gson();
+                String json=gson.toJson(resourcesFolderObjectsList);
+                Log.i("JSON",json);
+                editor.putString("data",json);
+                editor.commit();
+                resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
+                ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList);
+                resourcesfolderRecyclerview.setAdapter(adapter);
+
+            }
 
 
 
             @Override
             public void onFailure(Call<List<ResourcesFolderObject>> call, Throwable t) {
                 Log.i("FAILED : ",t.getMessage());
-                loadData(retrofit,domain,editor
-                );
+                if(sharedPreferences.contains("data")){
+                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    Log.i("SHARED","Yes Data");
+                    loadShared();
+                }
+                else {
+                    resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                }
             }
         });
     }

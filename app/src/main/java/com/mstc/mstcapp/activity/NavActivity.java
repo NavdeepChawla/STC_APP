@@ -31,6 +31,7 @@ import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.FeedAdapter;
 import com.mstc.mstcapp.adapter.highlights.EventAdapter;
+import com.mstc.mstcapp.adapter.highlights.GithubAdapter;
 import com.mstc.mstcapp.fragments.ExclusiveFragment;
 import com.mstc.mstcapp.fragments.FeedFragment;
 import com.mstc.mstcapp.fragments.HighlightFragment;
@@ -38,6 +39,8 @@ import com.mstc.mstcapp.fragments.InformationFragment;
 import com.mstc.mstcapp.fragments.ResourcesFragment;
 import com.mstc.mstcapp.model.FeedObject;
 import com.mstc.mstcapp.model.highlights.EventObject;
+import com.mstc.mstcapp.model.highlights.GithubObject;
+import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,6 +68,17 @@ public class NavActivity extends AppCompatActivity {
     //Feed Fragment
     public static ArrayList<FeedObject> feedList = new ArrayList<>();
     public static boolean sharedFeed=false;
+
+    //Project Fragment
+    public static ArrayList<ProjectsObject> projectList = new ArrayList<>();
+
+
+    //Github Fragment
+    public static ArrayList<GithubObject> githubList = new ArrayList<>();
+
+    //Events Fragment
+    public static ArrayList<EventObject> eventList = new ArrayList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

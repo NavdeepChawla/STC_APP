@@ -18,13 +18,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
+import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.GithubAdapter;
+import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 
 import java.lang.reflect.Type;
@@ -39,13 +42,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GithubFragment extends Fragment {
 
-    List<GithubObject> githubObjectList =new ArrayList<>();
+
     RecyclerView githubRecyclerView;
     ProgressBar githubProgressBar;
     String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    TextView internetCheck;
+
 
     public GithubFragment(){
 
@@ -79,18 +84,19 @@ public class GithubFragment extends Fragment {
         githubProgressBar=view.findViewById(R.id.progressbarGithub);
         githubRecyclerView = view.findViewById(R.id.githubRecyclerView);
         githubRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        internetCheck=view.findViewById(R.id.internetcheckGithub);
 
-
-        if(sharedPreferences.contains("data")){
-            sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
-
-            githubObjectList =new ArrayList<>();
-            loadShared();
+        if(NavActivity.githubList.size()==0){
+            loadData(retrofit);
         }
         else{
 
-            loadData(retrofit);
+            GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
+            githubRecyclerView.setAdapter(githubAdapter);
+            githubProgressBar.setVisibility(View.GONE);
+
         }
+
 
         final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.githubSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
@@ -114,10 +120,10 @@ public class GithubFragment extends Fragment {
         String json=sharedPreferences.getString("data","");
         Log.i("GETDATA ",json);
         Type type=new TypeToken<List<GithubObject>>(){}.getType();
-        githubObjectList =gson.fromJson(json,type);
+         NavActivity.githubList =gson.fromJson(json,type);
 
         githubProgressBar.setVisibility(View.INVISIBLE);
-        GithubAdapter adapter=new GithubAdapter(getContext(), githubObjectList);
+        GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
         githubRecyclerView.setAdapter(adapter);
 
         //if updates are there
@@ -127,7 +133,7 @@ public class GithubFragment extends Fragment {
 
     private void loadData(Retrofit retrofit) {
 
-        githubObjectList = new ArrayList<>();
+        NavActivity.githubList = new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
         Call<List<GithubObject>> call = jsonPlaceholderApi.getGithub();
         call.enqueue(new Callback<List<GithubObject>>() {
@@ -150,16 +156,16 @@ public class GithubFragment extends Fragment {
                 for (GithubObject githubObject : githubObjects) {
                     String title = githubObject.getTitle();
                     String content = githubObject.getLink();
-                    githubObjectList.add(new GithubObject(title, content));
+                    NavActivity.githubList.add(new GithubObject(title, content));
                 }
 
                 Gson gson = new Gson();
-                String json = gson.toJson(githubObjectList);
+                String json = gson.toJson(NavActivity.githubList);
                 Log.i("JSON", json);
                 editor.putString("data", json);
                 editor.commit();
                 githubProgressBar.setVisibility(View.INVISIBLE);
-                GithubAdapter githubAdapter = new GithubAdapter(getContext(), githubObjectList);
+                GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
                 githubRecyclerView.setAdapter(githubAdapter);
 
             }
@@ -167,7 +173,15 @@ public class GithubFragment extends Fragment {
             @Override
             public void onFailure(Call<List<GithubObject>> call, Throwable t) {
                 Log.i("FAILED : ", t.getMessage());
-                loadData(retrofit);
+                if(sharedPreferences.contains("data")){
+                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    Log.i("SHARED","Yes Data");
+                    loadShared();
+                }
+                else {
+                    githubProgressBar.setVisibility(View.INVISIBLE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                }
             }
         });
 

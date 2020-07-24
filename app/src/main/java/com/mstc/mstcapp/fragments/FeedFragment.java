@@ -55,7 +55,7 @@ public class FeedFragment extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     LinearLayoutManager linearLayoutManager;
-
+    TextView internetCheck;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,6 +81,7 @@ public class FeedFragment extends Fragment {
         progressBarFeed=view.findViewById(R.id.progressbarFeed);
         recyclerView_feed = (RecyclerView) view.findViewById(R.id.recyclerview_feed);
         feedLoadMore = view.findViewById(R.id.feedLoadMore);
+        internetCheck=view.findViewById(R.id.internetcheckFeed);
         feedLoadMore.setVisibility(View.GONE);
 
         recyclerView_feed.setLayoutManager(linearLayoutManager);
@@ -189,6 +190,10 @@ public class FeedFragment extends Fragment {
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
+                }
+                else {
+                    progressBarFeed.setVisibility(View.INVISIBLE);
+                    internetCheck.setVisibility(View.VISIBLE);
                 }
             }
         });
