@@ -3,6 +3,11 @@
   <component name="WizardSettings">
     <option name="children">
       <map>
+        <entry key="imageWizard">
+          <value>
+            <PersistentState />
+          </value>
+        </entry>
         <entry key="vectorWizard">
           <value>
             <PersistentState>
@@ -14,8 +19,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_compcc_bg" />
-                            <entry key="sourceFile" value="C:\Users\navde\Downloads\test\Icon awesome-laptop-code.svg" />
+                            <entry key="outputName" value="ic_roadmap_frontend" />
+                            <entry key="sourceFile" value="C:\Users\navde\Downloads\test\Group 141.svg" />
                           </map>
                         </option>
                       </PersistentState>
