@@ -116,7 +116,7 @@ public class ProjectFragment extends Fragment {
     }
     private void loadData(Retrofit retrofit) {
 
-
+        NavActivity.projectList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderApi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<ProjectsObject>> call=jsonPlaceholderApi.getProjects();
         call.enqueue(new Callback<List<ProjectsObject>>() {

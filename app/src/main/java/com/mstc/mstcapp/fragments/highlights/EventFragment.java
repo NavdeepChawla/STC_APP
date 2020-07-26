@@ -110,6 +110,7 @@ public class EventFragment extends Fragment {
     }
 
     private void loadData(Retrofit retrofit ){
+        NavActivity.eventList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<EventObject>> call= jsonPlaceholderapi.getEvents();
         call.enqueue(new Callback<List<EventObject>>() {
