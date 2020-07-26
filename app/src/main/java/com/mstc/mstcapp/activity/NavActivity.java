@@ -116,7 +116,7 @@ public class NavActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Snackbar.make(findViewById(android.R.id.content),"Unable to download picture.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(getColor(R.color.colorPrimary)).setActionTextColor(getColor(R.color.white)).show();
+                    Snackbar.make(findViewById(android.R.id.content),"Unable to download picture.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(getColor(R.color.colorPrimary)).setTextColor(getColor(R.color.permWhite)).show();
                 }
             });
         }
@@ -132,24 +132,6 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        boolean resource = intent.getBooleanExtra("Resource",false);
-        if(resource)
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, new ResourcesFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.nav_resources);
-        }
-        else
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, new FeedFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
-        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -207,6 +189,25 @@ public class NavActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        Intent intent = getIntent();
+        boolean resource = intent.getBooleanExtra("Resource",false);
+        if(resource)
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, new ResourcesFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_resources);
+        }
+        else
+        {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.nav_host_fragment, new FeedFragment())
+                    .commit();
+            bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        }
 
     }
 

@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardColor"
+    android:backgroundTint="@color/cardColor"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
     app:contentPadding="4dp"
@@ -11,14 +13,10 @@
     android:id="@+id/project_cardview"
     android:padding="8dp">
 
-
-
-
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:padding="8dp">
-
 
             <TextView
                 android:id="@+id/tv_name_proj"
@@ -30,6 +28,7 @@
                 android:lines="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="20dp" />
+
             <TextView
                 android:id="@+id/tv_name_proj_full"
                 android:layout_width="match_parent"
@@ -50,7 +49,7 @@
                 android:gravity="start"
                 android:text="Short Description"
                 android:layout_marginLeft="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
                 android:textSize="16dp" />
 
             <TextView
@@ -63,7 +62,7 @@
                 android:gravity="start"
                 android:text="Contributors"
                 android:layout_marginLeft="8dp"
-                android:textColor="@color/black"
+                android:textColor="@color/gray"
                 android:textSize="16dp" />
 
             <TextView

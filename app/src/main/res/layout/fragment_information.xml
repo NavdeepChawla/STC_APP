@@ -45,7 +45,7 @@
         android:gravity="center_vertical"
         android:text="Student\nTechnical\nCommunity"
         android:textAllCaps="true"
-        android:textColor="#000000"
+        android:textColor="@color/black"
         android:textSize="26dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/stcImage"
@@ -76,6 +76,7 @@
             android:textSize="16dp"
             android:background="@color/background_color"
             android:drawableStart="@drawable/ic_linkedin"
+            android:drawableTint="@color/black"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
 
@@ -89,6 +90,7 @@
             android:textSize="16dp"
             android:background="@color/background_color"
             android:drawableStart="@drawable/ic_medium"
+            android:drawableTint="@color/black"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
 
@@ -116,6 +118,7 @@
             android:textSize="16dp"
             android:background="@color/background_color"
             android:drawableStart="@drawable/ic_facebook"
+            android:drawableTint="@color/black"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
 
@@ -130,6 +133,7 @@
             android:textSize="16dp"
             android:background="@color/background_color"
             android:drawableStart="@drawable/ic_instagram"
+            android:drawableTint="@color/black"
             android:padding="8dp"
             android:text="\@MSTC_VIT" />
 
@@ -177,6 +181,8 @@
                     android:layout_height="400dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginStart="32dp"
+                    android:background="@color/cardColor"
+                    android:backgroundTint="@color/cardColor"
                     android:layout_marginEnd="32dp"
                     android:layout_marginBottom="8dp">
 
@@ -205,6 +211,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
+                    android:background="@color/cardColor"
+                    android:backgroundTint="@color/cardColor"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 
@@ -280,6 +288,8 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="32dp"
+                    android:background="@color/cardColor"
+                    android:backgroundTint="@color/cardColor"
                     app:cardCornerRadius="8dp"
                     app:cardElevation="4dp">
 

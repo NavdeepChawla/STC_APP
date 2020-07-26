@@ -35,6 +35,7 @@ import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +63,7 @@ public class EventFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        sharedPreferences=getContext().getSharedPreferences("event", Context.MODE_PRIVATE);
+        sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
         editor= sharedPreferences.edit();
 
         super.onCreate(savedInstanceState);

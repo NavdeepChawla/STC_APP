@@ -42,7 +42,7 @@ public class ResourcesFragment extends Fragment {
         domainList.add(new ResourceModel("Android",R.drawable.ic_android_bg));
         domainList.add(new ResourceModel("Flutter",R.drawable.ic_flutter_bg ));
         domainList.add(new ResourceModel("Frontend",R.drawable.ic_web_logos));
-        domainList.add(new ResourceModel("Backend",R.mipmap.ic_backend_foreground));
+        domainList.add(new ResourceModel("Backend",R.drawable.ic_backend_foreground));
         domainList.add(new ResourceModel("Data Science",R.drawable.ic_datascience_bg));
         domainList.add(new ResourceModel("Competitive Coding",R.drawable.ic_compcc_bg));
         domainList.add(new ResourceModel("Design",R.drawable.ic_design_bg));

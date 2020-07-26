@@ -111,6 +111,8 @@ public class FeedFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
+                        skip = 0;
+                        NavActivity.feedList.clear();
                         loadData(retrofit);
                     }
 
@@ -149,7 +151,7 @@ public class FeedFragment extends Fragment {
                 List<FeedObject> feeds=response.body();
                 if(feeds==null||feeds.size()==0){
                     feedLoadMore.setVisibility(View.GONE);
-                    //Snackbar.make()
+                    Snackbar.make(feedLoadMore,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                 }
                 else
                 {

@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/cardColor"
+    android:backgroundTint="@color/cardColor"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
     app:contentPadding="4dp"

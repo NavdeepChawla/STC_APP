@@ -135,7 +135,7 @@ public class InformationFragment extends Fragment {
         }
         infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
         TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
-        tv.setTextColor(getResources().getColor(R.color.white));
+        tv.setTextColor(getResources().getColor(R.color.permWhite));
         tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
     }
 
@@ -163,7 +163,7 @@ public class InformationFragment extends Fragment {
                 }
                 infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
                 TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
-                tv.setTextColor(getResources().getColor(R.color.white));
+                tv.setTextColor(getResources().getColor(R.color.permWhite));
                 tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
             }
         });

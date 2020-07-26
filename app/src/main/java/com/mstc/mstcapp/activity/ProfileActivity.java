@@ -47,7 +47,6 @@ public class ProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        getWindow().setStatusBarColor(Color.WHITE);
 
         mProgressCircular=findViewById(R.id.progressBar);
         profilePicture =findViewById(R.id.appBarProfilePicture);
@@ -59,7 +58,6 @@ public class ProfileActivity extends AppCompatActivity {
         profileDomain =findViewById(R.id.domain_user);
         profilePhoneNo =findViewById(R.id.phone_user);
         profileLayout =findViewById(R.id.rLayout);
-        getWindow().setStatusBarColor(Color.WHITE);
 
         firebaseAuth =FirebaseAuth.getInstance();
         user= firebaseAuth.getCurrentUser();

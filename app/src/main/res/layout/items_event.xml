@@ -3,6 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/cardColor"
+    android:backgroundTint="@color/cardColor"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
@@ -41,7 +43,7 @@
             android:layout_marginTop="4dp"
             android:id="@+id/eventDesc"
             android:fontFamily="@font/montserrat"
-            android:textColor="#545454"
+            android:textColor="@color/gray"
             android:textSize="16dp"/>
 
         <TextView

@@ -143,13 +143,12 @@ public class GithubFragment extends Fragment {
                     if(response.code()==400)
                     {
                         loadData(retrofit);
-                        return;
                     }
                     else {
                         Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
                         Log.i("CODE", String.valueOf(response.code()));
-                        return;
                     }
+                    return;
                 }
                 List<GithubObject> githubObjects = response.body();
                 assert githubObjects != null;

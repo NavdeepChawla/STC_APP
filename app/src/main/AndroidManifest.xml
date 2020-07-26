@@ -24,13 +24,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.LoginActivity"/>
-        <activity android:name=".activity.ProfileActivity"/>
-        <activity android:name=".activity.ResourcesActivity"/>
-        <activity android:name=".activity.ForgotPasswordActivity"/>
+
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.ResourcesActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity
+            android:name=".activity.ForgotPasswordActivity"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".activity.NavActivity"
             android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>
