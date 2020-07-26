@@ -27,6 +27,16 @@
                 android:fontFamily="@font/montserrat_medium"
                 android:textColor="@color/black"
                 android:text="Name of Project"
+                android:lines="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="20dp" />
+            <TextView
+                android:id="@+id/tv_name_proj_full"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:textColor="@color/black"
+                android:text="Name of Project"
                 android:layout_marginLeft="8dp"
                 android:textSize="20dp" />
 
@@ -34,7 +44,7 @@
                 android:id="@+id/tv_descrip_proj"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_name_proj"
+                android:layout_below="@+id/tv_name_proj_full"
                 android:layout_marginTop="4dp"
                 android:fontFamily="@font/montserrat"
                 android:gravity="start"

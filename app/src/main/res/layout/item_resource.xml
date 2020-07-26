@@ -30,8 +30,11 @@
             android:layout_height="64dp"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_marginRight="4dp"
+            android:layout_marginLeft="4dp"
             android:contentDescription="@string/contentDescription"
             android:fitsSystemWindows="true"
+            android:src="@drawable/ic_web_logos"
             />
 
     </RelativeLayout>

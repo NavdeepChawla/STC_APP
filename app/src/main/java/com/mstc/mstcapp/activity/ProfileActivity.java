@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -32,7 +33,7 @@ import com.mstc.mstcapp.R;
 public class ProfileActivity extends AppCompatActivity {
 
     private CircularImageView profilePicture;
-    private EditText profileName, profileEmail, profileRegNo, profileDomain, profileRoomNo, profilePhoneNo;
+    private TextView profileName, profileEmail, profileRegNo, profileDomain, profileRoomNo, profilePhoneNo;
     private Button buttonLogout;
     private FirebaseAuth firebaseAuth;
     private DatabaseReference mRef;

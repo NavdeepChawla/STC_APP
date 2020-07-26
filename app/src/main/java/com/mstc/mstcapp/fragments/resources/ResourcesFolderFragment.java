@@ -50,6 +50,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ResourcesFolderFragment extends Fragment {
     String domain;
 
+    public ResourcesFolderFragment(){}
     public ResourcesFolderFragment(String domain) {
         this.domain = domain;
     }

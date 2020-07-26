@@ -25,13 +25,24 @@
                 android:text="Name of Project"
                 android:textSize="20dp"
                 android:layout_marginLeft="8dp"
+                android:lines="1"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tv_github_title_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_medium"
+                android:text="Name of Project"
+                android:textSize="20dp"
+                android:layout_marginLeft="8dp"
                 android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tv_repo_link"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_github_title"
+                android:layout_below="@+id/tv_github_title_full"
                 android:fontFamily="@font/montserrat"
                 android:textColor="@color/link_blue"
                 android:layout_marginTop="4dp"

@@ -79,7 +79,7 @@ public class ResourcesActivity extends AppCompatActivity {
 
 
         ViewPagerResourcesAdapter adapter=new ViewPagerResourcesAdapter(getSupportFragmentManager());
-        adapter.addFragment(new RoadmapFragment(),"Roadmap");
+        adapter.addFragment(new RoadmapFragment(domain.toLowerCase()),"Roadmap");
         adapter.addFragment(new ResourcesFolderFragment(domain.toLowerCase()),"Resources");
         adapter.addFragment(new ArticleLinksFragment(domain.toLowerCase()),"Articles");
         resourcesViewPager.setOffscreenPageLimit(3);

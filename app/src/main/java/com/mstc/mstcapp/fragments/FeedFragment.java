@@ -187,7 +187,7 @@ public class FeedFragment extends Fragment {
             public void onFailure(@NotNull Call<List<FeedObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }

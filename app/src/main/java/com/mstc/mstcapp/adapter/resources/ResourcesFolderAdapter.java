@@ -36,9 +36,12 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
     @Override
     public void onBindViewHolder(@NonNull ResourcesFolderView holder, final int position) {
         holder.resourcesfolderTitle.setText(resourcesFolderObjects_list.get(position).getResourcesfolderTitle());
+        holder.resourcefolderTitleSecond.setText(resourcesFolderObjects_list.get(position).getResourcesfolderTitle());
         holder.resourcesfolderLink.setText(resourcesFolderObjects_list.get(position).getResourcefolderLink());
         holder.resourcefolderDesc.setText(resourcesFolderObjects_list.get(position).getResourcefolderDesc());
         final boolean isExpanded = position==mExpandedPosition;
+        holder.resourcesfolderTitle.setVisibility(!isExpanded?View.VISIBLE:View.GONE);
+        holder.resourcefolderTitleSecond.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.resourcefolderDesc.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.resourcesfolderLink.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.itemView.setActivated(isExpanded);
@@ -62,14 +65,16 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
     }
 
     public class ResourcesFolderView  extends RecyclerView.ViewHolder {
-        TextView resourcesfolderTitle,resourcesfolderLink,resourcefolderDesc;
+         public TextView resourcesfolderTitle,resourcesfolderLink,resourcefolderDesc,resourcefolderTitleSecond;
 
         public ResourcesFolderView(@NonNull View itemView) {
             super(itemView);
             resourcesfolderTitle=itemView.findViewById(R.id.resourcefolder_title);
             resourcesfolderLink=itemView.findViewById(R.id.resourcefolder_link);
             resourcefolderDesc=itemView.findViewById(R.id.resourcefolder_desc);
+            resourcefolderTitleSecond=itemView.findViewById(R.id.resourcefolder_title_second);
 
+            resourcefolderTitleSecond.setVisibility(View.GONE);
             resourcefolderDesc.setVisibility(View.GONE);
             resourcesfolderLink.setVisibility(View.GONE);
         }

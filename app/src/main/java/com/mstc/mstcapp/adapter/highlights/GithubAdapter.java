@@ -44,6 +44,8 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
     public void onBindViewHolder(@NonNull myViewHolder holder, final int position) {
         holder.githubProj_link.setText(mData2.get(position).getLink());
         holder.githubProj_title.setText(mData2.get(position).getTitle());
+        holder.githubProj_title_second.setText(mData2.get(position).getTitle());
+
         holder.githubProj_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +57,8 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
         });
         final boolean isExpanded = position==mExpandedPosition;
         holder.githubProj_link.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.githubProj_title_second.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.githubProj_title.setVisibility(!isExpanded?View.VISIBLE:View.GONE);
         holder.itemView.setActivated(isExpanded);
         if (isExpanded)
             previousExpandedPosition = position;
@@ -76,13 +80,16 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
 
     public static class myViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView githubProj_link,githubProj_title;
+        private TextView githubProj_link,githubProj_title,githubProj_title_second;
 
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
 
             githubProj_link = (TextView) itemView.findViewById(R.id.tv_repo_link);
             githubProj_title = (TextView) itemView.findViewById(R.id.tv_github_title);
+            githubProj_title_second=itemView.findViewById(R.id.tv_github_title_full);
+
+            githubProj_title_second.setVisibility(View.GONE);
             githubProj_link.setVisibility(View.GONE);
         }
 

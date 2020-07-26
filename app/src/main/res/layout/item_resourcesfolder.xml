@@ -23,12 +23,22 @@
             android:fontFamily="@font/montserrat"
             android:text="sample"
             android:textAllCaps="true"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="20dp" />
+        <TextView
+            android:id="@+id/resourcefolder_title_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat"
+            android:text="sample"
+            android:textAllCaps="true"
             android:textColor="@color/black"
             android:textSize="20dp" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/resourcefolder_title"
+            android:layout_below="@+id/resourcefolder_title_second"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
             android:textSize="16dp"

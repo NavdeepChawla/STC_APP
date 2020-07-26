@@ -41,12 +41,16 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
 
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder holder, final int position) {
+
         holder.proj_name.setText(mData1.get(position).getTitle());
+        holder.proj_title_secondary.setText(mData1.get(position).getTitle());
         holder.proj_descrip.setText(mData1.get(position).getDesc());
         holder.proj_mediumLink.setText(mData1.get(position).getLink());
         holder.proj_contributors.setText("Contributors : "+mData1.get(position).getContributors());
 
         final boolean isExpanded = position==mExpandedPosition;
+        holder.proj_title_secondary.setVisibility(isExpanded?View.VISIBLE:View.GONE);
+        holder.proj_name.setVisibility(!isExpanded?View.VISIBLE:View.GONE);
         holder.proj_descrip.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.proj_mediumLink.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.proj_contributors.setVisibility(isExpanded?View.VISIBLE:View.GONE);
@@ -82,7 +86,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
 
     public static class myViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView proj_name,proj_descrip,proj_contributors,proj_mediumLink;
+        private TextView proj_name,proj_descrip,proj_contributors,proj_mediumLink,proj_title_secondary;
         CardView cardView_project;
 
         public myViewHolder(@NonNull View itemView) {
@@ -92,6 +96,9 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
             proj_descrip = (TextView) itemView.findViewById(R.id.tv_descrip_proj);
             proj_contributors=(TextView)itemView.findViewById(R.id.tv_contributors_proj);
             proj_mediumLink=(TextView)itemView.findViewById(R.id.tv_mediumLink_proj);
+            proj_title_secondary=(TextView)itemView.findViewById(R.id.tv_name_proj_full);
+
+            proj_title_secondary.setVisibility(View.GONE);
             proj_descrip.setVisibility(View.GONE);
             proj_contributors.setVisibility(View.GONE);
             proj_mediumLink.setVisibility(View.GONE);
