@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
@@ -130,6 +131,13 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent=new Intent(ProfileActivity.this,NavActivity.class);
         startActivity(intent);
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        Intent intent = new Intent(ProfileActivity.this,NavActivity.class);
+        startActivity(intent);
+        super.onConfigurationChanged(newConfig);
     }
 
 }

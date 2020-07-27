@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -166,4 +167,10 @@ public class ResourcesActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
     }
 
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        Intent intent = new Intent(ResourcesActivity.this,NavActivity.class);
+        startActivity(intent);
+        super.onConfigurationChanged(newConfig);
+    }
 }

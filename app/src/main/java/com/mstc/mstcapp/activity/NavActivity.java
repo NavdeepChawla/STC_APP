@@ -6,6 +6,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -138,6 +139,7 @@ public class NavActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.nav_host_fragment, new FeedFragment())
                 .commit();
+        bottomNavigationView.setSelectedItemId(R.id.nav_home);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -219,5 +221,12 @@ public class NavActivity extends AppCompatActivity {
             Snackbar.make(findViewById(android.R.id.content),"Press back again to exit.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(getColor(R.color.colorPrimary)).setActionTextColor(getColor(R.color.white)).show();
             backButtonCount++;
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        Intent intent = new Intent(NavActivity.this,NavActivity.class);
+        startActivity(intent);
+        super.onConfigurationChanged(newConfig);
     }
 }
