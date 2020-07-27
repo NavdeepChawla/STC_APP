@@ -65,6 +65,8 @@ public class NavActivity extends AppCompatActivity {
     private int prevPage=0;
     private int currentPage=0;
 
+    private boolean resource;
+
     //Feed Fragment
     public static ArrayList<FeedObject> feedList = new ArrayList<>();
     public static boolean sharedFeed=false;
@@ -132,6 +134,10 @@ public class NavActivity extends AppCompatActivity {
             }
         });
 
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.nav_host_fragment, new FeedFragment())
+                .commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -165,7 +171,7 @@ public class NavActivity extends AppCompatActivity {
                                         break;
                                 }
 
-                                if(prevPage<currentPage)
+                               if(prevPage<currentPage)
                                 {
                                     prevPage=currentPage;
                                     getSupportFragmentManager()
@@ -191,22 +197,10 @@ public class NavActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        boolean resource = intent.getBooleanExtra("Resource",false);
+        resource = intent.getBooleanExtra("Resource",false);
         if(resource)
         {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, new ResourcesFragment())
-                    .commit();
             bottomNavigationView.setSelectedItemId(R.id.nav_resources);
-        }
-        else
-        {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.nav_host_fragment, new FeedFragment())
-                    .commit();
-            bottomNavigationView.setSelectedItemId(R.id.nav_home);
         }
 
     }

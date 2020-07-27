@@ -66,8 +66,6 @@ public class FeedFragment extends Fragment {
         skip=0;
         sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
         linearLayoutManager=new LinearLayoutManager(getActivity());
-
-
         return inflater.inflate(R.layout.fragment_feed, container, false);
     }
 
