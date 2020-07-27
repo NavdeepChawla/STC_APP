@@ -30,6 +30,9 @@ public class UpdatesFragment extends Fragment {
     RecyclerView recyclerView_updates;
     DatabaseReference databaseReference_updates;
 
+    public UpdatesFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

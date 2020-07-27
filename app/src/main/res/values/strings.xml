@@ -16,6 +16,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+    <string name="information">"Student Technical community, VIT Vellore is a group of enthusiastic students driven by their passion for technology. We have always worked together to empower students with new technical skills. In the last one year, we have had over 15 tech talks,10+ projects, and our flagship event “BREW” which had 250+ attendees and our latest events had over 1.5k impression, individually. We house over 10 Microsoft Student Partners and Alexa Student Influencers. We strive to acquire new knowledge, hone our skills, and help spread the awesomeness of new technologies inside and outside the campus."</string>
 
     <string name="devBy">Made with &#10084; by STC</string>
 

@@ -64,6 +64,8 @@ public class ArticleLinksFragment extends Fragment {
         this.domain=domain;
     }
 
+    public ArticleLinksFragment() {
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

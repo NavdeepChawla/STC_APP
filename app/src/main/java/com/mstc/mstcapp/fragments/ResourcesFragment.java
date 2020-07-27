@@ -25,6 +25,9 @@ public class ResourcesFragment extends Fragment {
     private List<ResourceModel> domainList;
     private RecyclerView domainRecyclerView;
 
+    public ResourcesFragment() {
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

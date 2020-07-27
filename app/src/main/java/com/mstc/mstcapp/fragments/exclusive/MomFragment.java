@@ -32,6 +32,9 @@ public class MomFragment extends Fragment {
     DatabaseReference databaseReference_mom;
     private ProgressBar progressBar_mom;
 
+    public MomFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

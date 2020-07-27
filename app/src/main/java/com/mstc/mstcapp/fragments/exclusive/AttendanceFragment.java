@@ -31,6 +31,9 @@ public class AttendanceFragment extends Fragment {
     RecyclerView recyclerView_attendance;
     DatabaseReference databaseReference_attendance;
 
+    public AttendanceFragment() {
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

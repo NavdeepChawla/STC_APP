@@ -57,6 +57,8 @@ public class FeedFragment extends Fragment {
     LinearLayoutManager linearLayoutManager;
     TextView internetCheck;
 
+    public FeedFragment(){}
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         retrofit=new Retrofit.Builder()
