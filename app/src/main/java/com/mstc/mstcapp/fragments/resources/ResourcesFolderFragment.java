@@ -33,6 +33,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -145,14 +146,16 @@ public class ResourcesFolderFragment extends Fragment {
                     String link= resourcesFolderObject.getResourcefolderLink();
                     resourcesFolderObjectsList.add(new ResourcesFolderObject(title,link,desc));
 
+
                 }
                 Gson gson=new Gson();
                 String json=gson.toJson(resourcesFolderObjectsList);
                 Log.i("JSON",json);
                 editor.putString("data",json);
                 editor.commit();
+
                 resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
-                ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList);
+                ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
                 resourcesfolderRecyclerview.setAdapter(adapter);
 
             }
@@ -182,7 +185,7 @@ public class ResourcesFolderFragment extends Fragment {
         Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
         resourcesFolderObjectsList=gson.fromJson(json,type);
         resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
-        ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList);
+        ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
         resourcesfolderRecyclerview.setAdapter(adapter);
 
         //if updates are there

@@ -15,6 +15,7 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 
 import java.security.acl.LastOwnerException;
+import java.util.Collections;
 import java.util.List;
 
 public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapter.ArticlelinkView> {
@@ -25,6 +26,7 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
 
     public ArticlelinksAdapter(List<ArticleLinksObject> articleLinksObjectList, Context context) {
         articleLinksObject_list=articleLinksObjectList;
+        Collections.reverse(articleLinksObject_list);
         articlelinkContext=context;
     }
 
@@ -65,6 +67,15 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
                 mExpandedPosition = isExpanded ? -1:position;
                 notifyItemChanged(previousExpandedPosition);
                 notifyItemChanged(position);
+            }
+        });
+        holder.articlelinksLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link=articleLinksObject_list.get(position).getArticlelinksLink();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse(link)));
+                articlelinkContext.startActivity(intent);
             }
         });
     }

@@ -35,6 +35,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -150,6 +151,7 @@ public class ArticleLinksFragment extends Fragment {
                     String link=articleLinksObject.getArticlelinksLink();
                     String desc=articleLinksObject.getArticlelinksDesc();
                     articleLinksObjectList.add(new ArticleLinksObject(title,link,desc));
+
                 }
 
                 Gson gson=new Gson();
@@ -160,6 +162,7 @@ public class ArticleLinksFragment extends Fragment {
                 articlelinksProgressbar.setVisibility(View.INVISIBLE);
                 ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
                 articlelinksRecyclerView.setAdapter(adapter);
+
             }
             @Override
             public void onFailure(Call<List<ArticleLinksObject>> call, Throwable t) {

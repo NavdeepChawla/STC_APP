@@ -1,5 +1,8 @@
 package com.mstc.mstcapp.adapter.resources;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +17,19 @@ import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 
 import org.w3c.dom.Text;
 
+import java.util.Collections;
 import java.util.List;
 
 public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolderAdapter.ResourcesFolderView> {
     List <ResourcesFolderObject> resourcesFolderObjects_list;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
+    Context context;
 
-    public ResourcesFolderAdapter(List<ResourcesFolderObject> resourcesFolderObjectsList) {
+    public ResourcesFolderAdapter(List<ResourcesFolderObject> resourcesFolderObjectsList,Context context1) {
         resourcesFolderObjects_list=resourcesFolderObjectsList;
+        Collections.reverse(resourcesFolderObjects_list);
+        context=context1;
     }
 
     @NonNull
@@ -55,6 +62,15 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
                 mExpandedPosition = isExpanded ? -1:position;
                 notifyItemChanged(previousExpandedPosition);
                 notifyItemChanged(position);
+            }
+        });
+        holder.resourcesfolderLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String link=resourcesFolderObjects_list.get(position).getResourcefolderLink();
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse(link)));
+                context.startActivity(intent);
             }
         });
     }
