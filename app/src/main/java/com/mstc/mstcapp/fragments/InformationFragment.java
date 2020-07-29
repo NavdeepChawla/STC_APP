@@ -1,17 +1,13 @@
 package com.mstc.mstcapp.fragments;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
 
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +15,6 @@ import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import com.google.android.material.tabs.TabLayout;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 
@@ -34,6 +29,7 @@ public class InformationFragment extends Fragment {
     private Button infoLinkMedium;
     private Button infoLinkInstagram;
    private TabHost infoTabHost;
+   private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor;
 
     public InformationFragment() {
     }
@@ -65,6 +61,10 @@ public class InformationFragment extends Fragment {
         infoLinkMedium = view.findViewById(R.id.button_medium);
         infoLinkLinkedIn = view.findViewById(R.id.button_linkedin);
         infoTabHost = view.findViewById(R.id.infoTabHost);
+        infoLinkPresident =view.findViewById(R.id.linkedinPresident);
+        infoLinkTechHead =view.findViewById(R.id.linkedinTechHead);
+        infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLead);
+        infoLinkTechMentor=view.findViewById(R.id.linkedinTechMentor);
     }
 
     private void onClickListener()
@@ -101,6 +101,44 @@ public class InformationFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse("https://medium.com/student-technical-community-vit-vellore")));
+                startActivity(intent);
+            }
+        });
+
+        infoLinkPresident.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://www.linkedin.com/in/jatin-mahajan-0869")));
+                startActivity(intent);
+            }
+        });
+
+        infoLinkTechHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://www.linkedin.com/in/shrey-sindher-0b3008167/")));
+                startActivity(intent);
+            }
+        });
+
+
+        infoLinkProjectLead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://www.linkedin.com/in/ujjwal-sinha-b8032514b/")));
+                startActivity(intent);
+            }
+        });
+
+
+        infoLinkTechMentor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://www.linkedin.com/in/mukundh-bhushan-akns-101a24156/")));
                 startActivity(intent);
             }
         });

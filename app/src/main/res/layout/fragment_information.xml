@@ -234,8 +234,8 @@
                             android:layout_centerVertical="false"
                             android:layout_margin="4dp"
                             android:contentDescription="@string/contentDescription"
-                            android:padding="4dp"
-                            android:src="@drawable/sample_fill_image"
+                            android:padding="2dp"
+                            android:src="@mipmap/ic_president"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -247,7 +247,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/montserrat_medium"
-                            android:text="NAME"
+                            android:text="JATIN MAHAJAN"
                             android:textColor="@color/black"
                             android:textSize="20dp"
                             android:textStyle="bold"
@@ -262,25 +262,29 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/montserrat_medium"
-                            android:text="PRESIDENT"
+                            android:text="President"
                             android:textColor="@color/black"
                             android:textSize="16dp"
                             app:layout_constraintStart_toEndOf="@+id/photoPresident"
                             app:layout_constraintTop_toBottomOf="@id/namePresident" />
 
-                        <TextView
-                            android:id="@+id/domainPresident"
+                        <Button
+                            android:id="@+id/linkedinPresident"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignStart="@id/postPresident"
-                            android:layout_marginStart="16dp"
-                            android:layout_marginTop="4dp"
-                            android:fontFamily="@font/montserrat_medium"
-                            android:text="DOMAIN"
-                            android:textColor="@color/black"
+                            android:layout_marginTop="2dp"
+                            android:layout_weight="1"
                             android:textSize="16dp"
+                            android:drawableStart="@drawable/ic_linkedin"
+                            android:drawableTint="@color/link_blue"
+                            android:textColor="@color/link_blue"
+                            android:textAllCaps="false"
                             app:layout_constraintStart_toEndOf="@+id/photoPresident"
-                            app:layout_constraintTop_toBottomOf="@id/postPresident" />
+                            app:layout_constraintTop_toBottomOf="@id/postPresident"
+                            android:text="\@Jatin Mahajan" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -311,8 +315,8 @@
                             android:layout_centerVertical="false"
                             android:layout_margin="4dp"
                             android:contentDescription="@string/contentDescription"
-                            android:padding="4dp"
-                            android:src="@drawable/sample_fill_image"
+                            android:padding="2dp"
+                            android:src="@mipmap/ic_techhead"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -324,7 +328,7 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="8dp"
                             android:fontFamily="@font/montserrat_medium"
-                            android:text="NAME"
+                            android:text="SHREY SINDHER"
                             android:textColor="@color/black"
                             android:textSize="20dp"
                             android:textStyle="bold"
@@ -339,29 +343,201 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/montserrat_medium"
-                            android:text="PRESIDENT"
+                            android:text="Tech Head"
                             android:textColor="@color/black"
                             android:textSize="16dp"
                             app:layout_constraintStart_toEndOf="@+id/photoTechHead"
                             app:layout_constraintTop_toBottomOf="@id/nameTechHead" />
 
-                        <TextView
-                            android:id="@+id/domainTechHead"
+                        <Button
+                            android:id="@+id/linkedinTechHead"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignStart="@id/postTechHead"
-                            android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
-                            android:fontFamily="@font/montserrat_medium"
-                            android:text="DOMAIN"
-                            android:textColor="@color/black"
+                            android:layout_weight="1"
                             android:textSize="16dp"
+                            android:drawableStart="@drawable/ic_linkedin"
+                            android:drawableTint="@color/link_blue"
+                            android:textColor="@color/link_blue"
+                            android:textAllCaps="false"
                             app:layout_constraintStart_toEndOf="@+id/photoTechHead"
-                            app:layout_constraintTop_toBottomOf="@id/postTechHead" />
+                            app:layout_constraintTop_toBottomOf="@id/postTechHead"
+                            android:text="\@Shrey Sindher" />
+
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.cardview.widget.CardView>
+
+
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/cViewProjectLead"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="@color/cardColor"
+                        android:backgroundTint="@color/cardColor"
+                        app:cardCornerRadius="8dp"
+                        app:cardElevation="4dp">
+
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/rProjectLead"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/photoProjectLead"
+                                android:layout_width="96dp"
+                                android:layout_height="96dp"
+                                android:layout_centerVertical="false"
+                                android:layout_margin="4dp"
+                                android:contentDescription="@string/contentDescription"
+                                android:padding="2dp"
+                                android:src="@mipmap/ic_projectlead"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/nameProjectLead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="UJJWAL SINHA"
+                                android:textColor="@color/black"
+                                android:textSize="20dp"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@+id/photoProjectLead"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                            <TextView
+                                android:id="@+id/postProjectLead"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@id/nameProjectLead"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="4dp"
+                                android:fontFamily="@font/montserrat_medium"
+                                android:text="Tech Head"
+                                android:textColor="@color/black"
+                                android:textSize="16dp"
+                                app:layout_constraintStart_toEndOf="@+id/photoProjectLead"
+                                app:layout_constraintTop_toBottomOf="@id/nameProjectLead" />
+
+                            <Button
+                                android:id="@+id/linkedinProjectLead"
+                                style="?android:attr/borderlessButtonStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignStart="@id/postProjectLead"
+                                android:layout_marginTop="4dp"
+                                android:layout_weight="1"
+                                android:textSize="16dp"
+                                android:drawableStart="@drawable/ic_linkedin"
+                                android:drawableTint="@color/link_blue"
+                                android:textColor="@color/link_blue"
+                                android:textAllCaps="false"
+                                app:layout_constraintStart_toEndOf="@+id/photoProjectLead"
+                                app:layout_constraintTop_toBottomOf="@id/postProjectLead"
+                                android:text="\@Ujjwal Sinha" />
+
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cViewTechMentor"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="@color/cardColor"
+                    android:backgroundTint="@color/cardColor"
+                    app:cardCornerRadius="8dp"
+                    app:cardElevation="4dp">
+
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/rTechMentor"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/photoTechMentor"
+                            android:layout_width="96dp"
+                            android:layout_height="96dp"
+                            android:layout_centerVertical="false"
+                            android:layout_margin="4dp"
+                            android:contentDescription="@string/contentDescription"
+                            android:padding="2dp"
+                            android:src="@mipmap/ic_techmentor"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/nameTechMentor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="8dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="MUKUNDH BHUSHAN"
+                            android:textColor="@color/black"
+                            android:textSize="20dp"
+                            android:textStyle="bold"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechMentor"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/postTechMentor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/nameTechMentor"
+                            android:layout_marginStart="16dp"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="@font/montserrat_medium"
+                            android:text="Tech Head"
+                            android:textColor="@color/black"
+                            android:textSize="16dp"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechMentor"
+                            app:layout_constraintTop_toBottomOf="@id/nameTechMentor" />
+
+                        <Button
+                            android:id="@+id/linkedinTechMentor"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignStart="@id/postTechMentor"
+                            android:layout_marginTop="4dp"
+                            android:layout_weight="1"
+                            android:textSize="16dp"
+                            android:drawableStart="@drawable/ic_linkedin"
+                            android:drawableTint="@color/link_blue"
+                            android:textColor="@color/link_blue"
+                            android:textAllCaps="false"
+                            app:layout_constraintStart_toEndOf="@+id/photoTechMentor"
+                            app:layout_constraintTop_toBottomOf="@id/postTechMentor"
+                            android:text="\@Mukundh Bhushan" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                </androidx.cardview.widget.CardView>
+
 
             </LinearLayout>
 
