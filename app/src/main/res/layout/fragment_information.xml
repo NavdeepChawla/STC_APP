@@ -263,7 +263,7 @@
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:text="President"
-                            android:textColor="@color/black"
+                            android:textColor="@color/gray"
                             android:textSize="16dp"
                             app:layout_constraintStart_toEndOf="@+id/photoPresident"
                             app:layout_constraintTop_toBottomOf="@id/namePresident" />
@@ -344,7 +344,7 @@
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/montserrat_medium"
                             android:text="Tech Head"
-                            android:textColor="@color/black"
+                            android:textColor="@color/gray"
                             android:textSize="16dp"
                             app:layout_constraintStart_toEndOf="@+id/photoTechHead"
                             app:layout_constraintTop_toBottomOf="@id/nameTechHead" />
@@ -427,8 +427,8 @@
                                 android:layout_marginStart="16dp"
                                 android:layout_marginTop="4dp"
                                 android:fontFamily="@font/montserrat_medium"
-                                android:text="Tech Head"
-                                android:textColor="@color/black"
+                                android:text="Project Lead"
+                                android:textColor="@color/gray"
                                 android:textSize="16dp"
                                 app:layout_constraintStart_toEndOf="@+id/photoProjectLead"
                                 app:layout_constraintTop_toBottomOf="@id/nameProjectLead" />
@@ -510,8 +510,8 @@
                             android:layout_marginStart="16dp"
                             android:layout_marginTop="4dp"
                             android:fontFamily="@font/montserrat_medium"
-                            android:text="Tech Head"
-                            android:textColor="@color/black"
+                            android:text="Tech Mentor"
+                            android:textColor="@color/gray"
                             android:textSize="16dp"
                             app:layout_constraintStart_toEndOf="@+id/photoTechMentor"
                             app:layout_constraintTop_toBottomOf="@id/nameTechMentor" />
