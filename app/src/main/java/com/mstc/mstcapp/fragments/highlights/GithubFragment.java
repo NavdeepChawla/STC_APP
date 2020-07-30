@@ -135,7 +135,7 @@ public class GithubFragment extends Fragment {
 
     private void loadData(Retrofit retrofit) {
 
-        NavActivity.githubList = new ArrayList<>();
+        NavActivity.githubList.clear();
         JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
         Call<List<GithubObject>> call = jsonPlaceholderApi.getGithub();
         call.enqueue(new Callback<List<GithubObject>>() {

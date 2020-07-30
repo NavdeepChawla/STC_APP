@@ -130,6 +130,7 @@ public class FeedFragment extends Fragment {
 
     private void loadData(Retrofit retrofit)
     {
+        NavActivity.feedList.clear();
         feedLoadMore.setVisibility(View.GONE);
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<FeedObject>> call= jsonPlaceholderapi.getFeed(base_url+skip);
