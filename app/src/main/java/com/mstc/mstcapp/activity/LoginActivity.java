@@ -49,6 +49,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void onClickListener()
     {
+
         loginForgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
             }
         });
+
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +65,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = loginPassword.getText().toString().trim();
                 if(checkEmpty())
                 {
+                    loginButton.setEnabled(false);
                     firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -74,6 +77,7 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else
                             {
+                                loginButton.setEnabled(true);
                                 Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.permWhite)).show();
                             }
                         }
@@ -81,6 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
+                            loginButton.setEnabled(true);
                             Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.permWhite)).show();
                         }
                     });
