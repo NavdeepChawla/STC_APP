@@ -61,7 +61,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                                 }
                             });
                             snackbar.setActionTextColor(R.color.colorPrimary);
-                            snackbar.setBackgroundTint(getColor(R.color.white));
+                            snackbar.setBackgroundTint(getColor(R.color.permWhite));
                             snackbar.setTextColor(getColor(R.color.colorPrimary));
                             snackbar.show();
 
@@ -71,7 +71,7 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
-                            Snackbar.make(findViewById(android.R.id.content),"Unable To Send Mail!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.white)).show();
+                            Snackbar.make(findViewById(android.R.id.content),"Unable To Send Mail!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.permWhite)).show();
                         }
                     });
 

@@ -74,14 +74,14 @@ public class LoginActivity extends AppCompatActivity {
                             }
                             else
                             {
-                                Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.white)).show();
+                                Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.permWhite)).show();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             e.printStackTrace();
-                            Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.white)).show();
+                            Snackbar.make(findViewById(android.R.id.content),"Unable To Login!!!",Snackbar.LENGTH_SHORT).setTextColor(getColor(R.color.colorPrimary)).setBackgroundTint(getColor(R.color.permWhite)).show();
                         }
                     });
                 }
