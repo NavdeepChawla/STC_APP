@@ -56,6 +56,7 @@ public class FeedFragment extends Fragment {
     SharedPreferences.Editor editor;
     LinearLayoutManager linearLayoutManager;
     TextView internetCheck;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public FeedFragment(){}
 
@@ -102,27 +103,28 @@ public class FeedFragment extends Fragment {
         }
 
         //SwipeRefreshLayout
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.feedSwipeRefresh);
+        swipeRefreshLayout = view.findViewById(R.id.feedSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                NavActivity.feedList.clear();
+                Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
+                skip = 0;
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        skip = 0;
-                        NavActivity.feedList.clear();
                         loadData(retrofit);
                     }
 
-                }, 3000);
+                });
             }
         });
 
         feedLoadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                swipeRefreshLayout.setRefreshing(true);
                 loadData(retrofit);
             }
         });
@@ -130,7 +132,6 @@ public class FeedFragment extends Fragment {
 
     private void loadData(Retrofit retrofit)
     {
-        NavActivity.feedList.clear();
         feedLoadMore.setVisibility(View.GONE);
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<FeedObject>> call= jsonPlaceholderapi.getFeed(base_url+skip);
@@ -143,6 +144,7 @@ public class FeedFragment extends Fragment {
                         loadData(retrofit);
                     }
                     else {
+                        swipeRefreshLayout.setRefreshing(false);
                         Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
@@ -152,6 +154,7 @@ public class FeedFragment extends Fragment {
                 List<FeedObject> feeds=response.body();
                 if(feeds==null||feeds.size()==0){
                     feedLoadMore.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     Snackbar.make(feedLoadMore,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                 }
                 else
@@ -182,6 +185,7 @@ public class FeedFragment extends Fragment {
                     }
                     skip=NavActivity.feedList.size();
                     progressBarFeed.setVisibility(View.GONE);
+                    swipeRefreshLayout.setRefreshing(false);
                     feedAdapter.notifyDataSetChanged();
                 }
             }
@@ -195,6 +199,7 @@ public class FeedFragment extends Fragment {
                     loadShared();
                 }
                 else {
+                    swipeRefreshLayout.setRefreshing(false);
                     progressBarFeed.setVisibility(View.INVISIBLE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
@@ -212,6 +217,7 @@ public class FeedFragment extends Fragment {
         Type type=new TypeToken<List<FeedObject>>(){}.getType();
         NavActivity.feedList=gson.fromJson(json,type);
 
+        swipeRefreshLayout.setRefreshing(false);
         progressBarFeed.setVisibility(View.INVISIBLE);
         feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
         recyclerView_feed.setAdapter(feedAdapter);

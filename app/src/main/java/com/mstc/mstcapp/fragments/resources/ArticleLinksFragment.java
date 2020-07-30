@@ -64,6 +64,8 @@ public class ArticleLinksFragment extends Fragment {
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     TextView internetCheck;
+    SwipeRefreshLayout swipeRefreshLayout;
+
     public ArticleLinksFragment(String domain) {
         this.domain=domain;
     }
@@ -98,26 +100,20 @@ public class ArticleLinksFragment extends Fragment {
         articlelinksRecyclerView=view.findViewById(R.id.resourcesarticle_recyclerview);
         articlelinksRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         internetCheck=view.findViewById(R.id.internetcheckArticles);
+        articleLinksObjectList=new ArrayList<>();
 
-        if(sharedPreferences.contains("data")){
-            sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
-            Log.i("SHARED","Yes Data");
-            articleLinksObjectList=new ArrayList<>();
-            loadShared();
-        }
-        else{
-            Log.i("SHARED","No Data");
-            loadData(retrofit,domain);
-        }
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.articleSwipeRefresh);
+        loadData(retrofit,domain);
+
+        swipeRefreshLayout = view.findViewById(R.id.articleSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
+                articleLinksObjectList.clear();
+                Objects.requireNonNull(articlelinksRecyclerView.getAdapter()).notifyDataSetChanged();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
                         loadData(retrofit,domain);
                     }
                 }, 2000);
@@ -127,7 +123,7 @@ public class ArticleLinksFragment extends Fragment {
     }
 
     private void loadData(Retrofit retrofit, String domain) {
-        articleLinksObjectList=new ArrayList<>();
+
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
         Call<List<ArticleLinksObject>> call=jsonPlaceholderApi.getArticleLinksObject(base_url+domain);
         call.enqueue(new Callback<List<ArticleLinksObject>>() {
@@ -139,6 +135,7 @@ public class ArticleLinksFragment extends Fragment {
                         loadData(retrofit,domain);
                     }
                     else {
+                        swipeRefreshLayout.setRefreshing(false);
                         Snackbar.make(articlelinksRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
@@ -161,6 +158,7 @@ public class ArticleLinksFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("data",json);
                 editor.apply();
+                swipeRefreshLayout.setRefreshing(false);
                 articlelinksProgressbar.setVisibility(View.INVISIBLE);
                 ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
                 articlelinksRecyclerView.setAdapter(adapter);
@@ -175,6 +173,7 @@ public class ArticleLinksFragment extends Fragment {
                     loadShared();
                 }
                 else {
+                    swipeRefreshLayout.setRefreshing(false);
                     articlelinksProgressbar.setVisibility(View.INVISIBLE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
@@ -192,12 +191,11 @@ public class ArticleLinksFragment extends Fragment {
         Type type=new TypeToken<List<ArticleLinksObject>>(){}.getType();
         articleLinksObjectList=gson.fromJson(json,type);
 
+        swipeRefreshLayout.setRefreshing(false);
         articlelinksProgressbar.setVisibility(View.INVISIBLE);
         ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
         articlelinksRecyclerView.setAdapter(adapter);
 
         //if updates are there
-        loadData(retrofit,domain);
-
     }
 }

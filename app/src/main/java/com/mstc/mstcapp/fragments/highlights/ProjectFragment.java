@@ -32,7 +32,6 @@ import com.mstc.mstcapp.model.highlights.ProjectsObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,6 +51,7 @@ public class ProjectFragment extends Fragment {
     SharedPreferences.Editor editor;
     ProjectAdapter projectAdapter;
     TextView internetCheck;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public ProjectFragment() {
     }
@@ -96,24 +96,24 @@ public class ProjectFragment extends Fragment {
         }
 
 
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.projectSwipeRefresh);
+        swipeRefreshLayout = view.findViewById(R.id.projectSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                NavActivity.projectList.clear();
+                Objects.requireNonNull(projectRecyclerView.getAdapter()).notifyDataSetChanged();
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
                         loadData(retrofit);
                     }
-                }, 2000);
+                });
             }
         });
     }
     private void loadData(Retrofit retrofit) {
-
-        NavActivity.projectList.clear();
         JsonPlaceholderApi jsonPlaceholderApi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<ProjectsObject>> call=jsonPlaceholderApi.getProjects();
         call.enqueue(new Callback<List<ProjectsObject>>() {
@@ -123,6 +123,7 @@ public class ProjectFragment extends Fragment {
                     if (response.code() == 400) {
                         loadData(retrofit);
                     } else {
+                        swipeRefreshLayout.setRefreshing(false);
                         Snackbar.make(projectRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
@@ -147,6 +148,7 @@ public class ProjectFragment extends Fragment {
                 editor.putString("data",json);
                 editor.apply();
 
+                swipeRefreshLayout.setRefreshing(false);
                 projectProgressBar.setVisibility(View.INVISIBLE);
                 projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
                 projectRecyclerView.setAdapter(projectAdapter);
@@ -162,6 +164,7 @@ public class ProjectFragment extends Fragment {
                     loadShared();
                 }
                 else {
+                    swipeRefreshLayout.setRefreshing(false);
                     projectProgressBar.setVisibility(View.INVISIBLE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
@@ -179,6 +182,7 @@ public class ProjectFragment extends Fragment {
         Type type=new TypeToken<List<ProjectsObject>>(){}.getType();
         NavActivity.projectList=gson.fromJson(json,type);
 
+       swipeRefreshLayout.setRefreshing(false);
         projectProgressBar.setVisibility(View.INVISIBLE);
         projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
         projectRecyclerView.setAdapter(projectAdapter);

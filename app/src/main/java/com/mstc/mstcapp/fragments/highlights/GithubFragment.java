@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -32,7 +33,6 @@ import com.mstc.mstcapp.model.highlights.GithubObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -52,6 +52,8 @@ public class GithubFragment extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     TextView internetCheck;
+    SwipeRefreshLayout swipeRefreshLayout;
+    RelativeLayout githubLayout;
 
 
     public GithubFragment(){
@@ -98,32 +100,36 @@ public class GithubFragment extends Fragment {
 
         }
 
+        githubLayout = view.findViewById(R.id.githubLayout);
 
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.githubSwipeRefresh);
+        swipeRefreshLayout = view.findViewById(R.id.githubSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                NavActivity.githubList.clear();
+                Objects.requireNonNull(githubRecyclerView.getAdapter()).notifyDataSetChanged();
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
                         loadData(retrofit);
                     }
-                }, 2000);
+                });
             }
         });
     }
 
     private void loadShared() {
+
         SharedPreferences sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
         assert json != null;
         Log.i("GETDATA ",json);
         Type type=new TypeToken<List<GithubObject>>(){}.getType();
-         NavActivity.githubList =gson.fromJson(json,type);
+        NavActivity.githubList =gson.fromJson(json,type);
 
+        swipeRefreshLayout.setRefreshing(false);
         githubProgressBar.setVisibility(View.INVISIBLE);
         GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
         githubRecyclerView.setAdapter(adapter);
@@ -135,7 +141,6 @@ public class GithubFragment extends Fragment {
 
     private void loadData(Retrofit retrofit) {
 
-        NavActivity.githubList.clear();
         JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
         Call<List<GithubObject>> call = jsonPlaceholderApi.getGithub();
         call.enqueue(new Callback<List<GithubObject>>() {
@@ -147,6 +152,7 @@ public class GithubFragment extends Fragment {
                         loadData(retrofit);
                     }
                     else {
+                        swipeRefreshLayout.setRefreshing(false);
                         Snackbar.make(githubRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
@@ -166,6 +172,7 @@ public class GithubFragment extends Fragment {
                 editor= sharedPreferences.edit();
                 editor.putString("data", json);
                 editor.apply();
+                swipeRefreshLayout.setRefreshing(false);
                 githubProgressBar.setVisibility(View.INVISIBLE);
                 GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
                 githubRecyclerView.setAdapter(githubAdapter);
@@ -174,6 +181,9 @@ public class GithubFragment extends Fragment {
 
             @Override
             public void onFailure(@NotNull Call<List<GithubObject>> call, @NotNull Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
+                githubRecyclerView.setEnabled(true);
+                swipeRefreshLayout.setEnabled(true);
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());

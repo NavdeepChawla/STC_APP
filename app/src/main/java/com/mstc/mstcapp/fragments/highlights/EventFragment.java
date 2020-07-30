@@ -51,6 +51,7 @@ public class EventFragment extends Fragment {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     TextView internetCheck;
+    SwipeRefreshLayout swipeRefreshLayout;
 
     public EventFragment(){}
 
@@ -92,24 +93,24 @@ public class EventFragment extends Fragment {
             eventProgressbar.setVisibility(View.GONE);
         }
 
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.eventSwipeRefresh);
+        swipeRefreshLayout = view.findViewById(R.id.eventSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
+                NavActivity.eventList.clear();
+                Objects.requireNonNull(eventRecyclerView.getAdapter()).notifyDataSetChanged();
+                new Handler().post(new Runnable() {
                     @Override
                     public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
                         loadData(retrofit);
                     }
-                }, 2000);
+                });
             }
         });
     }
 
-    private void loadData(Retrofit retrofit ){
-        NavActivity.eventList.clear();
+    private void loadData(Retrofit retrofit){
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<EventObject>> call= jsonPlaceholderapi.getEvents();
         call.enqueue(new Callback<List<EventObject>>() {
@@ -121,6 +122,7 @@ public class EventFragment extends Fragment {
                         loadData(retrofit);
                     }
                     else {
+                        swipeRefreshLayout.setRefreshing(false);
                         Snackbar.make(eventRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
@@ -145,6 +147,7 @@ public class EventFragment extends Fragment {
                 editor= sharedPreferences.edit();
                 editor.putString("data",json);
                 editor.apply();
+                swipeRefreshLayout.setRefreshing(false);
                 eventProgressbar.setVisibility(View.INVISIBLE);
                 EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
                 eventRecyclerView.setAdapter(eventAdapter);
@@ -159,6 +162,7 @@ public class EventFragment extends Fragment {
                     loadShared();
                 }
                 else {
+                    swipeRefreshLayout.setRefreshing(false);
                     eventProgressbar.setVisibility(View.INVISIBLE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
@@ -175,13 +179,10 @@ public class EventFragment extends Fragment {
 
         Type type=new TypeToken<List<EventObject>>(){}.getType();
         NavActivity.eventList=gson.fromJson(json,type);
-
+        swipeRefreshLayout.setRefreshing(false);
         eventProgressbar.setVisibility(View.INVISIBLE);
         EventAdapter adapter=new EventAdapter(getContext(),NavActivity.eventList);
         eventRecyclerView.setAdapter(adapter);
-
-
-
 
     }
 }
