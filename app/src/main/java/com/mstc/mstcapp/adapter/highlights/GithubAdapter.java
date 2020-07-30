@@ -49,7 +49,7 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
         holder.githubProj_link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String link=mData2.get(position).getTitle();
+                String link=mData2.get(position).getLink();
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse(link)));
                 mContext2.startActivity(intent);
