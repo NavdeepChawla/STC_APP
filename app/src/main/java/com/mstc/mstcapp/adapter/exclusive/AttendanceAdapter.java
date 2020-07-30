@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.exclusive.AttendanceObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.AttendanceView> {
-    List<AttendanceObject> attendanceObjects_list=new ArrayList<>();
+    private List<AttendanceObject> attendanceObjects_list;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 
@@ -54,14 +53,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
 
     }
     private String getData(int n,List<String> arr) {
-        String names="";
+        StringBuilder names= new StringBuilder();
         for(int i=0;i<n;i++){
             if(i<n-1)
-                names+=arr.get(i)+"\n";
+                names.append(arr.get(i)).append("\n");
             else
-                names+=arr.get(i);
+                names.append(arr.get(i));
         }
-        return names;
+        return names.toString();
     }
 
     @Override
@@ -69,9 +68,9 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.At
         return attendanceObjects_list.size();
     }
 
-    public class AttendanceView extends RecyclerView.ViewHolder{
+    public static class AttendanceView extends RecyclerView.ViewHolder{
 
-        TextView attendanceTitle,attendanceTitleSmall,attendanceContent;
+        TextView attendanceTitle,attendanceContent;
 
         public AttendanceView(@NonNull View itemView) {
             super(itemView);

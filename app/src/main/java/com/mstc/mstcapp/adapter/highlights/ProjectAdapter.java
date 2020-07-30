@@ -24,8 +24,8 @@ import java.util.List;
 
 public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHolder> {
 
-    Context mContext1;
-    List<ProjectsObject> mData1;
+    private Context mContext1;
+    private List<ProjectsObject> mData1;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 

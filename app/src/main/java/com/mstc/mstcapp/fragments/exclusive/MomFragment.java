@@ -25,6 +25,7 @@ import com.mstc.mstcapp.model.exclusive.MomObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class MomFragment extends Fragment {
     List<MomObject> momObjectList=new ArrayList<>();
@@ -54,8 +55,8 @@ public class MomFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot1:snapshot.getChildren()) {
-                    String title=dataSnapshot1.child("Title").getValue().toString();
-                    String content=dataSnapshot1.child("Content").getValue().toString();
+                    String title= Objects.requireNonNull(dataSnapshot1.child("Title").getValue()).toString();
+                    String content= Objects.requireNonNull(dataSnapshot1.child("Content").getValue()).toString();
                     momObjectList.add(new MomObject(content,title));
                 }
                 progressBar_mom.setVisibility(View.INVISIBLE);

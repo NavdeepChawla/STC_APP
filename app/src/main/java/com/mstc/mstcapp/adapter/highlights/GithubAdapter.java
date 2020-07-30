@@ -18,8 +18,8 @@ import java.util.List;
 
 public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHolder> {
 
-    Context mContext2;
-    List<GithubObject> mData2;
+    private Context mContext2;
+    private List<GithubObject> mData2;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 

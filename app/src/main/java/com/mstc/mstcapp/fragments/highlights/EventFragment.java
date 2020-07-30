@@ -19,18 +19,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.EventAdapter;
-import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
-import com.mstc.mstcapp.adapter.resources.ArticlelinksAdapter;
 import com.mstc.mstcapp.model.highlights.EventObject;
-import com.mstc.mstcapp.model.resources.ArticleLinksObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -64,7 +63,6 @@ public class EventFragment extends Fragment {
                 .build();
 
         sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
-        editor= sharedPreferences.edit();
 
         super.onCreate(savedInstanceState);
 
@@ -116,21 +114,21 @@ public class EventFragment extends Fragment {
         Call<List<EventObject>> call= jsonPlaceholderapi.getEvents();
         call.enqueue(new Callback<List<EventObject>>() {
             @Override
-            public void onResponse(Call<List<EventObject>> call, Response<List<EventObject>> response) {
+            public void onResponse(@NotNull Call<List<EventObject>> call, @NotNull Response<List<EventObject>> response) {
                 if(!response.isSuccessful()){
                     if(response.code()==400)
                     {
                         loadData(retrofit);
-                        return;
                     }
                     else {
-                        Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(eventRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
-                        return;
                     }
+                    return;
                 }
 
                 List<EventObject> events=response.body();
+                assert events != null;
                 for(EventObject events1:events){
 
                     String title = events1.getEventTitle();
@@ -144,16 +142,17 @@ public class EventFragment extends Fragment {
                 Gson gson=new Gson();
                 String json=gson.toJson(NavActivity.eventList);
                 Log.i("JSON",json);
+                editor= sharedPreferences.edit();
                 editor.putString("data",json);
-                editor.commit();
+                editor.apply();
                 eventProgressbar.setVisibility(View.INVISIBLE);
                 EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
                 eventRecyclerView.setAdapter(eventAdapter);
             }
 
             @Override
-            public void onFailure(Call<List<EventObject>> call, Throwable t) {
-                Log.i("FAILED : ",t.getMessage());
+            public void onFailure(@NotNull Call<List<EventObject>> call, @NotNull Throwable t) {
+                Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
@@ -168,9 +167,10 @@ public class EventFragment extends Fragment {
     }
 
     private void loadShared(){
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences("event", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
+        assert json != null;
         Log.i("GETDATA ",json);
 
         Type type=new TypeToken<List<EventObject>>(){}.getType();

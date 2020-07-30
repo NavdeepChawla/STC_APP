@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,8 +19,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
@@ -30,11 +29,12 @@ import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
-import org.w3c.dom.Text;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,10 +44,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ProjectFragment extends Fragment {
 
-
     RecyclerView projectRecyclerView;
     ProgressBar projectProgressBar;
-    CardView projectCardView;
     String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
@@ -66,8 +64,7 @@ public class ProjectFragment extends Fragment {
                 .baseUrl(base_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        sharedPreferences=getContext().getSharedPreferences("project", Context.MODE_PRIVATE);
-        editor= sharedPreferences.edit();
+        sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);
 
     }
 
@@ -121,19 +118,19 @@ public class ProjectFragment extends Fragment {
         Call<List<ProjectsObject>> call=jsonPlaceholderApi.getProjects();
         call.enqueue(new Callback<List<ProjectsObject>>() {
             @Override
-            public void onResponse(Call<List<ProjectsObject>> call, Response<List<ProjectsObject>> response) {
+            public void onResponse(@NotNull Call<List<ProjectsObject>> call, @NotNull Response<List<ProjectsObject>> response) {
                 if(!response.isSuccessful()) {
                     if (response.code() == 400) {
                         loadData(retrofit);
-                        return;
                     } else {
-                        Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(projectRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
-                        return;
                     }
+                    return;
                 }
 
                 List<ProjectsObject> projects=response.body();
+                assert projects != null;
                 for(ProjectsObject projectsObject1 :projects){
 
                     String title = projectsObject1.getTitle();
@@ -145,9 +142,10 @@ public class ProjectFragment extends Fragment {
                 }
                 Gson gson=new Gson();
                 String json=gson.toJson(NavActivity.projectList);
+                editor= sharedPreferences.edit();
                 Log.i("JSON",json);
                 editor.putString("data",json);
-                editor.commit();
+                editor.apply();
 
                 projectProgressBar.setVisibility(View.INVISIBLE);
                 projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
@@ -156,8 +154,8 @@ public class ProjectFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<ProjectsObject>> call, Throwable t) {
-                Log.i("FAILED : ", t.getMessage());
+            public void onFailure(@NotNull Call<List<ProjectsObject>> call, @NotNull Throwable t) {
+                Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
@@ -173,10 +171,11 @@ public class ProjectFragment extends Fragment {
     }
 
    private void loadShared(){
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences("project", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
-        Log.i("GETDATA ",json);
+       assert json != null;
+       Log.i("GETDATA ",json);
         Type type=new TypeToken<List<ProjectsObject>>(){}.getType();
         NavActivity.projectList=gson.fromJson(json,type);
 

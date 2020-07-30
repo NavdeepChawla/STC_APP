@@ -15,7 +15,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -26,13 +25,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.gson.Gson;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapter.FeedAdapter;
-import com.mstc.mstcapp.adapter.highlights.EventAdapter;
-import com.mstc.mstcapp.adapter.highlights.GithubAdapter;
 import com.mstc.mstcapp.fragments.ExclusiveFragment;
 import com.mstc.mstcapp.fragments.FeedFragment;
 import com.mstc.mstcapp.fragments.HighlightFragment;
@@ -44,13 +38,6 @@ import com.mstc.mstcapp.model.highlights.GithubObject;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class NavActivity extends AppCompatActivity {
 
@@ -59,14 +46,9 @@ public class NavActivity extends AppCompatActivity {
     public static CircularImageView appBarProfilePicture;
     public static ImageView stcLogo;
 
-    private static StorageReference storeRef;
-    private static String email, userEmail;
-    private static FirebaseUser user;
     private int backButtonCount = 0;
     private int prevPage=0;
     private int currentPage=0;
-
-    private boolean resource;
 
     //Feed Fragment
     public static ArrayList<FeedObject> feedList = new ArrayList<>();
@@ -103,12 +85,12 @@ public class NavActivity extends AppCompatActivity {
         }
         else
         {
-            user=firebaseAuth.getCurrentUser();
-            email =user.getEmail();
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String email = user.getEmail();
 
             assert email != null;
-            userEmail = email.replace('.','_');
-            storeRef= FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
+            String userEmail = email.replace('.', '_');
+            StorageReference storeRef = FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
             storeRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
@@ -199,7 +181,7 @@ public class NavActivity extends AppCompatActivity {
         });
 
         Intent intent = getIntent();
-        resource = intent.getBooleanExtra("Resource",false);
+        boolean resource = intent.getBooleanExtra("Resource", false);
         if(resource)
         {
             bottomNavigationView.setSelectedItemId(R.id.nav_resources);

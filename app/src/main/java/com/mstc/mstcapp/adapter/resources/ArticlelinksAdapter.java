@@ -14,13 +14,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 
-import java.security.acl.LastOwnerException;
 import java.util.Collections;
 import java.util.List;
 
 public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapter.ArticlelinkView> {
-    List<ArticleLinksObject> articleLinksObject_list;
-    Context articlelinkContext;
+
+    private List<ArticleLinksObject> articleLinksObject_list;
+    private Context articlelinkContext;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 

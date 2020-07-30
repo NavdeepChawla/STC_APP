@@ -20,11 +20,10 @@ import com.mstc.mstcapp.model.ResourceModel;
 
 import java.util.List;
 
-import static java.security.AccessController.getContext;
 
 public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourcesView> {
-   static List<ResourceModel> domains;
-   static Context context;
+   private static List<ResourceModel> domains;
+   private static Context context;
 
     public ResourceAdapter(Context mContext, List<ResourceModel> domain) {
         domains = domain;

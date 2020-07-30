@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -23,45 +22,17 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.adapter.resources.ViewPagerResourcesAdapter;
 import com.mstc.mstcapp.fragments.HighlightFragment;
 import com.mstc.mstcapp.fragments.resources.ArticleLinksFragment;
 import com.mstc.mstcapp.fragments.resources.ResourcesFolderFragment;
 import com.mstc.mstcapp.fragments.resources.RoadmapFragment;
-import com.mstc.mstcapp.model.resources.ArticleLinksObject;
-import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ResourcesActivity extends AppCompatActivity {
 
-    TextView resappbarTitle;
-    TabLayout resourcesTablayout;
-    ViewPager resourcesViewPager;
-    private static StorageReference storeRef;
-    private static String email, userEmail;
-    private static FirebaseUser user;
-    CircularImageView res_appBarProfilePicture;
-    ImageView resourcesStcLogo;
-    String domain;
-
-    // ResourcesFolder Fragment
-
-
-    // ArticleLinks Fragment
-    public static  ArrayList<ArticleLinksObject> articleLinksObjectList=new ArrayList<>();
-
-
+    private CircularImageView res_appBarProfilePicture;
+    private ImageView resourcesStcLogo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,16 +41,17 @@ public class ResourcesActivity extends AppCompatActivity {
 
         resourcesStcLogo=findViewById(R.id.resStcLogo);
         res_appBarProfilePicture=findViewById(R.id.res_appBarProfilePicture);
-        resappbarTitle=findViewById(R.id.resappBarTitle);
-        resourcesTablayout=findViewById(R.id.tab_view_resources);
-        resourcesViewPager=findViewById(R.id.viewpager_res);
+        TextView resappbarTitle = findViewById(R.id.resappBarTitle);
+        TabLayout resourcesTablayout = findViewById(R.id.tab_view_resources);
+        ViewPager resourcesViewPager = findViewById(R.id.viewpager_res);
 
         Intent i =getIntent();
-        domain= i.getStringExtra("domain");
+        String domain = i.getStringExtra("domain");
         resappbarTitle.setText(domain);
 
 
         ViewPagerResourcesAdapter adapter=new ViewPagerResourcesAdapter(getSupportFragmentManager());
+        assert domain != null;
         adapter.addFragment(new RoadmapFragment(domain.toLowerCase()),"Roadmap");
         adapter.addFragment(new ResourcesFolderFragment(domain.toLowerCase()),"Resources");
         adapter.addFragment(new ArticleLinksFragment(domain.toLowerCase()),"Articles");
@@ -91,12 +63,12 @@ public class ResourcesActivity extends AppCompatActivity {
         FirebaseAuth firebaseAuth=FirebaseAuth.getInstance();
         if(firebaseAuth.getCurrentUser()!=null)
         {
-            user=firebaseAuth.getCurrentUser();
-            email =user.getEmail();
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            String email = user.getEmail();
 
             assert email != null;
-            userEmail = email.replace('.','_');
-            storeRef= FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
+            String userEmail = email.replace('.', '_');
+            StorageReference storeRef = FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
             storeRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {

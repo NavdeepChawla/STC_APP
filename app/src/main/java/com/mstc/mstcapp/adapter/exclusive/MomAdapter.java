@@ -11,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.exclusive.MomObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MomAdapter extends RecyclerView.Adapter <MomAdapter.MomView> {
-    List <MomObject> momObjects_list=new ArrayList<>();
+    private List <MomObject> momObjects_list;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 
@@ -56,7 +55,7 @@ public class MomAdapter extends RecyclerView.Adapter <MomAdapter.MomView> {
         return momObjects_list.size();
     }
 
-    public class MomView extends RecyclerView.ViewHolder{
+    public static class MomView extends RecyclerView.ViewHolder{
         TextView momTitle,momContent;
         public MomView(@NonNull View itemView) {
             super(itemView);

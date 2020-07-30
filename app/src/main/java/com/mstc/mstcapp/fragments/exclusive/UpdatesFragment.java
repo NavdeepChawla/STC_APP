@@ -24,6 +24,7 @@ import com.mstc.mstcapp.model.exclusive.UpdatesObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UpdatesFragment extends Fragment {
     List<UpdatesObject> updatesObjectsList=new ArrayList<>();
@@ -52,8 +53,8 @@ public class UpdatesFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot1:snapshot.getChildren()) {
-                    String title = dataSnapshot1.child("Title").getValue().toString();
-                    String content = dataSnapshot1.child("Content").getValue().toString();
+                    String title = Objects.requireNonNull(dataSnapshot1.child("Title").getValue()).toString();
+                    String content = Objects.requireNonNull(dataSnapshot1.child("Content").getValue()).toString();
                     updatesObjectsList.add(new UpdatesObject(content, title));
                 }
                 final UpdatesAdapter adapter=new UpdatesAdapter(updatesObjectsList);

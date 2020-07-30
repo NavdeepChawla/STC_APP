@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
@@ -30,6 +31,8 @@ import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -37,6 +40,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -59,7 +63,6 @@ public class ArticleLinksFragment extends Fragment {
     String base_url = "https://stc-app-backend.herokuapp.com/api/articles/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     TextView internetCheck;
     public ArticleLinksFragment(String domain) {
         this.domain=domain;
@@ -78,9 +81,7 @@ public class ArticleLinksFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        sharedPreferences=getContext().getSharedPreferences(domain+"article",Context.MODE_PRIVATE);
-        editor= sharedPreferences.edit();
-
+        sharedPreferences= requireContext().getSharedPreferences(domain+"article",Context.MODE_PRIVATE);
 
     }
 
@@ -106,7 +107,7 @@ public class ArticleLinksFragment extends Fragment {
         }
         else{
             Log.i("SHARED","No Data");
-            loadData(retrofit,domain,editor);
+            loadData(retrofit,domain);
         }
         final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.articleSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
@@ -117,7 +118,7 @@ public class ArticleLinksFragment extends Fragment {
                     @Override
                     public void run() {
                         swipeRefreshLayout.setRefreshing(false);
-                        loadData(retrofit,domain,editor);
+                        loadData(retrofit,domain);
                     }
                 }, 2000);
             }
@@ -125,27 +126,27 @@ public class ArticleLinksFragment extends Fragment {
 
     }
 
-    private void loadData(Retrofit retrofit, String domain, SharedPreferences.Editor editor) {
+    private void loadData(Retrofit retrofit, String domain) {
         articleLinksObjectList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
         Call<List<ArticleLinksObject>> call=jsonPlaceholderApi.getArticleLinksObject(base_url+domain);
         call.enqueue(new Callback<List<ArticleLinksObject>>() {
             @Override
-            public void onResponse(Call<List<ArticleLinksObject>> call, Response<List<ArticleLinksObject>> response) {
+            public void onResponse(@NotNull Call<List<ArticleLinksObject>> call, @NotNull Response<List<ArticleLinksObject>> response) {
                 if(!response.isSuccessful()){
                     if(response.code()==400)
                     {
-                        loadData(retrofit,domain,editor);
-                        return;
+                        loadData(retrofit,domain);
                     }
                     else {
-                        Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(articlelinksRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
-                        return;
                     }
+                    return;
                 }
 
                 List<ArticleLinksObject> articleLinksObjects= response.body();
+                assert articleLinksObjects != null;
                 for(ArticleLinksObject articleLinksObject : articleLinksObjects){
                     String title=articleLinksObject.getArticlelinksTitle();
                     String link=articleLinksObject.getArticlelinksLink();
@@ -157,16 +158,17 @@ public class ArticleLinksFragment extends Fragment {
                 Gson gson=new Gson();
                 String json=gson.toJson(articleLinksObjects);
                 Log.i("JSON",json);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("data",json);
-                editor.commit();
+                editor.apply();
                 articlelinksProgressbar.setVisibility(View.INVISIBLE);
                 ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
                 articlelinksRecyclerView.setAdapter(adapter);
 
             }
             @Override
-            public void onFailure(Call<List<ArticleLinksObject>> call, Throwable t) {
-                Log.i("FAILED : ",t.getMessage());
+            public void onFailure(@NotNull Call<List<ArticleLinksObject>> call, @NotNull Throwable t) {
+                Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
@@ -182,9 +184,10 @@ public class ArticleLinksFragment extends Fragment {
 
     }
     private void loadShared(){
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences(domain+"article", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"article", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
+        assert json != null;
         Log.i("GETDATA ",json);
         Type type=new TypeToken<List<ArticleLinksObject>>(){}.getType();
         articleLinksObjectList=gson.fromJson(json,type);
@@ -194,7 +197,7 @@ public class ArticleLinksFragment extends Fragment {
         articlelinksRecyclerView.setAdapter(adapter);
 
         //if updates are there
-        loadData(retrofit,domain,editor);
+        loadData(retrofit,domain);
 
     }
 }

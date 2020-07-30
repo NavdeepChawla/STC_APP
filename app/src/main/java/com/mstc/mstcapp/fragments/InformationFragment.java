@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -30,8 +31,9 @@ public class InformationFragment extends Fragment {
     private Button infoLinkMedium;
     private Button infoLinkInstagram;
     private TabHost infoTabHost;
-    private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor;
+    private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor,infoLinkMgmtLead;
     private CardView infoPrivacyPolicy;
+    private ImageView infoImagePresident,infoImageTechHead, infoImageProjectLead,infoImageTechMentor,infoImageMgmtLead;
 
     public InformationFragment() {
     }
@@ -70,6 +72,14 @@ public class InformationFragment extends Fragment {
         infoLinkTechHead =view.findViewById(R.id.linkedinTechHead);
         infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLead);
         infoLinkTechMentor=view.findViewById(R.id.linkedinTechMentor);
+        infoLinkMgmtLead = view.findViewById(R.id.linkedinMgmtLead);
+
+        infoImagePresident = view.findViewById(R.id.infoImagePresident);
+        infoImageTechHead = view.findViewById(R.id.infoImageTechHead);
+        infoImageProjectLead = view.findViewById(R.id.infoImageProjectLead);
+        infoImageTechMentor = view.findViewById(R.id.infoImageTechMentor);
+        infoImageMgmtLead = view.findViewById(R.id.infoImageMgmtLead);
+
     }
 
     private void onClickListener()
@@ -153,6 +163,15 @@ public class InformationFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse("https://www.linkedin.com/in/mukundh-bhushan-akns-101a24156/")));
+                startActivity(intent);
+            }
+        });
+
+        infoLinkMgmtLead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://www.linkedin.com/in/mayank-yadav-528381187/")));
                 startActivity(intent);
             }
         });

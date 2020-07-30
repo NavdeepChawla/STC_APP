@@ -19,20 +19,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.GithubAdapter;
-import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
 import com.mstc.mstcapp.model.highlights.GithubObject;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -65,8 +67,7 @@ public class GithubFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        sharedPreferences=getContext().getSharedPreferences("github", Context.MODE_PRIVATE);
-        editor= sharedPreferences.edit();
+        sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
 
     }
 
@@ -115,9 +116,10 @@ public class GithubFragment extends Fragment {
     }
 
     private void loadShared() {
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences("github", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
+        assert json != null;
         Log.i("GETDATA ",json);
         Type type=new TypeToken<List<GithubObject>>(){}.getType();
          NavActivity.githubList =gson.fromJson(json,type);
@@ -138,14 +140,14 @@ public class GithubFragment extends Fragment {
         Call<List<GithubObject>> call = jsonPlaceholderApi.getGithub();
         call.enqueue(new Callback<List<GithubObject>>() {
             @Override
-            public void onResponse(Call<List<GithubObject>> call, Response<List<GithubObject>> response) {
+            public void onResponse(@NotNull Call<List<GithubObject>> call, @NotNull Response<List<GithubObject>> response) {
                 if(!response.isSuccessful()){
                     if(response.code()==400)
                     {
                         loadData(retrofit);
                     }
                     else {
-                        Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
+                        Snackbar.make(githubRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                         Log.i("CODE", String.valueOf(response.code()));
                     }
                     return;
@@ -161,8 +163,9 @@ public class GithubFragment extends Fragment {
                 Gson gson = new Gson();
                 String json = gson.toJson(NavActivity.githubList);
                 Log.i("JSON", json);
+                editor= sharedPreferences.edit();
                 editor.putString("data", json);
-                editor.commit();
+                editor.apply();
                 githubProgressBar.setVisibility(View.INVISIBLE);
                 GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
                 githubRecyclerView.setAdapter(githubAdapter);
@@ -170,8 +173,8 @@ public class GithubFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<GithubObject>> call, Throwable t) {
-                Log.i("FAILED : ", t.getMessage());
+            public void onFailure(@NotNull Call<List<GithubObject>> call, @NotNull Throwable t) {
+                Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");

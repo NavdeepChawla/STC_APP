@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,16 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 
-import org.w3c.dom.Text;
-
 import java.util.Collections;
 import java.util.List;
 
 public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolderAdapter.ResourcesFolderView> {
-    List <ResourcesFolderObject> resourcesFolderObjects_list;
+
+    private List <ResourcesFolderObject> resourcesFolderObjects_list;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
-    Context context;
+    private Context context;
 
     public ResourcesFolderAdapter(List<ResourcesFolderObject> resourcesFolderObjectsList,Context context1) {
         resourcesFolderObjects_list=resourcesFolderObjectsList;
@@ -80,7 +78,7 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
         return resourcesFolderObjects_list.size();
     }
 
-    public class ResourcesFolderView  extends RecyclerView.ViewHolder {
+    public static class ResourcesFolderView  extends RecyclerView.ViewHolder {
          public TextView resourcesfolderTitle,resourcesfolderLink,resourcefolderDesc,resourcefolderTitleSecond;
 
         public ResourcesFolderView(@NonNull View itemView) {

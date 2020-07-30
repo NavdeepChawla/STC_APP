@@ -24,6 +24,7 @@ import com.mstc.mstcapp.model.exclusive.AttendanceObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AttendanceFragment extends Fragment {
     List<AttendanceObject> attendanceObjects_list=new ArrayList<>();
@@ -51,7 +52,7 @@ public class AttendanceFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for(DataSnapshot dataSnapshot1:snapshot.getChildren()) {
-                    String title=dataSnapshot1.child("Title").getValue().toString();
+                    String title= Objects.requireNonNull(dataSnapshot1.child("Title").getValue()).toString();
                     attendancecontent= (List<String>) dataSnapshot1.child("Content").getValue();
                     attendanceObjects_list.add(new AttendanceObject(attendancecontent,title));
                 }

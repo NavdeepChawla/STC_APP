@@ -2,7 +2,6 @@ package com.mstc.mstcapp.fragments.resources;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.net.http.HttpResponseCache;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -12,16 +11,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mstc.mstcapp.JsonPlaceholderApi;
@@ -29,12 +27,15 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Cache;
@@ -76,7 +77,7 @@ public class ResourcesFolderFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        sharedPreferences=getContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
+        sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
         editor= sharedPreferences.edit();
         super.onCreate(savedInstanceState);
     }
@@ -124,7 +125,7 @@ public class ResourcesFolderFragment extends Fragment {
 
 
 
-    private void loadData(Retrofit retrofit,String domain,SharedPreferences.Editor editor) {
+    private void loadData(Retrofit retrofit,String domain,final SharedPreferences.Editor editor) {
         resourcesFolderObjectsList=new ArrayList<>();
 
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
@@ -132,14 +133,15 @@ public class ResourcesFolderFragment extends Fragment {
         call.enqueue(new Callback<List<ResourcesFolderObject>>() {
 
             @Override
-            public void onResponse(Call<List<ResourcesFolderObject>> call, Response<List<ResourcesFolderObject>> response) {
+            public void onResponse(@NotNull Call<List<ResourcesFolderObject>> call, @NotNull Response<List<ResourcesFolderObject>> response) {
                 if(!response.isSuccessful()){
-                    Toast.makeText(getContext(),"Code "+response.code(),Toast.LENGTH_SHORT).show();
+                    Snackbar.make(resourcesfolderRecyclerview,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                     Log.i("CODE", String.valueOf(response.code()));
                     return;
                 }
                 List<ResourcesFolderObject> resourcesFolderObjects=response.body();
                 editor.clear();
+                assert resourcesFolderObjects != null;
                 for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
                     String title=resourcesFolderObject.getResourcesfolderTitle();
                     String desc=resourcesFolderObject.getResourcefolderDesc();
@@ -163,8 +165,8 @@ public class ResourcesFolderFragment extends Fragment {
 
 
             @Override
-            public void onFailure(Call<List<ResourcesFolderObject>> call, Throwable t) {
-                Log.i("FAILED : ",t.getMessage());
+            public void onFailure(@NotNull Call<List<ResourcesFolderObject>> call, @NotNull Throwable t) {
+                Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
@@ -178,9 +180,10 @@ public class ResourcesFolderFragment extends Fragment {
         });
     }
     private void loadShared(){
-        SharedPreferences sharedPreferences=getContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
+        assert json != null;
         Log.i("GETDATA ",json);
         Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
         resourcesFolderObjectsList=gson.fromJson(json,type);

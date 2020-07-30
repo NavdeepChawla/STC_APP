@@ -22,9 +22,6 @@ import java.util.List;
 
 public class ResourcesFragment extends Fragment {
 
-    private List<ResourceModel> domainList;
-    private RecyclerView domainRecyclerView;
-
     public ResourcesFragment() {
     }
 
@@ -41,7 +38,7 @@ public class ResourcesFragment extends Fragment {
         NavActivity.appBar.setElevation(4.0f);
         NavActivity.appBarTitle.setText("RESOURCES");
 
-        domainList = new ArrayList<>();
+        List<ResourceModel> domainList = new ArrayList<>();
         domainList.add(new ResourceModel("Android",R.drawable.ic_android_bg));
         domainList.add(new ResourceModel("Flutter",R.drawable.ic_flutter_bg ));
         domainList.add(new ResourceModel("Frontend",R.drawable.ic_web_logos));
@@ -51,10 +48,10 @@ public class ResourcesFragment extends Fragment {
         domainList.add(new ResourceModel("Design",R.drawable.ic_design_bg));
 
 
-        domainRecyclerView=view.findViewById(R.id.domainsRecyclerView);
+        RecyclerView domainRecyclerView = view.findViewById(R.id.domainsRecyclerView);
         GridLayoutManager gridLayoutManager=new GridLayoutManager(getContext(),2);
         domainRecyclerView.setLayoutManager(gridLayoutManager);   //setting layout as grid in the recycler view
-        domainRecyclerView.setAdapter(new ResourceAdapter(getContext(),domainList));//adapter for the recycler view
+        domainRecyclerView.setAdapter(new ResourceAdapter(getContext(), domainList));//adapter for the recycler view
 
     }
 }

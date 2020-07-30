@@ -12,12 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.exclusive.UpdatesObject;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class UpdatesAdapter extends RecyclerView.Adapter<UpdatesAdapter.UpdatesView> {
 
-    List<UpdatesObject> updatesObjects_list=new ArrayList<>();
+    List<UpdatesObject> updatesObjects_list;
     public static int mExpandedPosition=-1;
     public static int previousExpandedPosition=-1;
 
@@ -58,7 +57,7 @@ public class UpdatesAdapter extends RecyclerView.Adapter<UpdatesAdapter.UpdatesV
         return updatesObjects_list.size();
     }
 
-    public class UpdatesView extends RecyclerView.ViewHolder{
+    public static class UpdatesView extends RecyclerView.ViewHolder{
         ImageView updatesDatebg;
         TextView updatesTitle,updatesContent,updatesDate,updatesMonth;
         public UpdatesView(@NonNull View itemView) {

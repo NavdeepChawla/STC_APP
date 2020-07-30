@@ -31,18 +31,15 @@ import com.google.firebase.storage.StorageReference;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.mstc.mstcapp.R;
 
+import java.util.Objects;
+
 public class ProfileActivity extends AppCompatActivity {
 
     private CircularImageView profilePicture;
     private TextView profileName, profileEmail, profileRegNo, profileDomain, profileRoomNo, profilePhoneNo;
-    private Button buttonLogout;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference mRef;
     private ProgressBar mProgressCircular;
     private RelativeLayout profileLayout;
-    private FirebaseUser user;
-    private StorageReference storeRef;
-    private String email,userEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,19 +51,21 @@ public class ProfileActivity extends AppCompatActivity {
         profileName =findViewById(R.id.userName);
         profileEmail =findViewById(R.id.userEmail);
         profileRegNo =findViewById(R.id.userRegNo);
-        buttonLogout =findViewById(R.id.resetButton);
+        Button buttonLogout = findViewById(R.id.resetButton);
         profileRoomNo =findViewById(R.id.room_user);
         profileDomain =findViewById(R.id.domain_user);
         profilePhoneNo =findViewById(R.id.phone_user);
         profileLayout =findViewById(R.id.rLayout);
 
         firebaseAuth =FirebaseAuth.getInstance();
-        user= firebaseAuth.getCurrentUser();
-        email =user.getEmail();
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        assert user != null;
+        String email = user.getEmail();
 
-        userEmail = email.replace('.','_');
+        assert email != null;
+        String userEmail = email.replace('.', '_');
 
-        storeRef= FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
+        StorageReference storeRef = FirebaseStorage.getInstance().getReference().child("Profile Pictures").child(userEmail);
 
         //FETCHING PROFILE PIC FROM FIRESTORAGE AND PUTTING IT ON THE VIEW
         storeRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -81,7 +80,7 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
-        mRef= FirebaseDatabase.getInstance().getReference("Users").child(userEmail);
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference("Users").child(userEmail);
 
 
         buttonLogout.setOnClickListener(new View.OnClickListener() {
@@ -100,17 +99,17 @@ public class ProfileActivity extends AppCompatActivity {
         mRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name=snapshot.child("userName").getValue().toString();
+                String name= Objects.requireNonNull(snapshot.child("userName").getValue()).toString();
                 profileName.setText(name);
-                String uMail=snapshot.child("userEmail").getValue().toString();
+                String uMail= Objects.requireNonNull(snapshot.child("userEmail").getValue()).toString();
                 profileEmail.setText(uMail);
-                String uRegNo=snapshot.child("userRegNo").getValue().toString();
+                String uRegNo= Objects.requireNonNull(snapshot.child("userRegNo").getValue()).toString();
                 profileRegNo.setText(uRegNo);
-                String uRoomNo=snapshot.child("userRoom").getValue().toString();
+                String uRoomNo= Objects.requireNonNull(snapshot.child("userRoom").getValue()).toString();
                 profileRoomNo.setText(uRoomNo);
-                String uPhone=snapshot.child("userPhone").getValue().toString();
+                String uPhone= Objects.requireNonNull(snapshot.child("userPhone").getValue()).toString();
                 profilePhoneNo.setText(uPhone);
-                String uDomain=snapshot.child("userDomain").getValue().toString();
+                String uDomain= Objects.requireNonNull(snapshot.child("userDomain").getValue()).toString();
                 profileDomain.setText(uDomain);
 
                 mProgressCircular.setVisibility(View.INVISIBLE);

@@ -15,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.FeedObject;
 
@@ -75,7 +74,7 @@ public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
         return mData_feed.size();
     }
 
-    public class FeedView extends RecyclerView.ViewHolder {
+    public static class FeedView extends RecyclerView.ViewHolder {
 
         ImageView feed_imageView;
         TextView desc_textView, title_textView, link_textView;
