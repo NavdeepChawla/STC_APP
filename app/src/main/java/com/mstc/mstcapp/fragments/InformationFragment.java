@@ -1,6 +1,8 @@
 package com.mstc.mstcapp.fragments;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -52,6 +54,12 @@ public class InformationFragment extends Fragment {
 
         findViewById(view);
         onClickListener();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                SetImages();
+            }
+        }).start();
 
         setUpTabHost();
         onTabChangedListener();
@@ -79,6 +87,25 @@ public class InformationFragment extends Fragment {
         infoImageProjectLead = view.findViewById(R.id.infoImageProjectLead);
         infoImageTechMentor = view.findViewById(R.id.infoImageTechMentor);
         infoImageMgmtLead = view.findViewById(R.id.infoImageMgmtLead);
+
+    }
+
+    private void SetImages(){
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_president);
+        infoImagePresident.setImageBitmap(bitmap);
+
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_tech_lead);
+        infoImageTechHead.setImageBitmap(bitmap);
+
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_tech_mentor);
+        infoImageTechMentor.setImageBitmap(bitmap);
+
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_project_head);
+        infoImageProjectLead.setImageBitmap(bitmap);
+
+        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_mgmt_lead);
+        infoImageMgmtLead.setImageBitmap(bitmap);
 
     }
 
