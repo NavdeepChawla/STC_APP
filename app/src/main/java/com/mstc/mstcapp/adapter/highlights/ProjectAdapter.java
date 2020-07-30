@@ -2,7 +2,12 @@ package com.mstc.mstcapp.adapter.highlights;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.Html;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,8 +51,11 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
         holder.proj_title_secondary.setText(mData1.get(position).getTitle());
         holder.proj_descrip.setText(mData1.get(position).getDesc());
         holder.proj_mediumLink.setText(mData1.get(position).getLink());
-        holder.proj_contributors.setText("Contributors : "+mData1.get(position).getContributors());
-
+        String boldText = "CONTRIBUTORS: ";
+        String normalText = String.format("%s", mData1.get(position).getContributors()).replace("[","").replace("]","");
+        SpannableString contributor = new SpannableString(boldText + normalText);
+        contributor.setSpan(new StyleSpan(Typeface.BOLD), 0, boldText.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.proj_contributors.setText(contributor);
         final boolean isExpanded = position==mExpandedPosition;
         holder.proj_title_secondary.setVisibility(isExpanded?View.VISIBLE:View.GONE);
         holder.proj_name.setVisibility(!isExpanded?View.VISIBLE:View.GONE);

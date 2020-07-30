@@ -20,5 +20,6 @@
 
     <string name="devBy">Made with &#10084; by STC</string>
     <string name="infoPrivacyPolicy">Privacy Policy</string>
+    <string name="projectContributors"><B>Contributors:</B></string>
 
 </resources>
