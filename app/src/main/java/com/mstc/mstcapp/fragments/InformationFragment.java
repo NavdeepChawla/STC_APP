@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -28,8 +29,9 @@ public class InformationFragment extends Fragment {
     private Button infoLinkFacebook;
     private Button infoLinkMedium;
     private Button infoLinkInstagram;
-   private TabHost infoTabHost;
-   private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor;
+    private TabHost infoTabHost;
+    private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor;
+    private CardView infoPrivacyPolicy;
 
     public InformationFragment() {
     }
@@ -60,7 +62,10 @@ public class InformationFragment extends Fragment {
         infoLinkInstagram = view.findViewById(R.id.button_instagram);
         infoLinkMedium = view.findViewById(R.id.button_medium);
         infoLinkLinkedIn = view.findViewById(R.id.button_linkedin);
+
         infoTabHost = view.findViewById(R.id.infoTabHost);
+        infoPrivacyPolicy = view.findViewById(R.id.infoPrivacyPolicy);
+
         infoLinkPresident =view.findViewById(R.id.linkedinPresident);
         infoLinkTechHead =view.findViewById(R.id.linkedinTechHead);
         infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLead);
@@ -101,6 +106,15 @@ public class InformationFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse("https://medium.com/student-technical-community-vit-vellore")));
+                startActivity(intent);
+            }
+        });
+
+        infoPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData((Uri.parse("https://navdeepchawla.github.io/STC_APP_Privacy_Policy/")));
                 startActivity(intent);
             }
         });
