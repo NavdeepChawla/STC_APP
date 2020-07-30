@@ -186,9 +186,6 @@ public class ProjectFragment extends Fragment {
         projectProgressBar.setVisibility(View.INVISIBLE);
         projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
         projectRecyclerView.setAdapter(projectAdapter);
-
-
-
-
+        
     }
 }

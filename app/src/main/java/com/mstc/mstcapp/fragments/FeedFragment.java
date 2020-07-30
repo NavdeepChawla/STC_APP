@@ -208,6 +208,7 @@ public class FeedFragment extends Fragment {
     }
 
     private void loadShared(){
+        NavActivity.feedList.clear();
         SharedPreferences sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");

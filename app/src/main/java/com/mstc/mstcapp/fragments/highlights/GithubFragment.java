@@ -134,9 +134,6 @@ public class GithubFragment extends Fragment {
         GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
         githubRecyclerView.setAdapter(adapter);
 
-        //if updates are there
-        loadData(retrofit);
-
     }
 
     private void loadData(Retrofit retrofit) {
@@ -181,9 +178,6 @@ public class GithubFragment extends Fragment {
 
             @Override
             public void onFailure(@NotNull Call<List<GithubObject>> call, @NotNull Throwable t) {
-                swipeRefreshLayout.setRefreshing(false);
-                githubRecyclerView.setEnabled(true);
-                swipeRefreshLayout.setEnabled(true);
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
                     sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -191,6 +185,7 @@ public class GithubFragment extends Fragment {
                     loadShared();
                 }
                 else {
+                    swipeRefreshLayout.setRefreshing(false);
                     githubProgressBar.setVisibility(View.INVISIBLE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
