@@ -35,7 +35,6 @@ public class InformationFragment extends Fragment {
     private TabHost infoTabHost;
     private Button infoLinkPresident, infoLinkTechHead, infoLinkProjectLead,infoLinkTechMentor,infoLinkMgmtLead;
     private CardView infoPrivacyPolicy;
-    private ImageView infoImagePresident,infoImageTechHead, infoImageProjectLead,infoImageTechMentor,infoImageMgmtLead;
 
     public InformationFragment() {
     }
@@ -54,12 +53,6 @@ public class InformationFragment extends Fragment {
 
         findViewById(view);
         onClickListener();
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SetImages();
-            }
-        }).start();
 
         setUpTabHost();
         onTabChangedListener();
@@ -81,31 +74,6 @@ public class InformationFragment extends Fragment {
         infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLead);
         infoLinkTechMentor=view.findViewById(R.id.linkedinTechMentor);
         infoLinkMgmtLead = view.findViewById(R.id.linkedinMgmtLead);
-
-        infoImagePresident = view.findViewById(R.id.infoImagePresident);
-        infoImageTechHead = view.findViewById(R.id.infoImageTechHead);
-        infoImageProjectLead = view.findViewById(R.id.infoImageProjectLead);
-        infoImageTechMentor = view.findViewById(R.id.infoImageTechMentor);
-        infoImageMgmtLead = view.findViewById(R.id.infoImageMgmtLead);
-
-    }
-
-    private void SetImages(){
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_president);
-        infoImagePresident.setImageBitmap(bitmap);
-
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_tech_lead);
-        infoImageTechHead.setImageBitmap(bitmap);
-
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_tech_mentor);
-        infoImageTechMentor.setImageBitmap(bitmap);
-
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_project_head);
-        infoImageProjectLead.setImageBitmap(bitmap);
-
-        bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.ic_mgmt_lead);
-        infoImageMgmtLead.setImageBitmap(bitmap);
 
     }
 
