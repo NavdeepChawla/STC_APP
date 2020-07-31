@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/momSwipeRefresh"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp"
-        tools:ignore="UselessParent">
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
         <ProgressBar
             android:id="@+id/progressbar_mom"
@@ -25,6 +20,4 @@
             android:layout_height="match_parent"
             android:id="@+id/recyclerview_mom"/>
 
-    </RelativeLayout>
-
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</RelativeLayout>

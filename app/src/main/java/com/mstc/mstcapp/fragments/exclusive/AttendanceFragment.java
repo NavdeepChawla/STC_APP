@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -41,11 +42,11 @@ public class AttendanceFragment extends Fragment {
         View attendance_view=inflater.inflate(R.layout.fragment_attendance,container,false);
         recyclerView_attendance=attendance_view.findViewById(R.id.recyclerview_attendance);
         recyclerView_attendance.setLayoutManager(new LinearLayoutManager(getContext()));
-        initializedata();
+        initializeData();
         return attendance_view;
     }
 
-    private void initializedata() {
+    private void initializeData() {
         attendanceObjects_list=new ArrayList<>();
         databaseReference_attendance=FirebaseDatabase.getInstance().getReference().child("Attendance");
         databaseReference_attendance.addValueEventListener(new ValueEventListener() {
@@ -62,26 +63,7 @@ public class AttendanceFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        final SwipeRefreshLayout swipeRefreshLayout = view.findViewById(R.id.attendanceSwipeRefresh);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 2000);
+                Snackbar.make(recyclerView_attendance,"Error "+error.getMessage(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
             }
         });
     }
