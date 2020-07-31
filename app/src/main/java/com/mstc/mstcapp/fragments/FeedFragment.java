@@ -108,19 +108,24 @@ public class FeedFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NavActivity.feedList.clear();
-                if(recyclerView_feed.getAdapter()!=null)
+                if(progressBarFeed.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
-                }
-                skip = 0;
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(retrofit);
+                    NavActivity.feedList.clear();
+                    if(recyclerView_feed.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
                     }
-
-                });
+                    skip = 0;
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData(retrofit);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
 

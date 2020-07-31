@@ -98,17 +98,23 @@ public class EventFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NavActivity.eventList.clear();
-                if(eventRecyclerView.getAdapter()!=null)
+                if(eventProgressbar.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(eventRecyclerView.getAdapter()).notifyDataSetChanged();
-                }
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(retrofit);
+                    NavActivity.eventList.clear();
+                    if(eventRecyclerView.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(eventRecyclerView.getAdapter()).notifyDataSetChanged();
                     }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData(retrofit);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

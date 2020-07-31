@@ -101,18 +101,24 @@ public class ProjectFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NavActivity.projectList.clear();
-                if(projectRecyclerView.getAdapter()!=null)
+                if(projectProgressBar.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(projectRecyclerView.getAdapter()).notifyDataSetChanged();
-                }
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        swipeRefreshLayout.setRefreshing(false);
-                        loadData(retrofit);
+                    NavActivity.projectList.clear();
+                    if(projectRecyclerView.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(projectRecyclerView.getAdapter()).notifyDataSetChanged();
                     }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            swipeRefreshLayout.setRefreshing(false);
+                            loadData(retrofit);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

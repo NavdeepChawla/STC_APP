@@ -109,18 +109,25 @@ public class ArticleLinksFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                articleLinksObjectList.clear();
-                if(articlelinksRecyclerView.getAdapter()!=null)
+                if(articlelinksProgressbar.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(articlelinksRecyclerView.getAdapter()).notifyDataSetChanged();
-                }
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(retrofit,domain);
+                    articleLinksObjectList.clear();
+                    if(articlelinksRecyclerView.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(articlelinksRecyclerView.getAdapter()).notifyDataSetChanged();
                     }
-                }, 2000);
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData(retrofit,domain);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
+
         });
 
     }

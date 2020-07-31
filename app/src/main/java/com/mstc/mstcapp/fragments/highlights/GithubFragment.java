@@ -107,17 +107,23 @@ public class GithubFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                NavActivity.githubList.clear();
-                if(githubRecyclerView.getAdapter()!=null)
+                if(githubProgressBar.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(githubRecyclerView.getAdapter()).notifyDataSetChanged();
-                }
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(retrofit);
+                    NavActivity.githubList.clear();
+                    if(githubRecyclerView.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(githubRecyclerView.getAdapter()).notifyDataSetChanged();
                     }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData(retrofit);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }

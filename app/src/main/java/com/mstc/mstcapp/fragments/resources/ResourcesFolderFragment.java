@@ -97,17 +97,23 @@ public class ResourcesFolderFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                resourcesFolderObjectsList.clear();
-                if(resourcesfolderRecyclerview.getAdapter()!=null)
+                if(resouurcesfolderProgressbar.getVisibility()==View.GONE)
                 {
-                    Objects.requireNonNull(resourcesfolderRecyclerview.getAdapter()).notifyDataSetChanged();
-                }
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        loadData(retrofit,domain,editor);
+                    resourcesFolderObjectsList.clear();
+                    if(resourcesfolderRecyclerview.getAdapter()!=null)
+                    {
+                        Objects.requireNonNull(resourcesfolderRecyclerview.getAdapter()).notifyDataSetChanged();
                     }
-                });
+                    new Handler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            loadData(retrofit,domain,editor);
+                        }
+                    });
+                }
+                else {
+                    swipeRefreshLayout.setRefreshing(false);
+                }
             }
         });
     }
