@@ -98,7 +98,10 @@ public class ResourcesFolderFragment extends Fragment {
             @Override
             public void onRefresh() {
                 resourcesFolderObjectsList.clear();
-                Objects.requireNonNull(resourcesfolderRecyclerview.getAdapter()).notifyDataSetChanged();
+                if(resourcesfolderRecyclerview.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(resourcesfolderRecyclerview.getAdapter()).notifyDataSetChanged();
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -113,7 +116,6 @@ public class ResourcesFolderFragment extends Fragment {
 
     private void loadData(Retrofit retrofit,String domain,final SharedPreferences.Editor editor) {
         resourcesFolderObjectsList=new ArrayList<>();
-
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
         Call<List<ResourcesFolderObject>> call=jsonPlaceholderApi.getResourcesFolderObject(base_url+domain);
         call.enqueue(new Callback<List<ResourcesFolderObject>>() {
@@ -142,6 +144,7 @@ public class ResourcesFolderFragment extends Fragment {
                 Log.i("JSON",json);
                 editor.putString("data",json);
                 editor.commit();
+                internetCheck.setVisibility(View.INVISIBLE);
                 swipeRefreshLayout.setRefreshing(false);
                 resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
                 ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
@@ -176,6 +179,7 @@ public class ResourcesFolderFragment extends Fragment {
         Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
         resourcesFolderObjectsList=gson.fromJson(json,type);
         swipeRefreshLayout.setRefreshing(false);
+        internetCheck.setVisibility(View.INVISIBLE);
         resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
         ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
         resourcesfolderRecyclerview.setAdapter(adapter);

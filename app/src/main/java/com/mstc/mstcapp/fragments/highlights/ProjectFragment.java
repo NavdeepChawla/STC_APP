@@ -102,7 +102,10 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onRefresh() {
                 NavActivity.projectList.clear();
-                Objects.requireNonNull(projectRecyclerView.getAdapter()).notifyDataSetChanged();
+                if(projectRecyclerView.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(projectRecyclerView.getAdapter()).notifyDataSetChanged();
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -149,7 +152,8 @@ public class ProjectFragment extends Fragment {
                 editor.apply();
 
                 swipeRefreshLayout.setRefreshing(false);
-                projectProgressBar.setVisibility(View.INVISIBLE);
+                projectProgressBar.setVisibility(View.GONE);
+                internetCheck.setVisibility(View.GONE);
                 projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
                 projectRecyclerView.setAdapter(projectAdapter);
 
@@ -165,7 +169,7 @@ public class ProjectFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    projectProgressBar.setVisibility(View.INVISIBLE);
+                    projectProgressBar.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
             }
@@ -174,6 +178,7 @@ public class ProjectFragment extends Fragment {
     }
 
    private void loadShared(){
+        NavActivity.projectList.clear();
         SharedPreferences sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
@@ -182,10 +187,10 @@ public class ProjectFragment extends Fragment {
         Type type=new TypeToken<List<ProjectsObject>>(){}.getType();
         NavActivity.projectList=gson.fromJson(json,type);
 
-       swipeRefreshLayout.setRefreshing(false);
-        projectProgressBar.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setRefreshing(false);
+        projectProgressBar.setVisibility(View.GONE);
+        internetCheck.setVisibility(View.GONE);
         projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
         projectRecyclerView.setAdapter(projectAdapter);
-
     }
 }

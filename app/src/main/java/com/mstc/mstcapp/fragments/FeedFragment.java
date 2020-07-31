@@ -109,7 +109,10 @@ public class FeedFragment extends Fragment {
             @Override
             public void onRefresh() {
                 NavActivity.feedList.clear();
-                Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
+                if(recyclerView_feed.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
+                }
                 skip = 0;
                 new Handler().post(new Runnable() {
                     @Override

@@ -84,7 +84,7 @@ public class EventFragment extends Fragment {
         eventRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         internetCheck=view.findViewById(R.id.internetcheckEvent);
 
-        if(NavActivity.projectList.size()==0){
+        if(NavActivity.eventList.size()==0){
             loadData(retrofit);
         }
         else{
@@ -99,7 +99,10 @@ public class EventFragment extends Fragment {
             @Override
             public void onRefresh() {
                 NavActivity.eventList.clear();
-                Objects.requireNonNull(eventRecyclerView.getAdapter()).notifyDataSetChanged();
+                if(eventRecyclerView.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(eventRecyclerView.getAdapter()).notifyDataSetChanged();
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -148,7 +151,8 @@ public class EventFragment extends Fragment {
                 editor.putString("data",json);
                 editor.apply();
                 swipeRefreshLayout.setRefreshing(false);
-                eventProgressbar.setVisibility(View.INVISIBLE);
+                eventProgressbar.setVisibility(View.GONE);
+                internetCheck.setVisibility(View.GONE);
                 EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
                 eventRecyclerView.setAdapter(eventAdapter);
             }
@@ -163,7 +167,7 @@ public class EventFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    eventProgressbar.setVisibility(View.INVISIBLE);
+                    eventProgressbar.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
             }
@@ -171,6 +175,7 @@ public class EventFragment extends Fragment {
     }
 
     private void loadShared(){
+        NavActivity.eventList.clear();
         SharedPreferences sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
@@ -180,7 +185,8 @@ public class EventFragment extends Fragment {
         Type type=new TypeToken<List<EventObject>>(){}.getType();
         NavActivity.eventList=gson.fromJson(json,type);
         swipeRefreshLayout.setRefreshing(false);
-        eventProgressbar.setVisibility(View.INVISIBLE);
+        eventProgressbar.setVisibility(View.GONE);
+        internetCheck.setVisibility(View.GONE);
         EventAdapter adapter=new EventAdapter(getContext(),NavActivity.eventList);
         eventRecyclerView.setAdapter(adapter);
 

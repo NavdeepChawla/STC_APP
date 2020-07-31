@@ -110,7 +110,10 @@ public class ArticleLinksFragment extends Fragment {
             @Override
             public void onRefresh() {
                 articleLinksObjectList.clear();
-                Objects.requireNonNull(articlelinksRecyclerView.getAdapter()).notifyDataSetChanged();
+                if(articlelinksRecyclerView.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(articlelinksRecyclerView.getAdapter()).notifyDataSetChanged();
+                }
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -158,8 +161,9 @@ public class ArticleLinksFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putString("data",json);
                 editor.apply();
+                internetCheck.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
-                articlelinksProgressbar.setVisibility(View.INVISIBLE);
+                articlelinksProgressbar.setVisibility(View.GONE);
                 ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
                 articlelinksRecyclerView.setAdapter(adapter);
 
@@ -174,7 +178,7 @@ public class ArticleLinksFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    articlelinksProgressbar.setVisibility(View.INVISIBLE);
+                    articlelinksProgressbar.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
 
@@ -192,7 +196,8 @@ public class ArticleLinksFragment extends Fragment {
         articleLinksObjectList=gson.fromJson(json,type);
 
         swipeRefreshLayout.setRefreshing(false);
-        articlelinksProgressbar.setVisibility(View.INVISIBLE);
+        articlelinksProgressbar.setVisibility(View.GONE);
+        internetCheck.setVisibility(View.GONE);
         ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
         articlelinksRecyclerView.setAdapter(adapter);
 

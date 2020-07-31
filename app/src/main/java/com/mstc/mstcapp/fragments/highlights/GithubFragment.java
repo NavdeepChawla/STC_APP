@@ -108,7 +108,10 @@ public class GithubFragment extends Fragment {
             @Override
             public void onRefresh() {
                 NavActivity.githubList.clear();
-                Objects.requireNonNull(githubRecyclerView.getAdapter()).notifyDataSetChanged();
+                if(githubRecyclerView.getAdapter()!=null)
+                {
+                    Objects.requireNonNull(githubRecyclerView.getAdapter()).notifyDataSetChanged();
+                }
                 new Handler().post(new Runnable() {
                     @Override
                     public void run() {
@@ -121,6 +124,7 @@ public class GithubFragment extends Fragment {
 
     private void loadShared() {
 
+        NavActivity.githubList.clear();
         SharedPreferences sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
         Gson gson=new Gson();
         String json=sharedPreferences.getString("data","");
@@ -130,7 +134,8 @@ public class GithubFragment extends Fragment {
         NavActivity.githubList =gson.fromJson(json,type);
 
         swipeRefreshLayout.setRefreshing(false);
-        githubProgressBar.setVisibility(View.INVISIBLE);
+        githubProgressBar.setVisibility(View.GONE);
+        internetCheck.setVisibility(View.GONE);
         GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
         githubRecyclerView.setAdapter(adapter);
 
@@ -170,7 +175,8 @@ public class GithubFragment extends Fragment {
                 editor.putString("data", json);
                 editor.apply();
                 swipeRefreshLayout.setRefreshing(false);
-                githubProgressBar.setVisibility(View.INVISIBLE);
+                githubProgressBar.setVisibility(View.GONE);
+                internetCheck.setVisibility(View.GONE);
                 GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
                 githubRecyclerView.setAdapter(githubAdapter);
 
@@ -186,7 +192,7 @@ public class GithubFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    githubProgressBar.setVisibility(View.INVISIBLE);
+                    githubProgressBar.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
             }
