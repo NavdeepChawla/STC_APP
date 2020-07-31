@@ -111,7 +111,6 @@ public class ProjectFragment extends Fragment {
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            swipeRefreshLayout.setRefreshing(false);
                             loadData(retrofit);
                         }
                     });
