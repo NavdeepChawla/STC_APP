@@ -36,7 +36,7 @@
             android:fontFamily="@font/montserrat"
             android:textSize="16dp"
             android:text="Sample"
-            android:textColor="@color/black"/>
+            android:textColor="@color/gray"/>
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
