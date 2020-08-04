@@ -1,6 +1,7 @@
 package com.mstc.mstcapp.fragments;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -9,9 +10,11 @@ import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TabHost;
 import android.widget.TextView;
@@ -20,6 +23,8 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 
 import java.util.Objects;
+
+import static android.content.Context.WINDOW_SERVICE;
 
 
 public class InformationFragment extends Fragment {
@@ -38,6 +43,7 @@ public class InformationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        adjustFontScale(getResources().getConfiguration());
         return inflater.inflate(R.layout.fragment_information, container, false);
     }
 
@@ -188,7 +194,7 @@ public class InformationFragment extends Fragment {
             infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.white));
             TextView tv = infoTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
             tv.setTextColor(getResources().getColor(R.color.black));
-            tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
+            //tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
         }
         // When tab is selected
         if(Objects.equals(infoTabHost.getCurrentTabTag(), "TAB ONE"))
@@ -202,7 +208,7 @@ public class InformationFragment extends Fragment {
         infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
         TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
         tv.setTextColor(getResources().getColor(R.color.permWhite));
-        tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
+        //tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
     }
 
     private void onTabChangedListener()
@@ -216,7 +222,7 @@ public class InformationFragment extends Fragment {
                     infoTabHost.getTabWidget().getChildAt(i).setBackgroundColor(getResources().getColor(R.color.white));
                     TextView tv = infoTabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
                     tv.setTextColor(getResources().getColor(R.color.black));
-                    tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
+                    //tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
                 }
                 // When tab is selected
                 if(Objects.equals(infoTabHost.getCurrentTabTag(), "TAB ONE"))
@@ -230,8 +236,18 @@ public class InformationFragment extends Fragment {
                 infoTabHost.getTabWidget().getChildAt(infoTabHost.getCurrentTab()).setElevation(4.0f);
                 TextView tv = infoTabHost.getTabWidget().getChildAt(tab).findViewById(android.R.id.title);
                 tv.setTextColor(getResources().getColor(R.color.permWhite));
-                tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
+                //tv.setTextSize(getResources().getDimension(R.dimen.tabHost));
             }
         });
     }
+
+    public void adjustFontScale(Configuration configuration) {
+        configuration.fontScale = (float) 1;
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        WindowManager wm = (WindowManager) requireContext().getSystemService(WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        metrics.scaledDensity = configuration.fontScale * metrics.density;
+        getResources().updateConfiguration(configuration, metrics);
+    }
+
 }

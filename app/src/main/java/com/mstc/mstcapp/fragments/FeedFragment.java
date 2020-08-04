@@ -33,7 +33,6 @@ import com.mstc.mstcapp.model.FeedObject;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -193,6 +192,7 @@ public class FeedFragment extends Fragment {
                     }
                     skip=NavActivity.feedList.size();
                     progressBarFeed.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
                     feedAdapter.notifyDataSetChanged();
                 }
@@ -208,7 +208,7 @@ public class FeedFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    progressBarFeed.setVisibility(View.INVISIBLE);
+                    progressBarFeed.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
             }
@@ -227,16 +227,12 @@ public class FeedFragment extends Fragment {
         NavActivity.feedList=gson.fromJson(json,type);
 
         swipeRefreshLayout.setRefreshing(false);
-        progressBarFeed.setVisibility(View.INVISIBLE);
+        progressBarFeed.setVisibility(View.GONE);
+        internetCheck.setVisibility(View.GONE);
         feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
         recyclerView_feed.setAdapter(feedAdapter);
 
        NavActivity.sharedFeed = true;
     }
 
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 }

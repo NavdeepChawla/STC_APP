@@ -150,9 +150,9 @@ public class ResourcesFolderFragment extends Fragment {
                 Log.i("JSON",json);
                 editor.putString("data",json);
                 editor.commit();
-                internetCheck.setVisibility(View.INVISIBLE);
+                internetCheck.setVisibility(View.GONE);
                 swipeRefreshLayout.setRefreshing(false);
-                resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
+                resouurcesfolderProgressbar.setVisibility(View.GONE);
                 ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
                 resourcesfolderRecyclerview.setAdapter(adapter);
 
@@ -170,7 +170,7 @@ public class ResourcesFolderFragment extends Fragment {
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
-                    resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
+                    resouurcesfolderProgressbar.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
                 }
             }
@@ -185,8 +185,8 @@ public class ResourcesFolderFragment extends Fragment {
         Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
         resourcesFolderObjectsList=gson.fromJson(json,type);
         swipeRefreshLayout.setRefreshing(false);
-        internetCheck.setVisibility(View.INVISIBLE);
-        resouurcesfolderProgressbar.setVisibility(View.INVISIBLE);
+        internetCheck.setVisibility(View.GONE);
+        resouurcesfolderProgressbar.setVisibility(View.GONE);
         ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
         resourcesfolderRecyclerview.setAdapter(adapter);
 
@@ -196,4 +196,5 @@ public class ResourcesFolderFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
     }
+
 }
