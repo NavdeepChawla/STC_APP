@@ -8,7 +8,9 @@
         android:id="@+id/githubLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp">
+        android:paddingTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
         <ProgressBar
             android:id="@+id/progressbarGithub"
             android:layout_width="wrap_content"
