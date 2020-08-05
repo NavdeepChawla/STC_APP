@@ -70,7 +70,6 @@
         android:elevation="4dp"
         app:itemRippleColor="@color/rippleColor"
         app:itemTextAppearanceActive="@style/BottomNavigationViewTitle"
-        android:hapticFeedbackEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"

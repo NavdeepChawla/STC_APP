@@ -40,7 +40,6 @@
             android:layout_marginBottom="4dp"
             android:contentDescription="@string/contentDescription"
             android:fitsSystemWindows="true"
-            android:src="@drawable/ic_web_logos"
             />
 
     </RelativeLayout>
