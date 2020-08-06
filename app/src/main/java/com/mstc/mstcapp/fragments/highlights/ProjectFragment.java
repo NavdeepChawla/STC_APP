@@ -140,6 +140,7 @@ public class ProjectFragment extends Fragment {
                     List<ProjectsObject> projects=response.body();
                     if(projects!=null)
                     {
+                        NavActivity.projectList.clear();
                         for(ProjectsObject projectsObject1 :projects){
 
                             String title = projectsObject1.getTitle();

@@ -147,6 +147,7 @@ public class GithubFragment extends Fragment {
                     List<GithubObject> githubObjects = response.body();
                     if(githubObjects!=null)
                     {
+                        NavActivity.githubList.clear();
                         for (GithubObject githubObject : githubObjects) {
                             String title = githubObject.getTitle();
                             String content = githubObject.getLink();

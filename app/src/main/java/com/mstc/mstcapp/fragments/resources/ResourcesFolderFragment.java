@@ -139,6 +139,7 @@ public class ResourcesFolderFragment extends Fragment {
                     List<ResourcesFolderObject> resourcesFolderObjects=response.body();
                     if(resourcesFolderObjects!=null)
                     {
+                        resourcesFolderObjectsList.clear();
                         for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
                             String title=resourcesFolderObject.getResourcesfolderTitle();
                             String desc=resourcesFolderObject.getResourcefolderDesc();
@@ -196,6 +197,7 @@ public class ResourcesFolderFragment extends Fragment {
     }
     private void loadShared(){
         //SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
+        resourcesFolderObjectsList.clear();
         if(getContext()!=null)
         {
             Gson gson=new Gson();

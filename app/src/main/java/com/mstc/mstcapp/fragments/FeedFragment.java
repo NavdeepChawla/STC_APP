@@ -129,6 +129,7 @@ public class FeedFragment extends Fragment {
         feedLoadMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                NavActivity.sharedFeed=false;
                 swipeRefreshLayout.setRefreshing(true);
                 loadData(retrofit);
             }
@@ -160,6 +161,11 @@ public class FeedFragment extends Fragment {
                     }
                     else
                     {
+                        NavActivity.sharedFeed=false;
+                        if(skip==0)
+                        {
+                            NavActivity.feedList.clear();
+                        }
                         for(FeedObject feed:feeds){
                             String title = feed.getFeedTitle();
                             String desc = feed.getFeedDesc();
@@ -220,6 +226,7 @@ public class FeedFragment extends Fragment {
             if(json!=null)
             {
                 Log.i("GETDATA",json);
+                NavActivity.feedList.clear();
                 Type type=new TypeToken<List<FeedObject>>(){}.getType();
                 NavActivity.feedList=gson.fromJson(json,type);
                 internetCheck.setVisibility(View.GONE);

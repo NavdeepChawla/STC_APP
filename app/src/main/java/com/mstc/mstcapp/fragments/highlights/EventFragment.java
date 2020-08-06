@@ -135,6 +135,7 @@ public class EventFragment extends Fragment {
                     List<EventObject> events=response.body();
                     if(events!=null)
                     {
+                        NavActivity.eventList.clear();
                         for(EventObject events1:events){
 
                             String title = events1.getEventTitle();
@@ -199,8 +200,7 @@ public class EventFragment extends Fragment {
             String json=sharedPreferences.getString("data",null);
            if(json!=null) {
                Log.i("GETDATA ", json);
-               Type type = new TypeToken<List<EventObject>>() {
-               }.getType();
+               Type type = new TypeToken<List<EventObject>>() {}.getType();
                NavActivity.eventList = gson.fromJson(json, type);
                EventAdapter adapter = new EventAdapter(getContext(), NavActivity.eventList);
                eventRecyclerView.setAdapter(adapter);

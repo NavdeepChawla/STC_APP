@@ -151,6 +151,7 @@ public class ArticleLinksFragment extends Fragment {
                     List<ArticleLinksObject> articleLinksObjects= response.body();
                     if(articleLinksObjects!=null)
                     {
+                        articleLinksObjectList.clear();
                         for(ArticleLinksObject articleLinksObject : articleLinksObjects){
                             String title=articleLinksObject.getArticlelinksTitle();
                             String link=articleLinksObject.getArticlelinksLink();
@@ -205,6 +206,7 @@ public class ArticleLinksFragment extends Fragment {
     }
     private void loadShared(){
         //SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"article", Context.MODE_PRIVATE);
+        articleLinksObjectList.clear();
         if(getContext()!=null)
         {
             Gson gson=new Gson();
