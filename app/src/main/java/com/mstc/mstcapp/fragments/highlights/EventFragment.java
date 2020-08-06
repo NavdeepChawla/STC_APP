@@ -57,15 +57,13 @@ public class EventFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-
+        super.onCreate(savedInstanceState);
         retrofit=new Retrofit.Builder()
                 .baseUrl(base_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
-
-        super.onCreate(savedInstanceState);
 
     }
 
@@ -126,48 +124,60 @@ public class EventFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<EventObject>> call, @NotNull Response<List<EventObject>> response) {
                 if(!response.isSuccessful()){
-                    if(response.code()==400)
+                    swipeRefreshLayout.setRefreshing(false);
+                    eventProgressbar.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                    Snackbar.make(eventRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Log.i("CODE", String.valueOf(response.code()));
+                }
+                else
+                {
+                    List<EventObject> events=response.body();
+                    if(events!=null)
                     {
-                        loadData(retrofit);
+                        for(EventObject events1:events){
+
+                            String title = events1.getEventTitle();
+                            String desc = events1.getEventDesc();
+                            String link= events1.getEventLink();
+                            String picture=events1.getEventPicture();
+                            NavActivity.eventList.add(new EventObject(title,desc,link,picture));
+
+                        }
+
+                        Gson gson=new Gson();
+                        String json=gson.toJson(NavActivity.eventList);
+                        Log.i("JSON",json);
+                        editor= sharedPreferences.edit();
+                        editor.putString("data",json);
+                        editor.apply();
+                        swipeRefreshLayout.setRefreshing(false);
+                        eventProgressbar.setVisibility(View.GONE);
+                        internetCheck.setVisibility(View.GONE);
+                        EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
+                        eventRecyclerView.setAdapter(eventAdapter);
                     }
                     else {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(eventRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
-                        Log.i("CODE", String.valueOf(response.code()));
+                        if(sharedPreferences.contains("data")){
+                            //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                            Log.i("SHARED","Yes Data");
+                            loadShared();
+                        }
+                        else {
+                            swipeRefreshLayout.setRefreshing(false);
+                            eventProgressbar.setVisibility(View.GONE);
+                            internetCheck.setVisibility(View.VISIBLE);
+                        }
                     }
-                    return;
                 }
 
-                List<EventObject> events=response.body();
-                assert events != null;
-                for(EventObject events1:events){
-
-                    String title = events1.getEventTitle();
-                    String desc = events1.getEventDesc();
-                    String link= events1.getEventLink();
-                    String picture=events1.getEventPicture();
-                    NavActivity.eventList.add(new EventObject(title,desc,link,picture));
-
-                }
-
-                Gson gson=new Gson();
-                String json=gson.toJson(NavActivity.eventList);
-                Log.i("JSON",json);
-                editor= sharedPreferences.edit();
-                editor.putString("data",json);
-                editor.apply();
-                swipeRefreshLayout.setRefreshing(false);
-                eventProgressbar.setVisibility(View.GONE);
-                internetCheck.setVisibility(View.GONE);
-                EventAdapter eventAdapter=new EventAdapter(getContext(),NavActivity.eventList);
-                eventRecyclerView.setAdapter(eventAdapter);
             }
 
             @Override
             public void onFailure(@NotNull Call<List<EventObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -182,19 +192,31 @@ public class EventFragment extends Fragment {
 
     private void loadShared(){
         NavActivity.eventList.clear();
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-        assert json != null;
-        Log.i("GETDATA ",json);
-
-        Type type=new TypeToken<List<EventObject>>(){}.getType();
-        NavActivity.eventList=gson.fromJson(json,type);
+        //SharedPreferences sharedPreferences= requireContext().getSharedPreferences("event", Context.MODE_PRIVATE);
+        if(getContext()!=null)
+        {
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+           if(json!=null) {
+               Log.i("GETDATA ", json);
+               Type type = new TypeToken<List<EventObject>>() {
+               }.getType();
+               NavActivity.eventList = gson.fromJson(json, type);
+               EventAdapter adapter = new EventAdapter(getContext(), NavActivity.eventList);
+               eventRecyclerView.setAdapter(adapter);
+               internetCheck.setVisibility(View.GONE);
+           }
+            else
+            {
+                internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else
+        {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
         swipeRefreshLayout.setRefreshing(false);
         eventProgressbar.setVisibility(View.GONE);
-        internetCheck.setVisibility(View.GONE);
-        EventAdapter adapter=new EventAdapter(getContext(),NavActivity.eventList);
-        eventRecyclerView.setAdapter(adapter);
 
     }
 }

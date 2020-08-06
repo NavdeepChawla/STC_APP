@@ -12,14 +12,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
@@ -146,55 +144,52 @@ public class FeedFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<FeedObject>> call, @NotNull Response<List<FeedObject>> response) {
                 if(!response.isSuccessful()){
-                    if(response.code()==400)
-                    {
-                        loadData(retrofit);
-                    }
-                    else {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Toast.makeText(getContext(), "ErrorCode " + response.code(), Toast.LENGTH_SHORT).show();
-                        Log.i("CODE", String.valueOf(response.code()));
-                    }
-                    return;
-                }
-
-                List<FeedObject> feeds=response.body();
-                if(feeds==null||feeds.size()==0){
-                    feedLoadMore.setVisibility(View.GONE);
                     swipeRefreshLayout.setRefreshing(false);
-                    Snackbar.make(feedLoadMore,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    progressBarFeed.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                    Snackbar.make(recyclerView_feed,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Log.i("CODE", String.valueOf(response.code()));
                 }
                 else
                 {
-                    for(FeedObject feed:feeds){
-                        String title = feed.getFeedTitle();
-                        String desc = feed.getFeedDesc();
-                        String link= feed.getFeedLink();
-                        String picture=feed.getFeedPicture();
-                        NavActivity.feedList.add(new FeedObject(title,desc,link,picture));
+                    List<FeedObject> feeds=response.body();
+                    if(feeds==null||feeds.size()==0){
+                        feedLoadMore.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+                        Snackbar.make(feedLoadMore,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                     }
-                    if(skip==0)
+                    else
                     {
-                        feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
-                        Gson gson=new Gson();
-                        String json=gson.toJson(NavActivity.feedList);
-                        Log.i("JSON",json);
+                        for(FeedObject feed:feeds){
+                            String title = feed.getFeedTitle();
+                            String desc = feed.getFeedDesc();
+                            String link= feed.getFeedLink();
+                            String picture=feed.getFeedPicture();
+                            NavActivity.feedList.add(new FeedObject(title,desc,link,picture));
+                        }
+                        if(skip==0)
+                        {
+                            feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
+                            Gson gson=new Gson();
+                            String json=gson.toJson(NavActivity.feedList);
+                            Log.i("JSON",json);
 
-                        editor= sharedPreferences.edit();
-                        editor.putString("data",json);
-                        editor.apply();
+                            editor= sharedPreferences.edit();
+                            editor.putString("data",json);
+                            editor.apply();
 
-                        recyclerView_feed.setAdapter(feedAdapter);
+                            recyclerView_feed.setAdapter(feedAdapter);
+                        }
+                        if(feeds.size()==5)
+                        {
+                            feedLoadMore.setVisibility(View.VISIBLE);
+                        }
+                        skip=NavActivity.feedList.size();
+                        progressBarFeed.setVisibility(View.GONE);
+                        internetCheck.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+                        feedAdapter.notifyDataSetChanged();
                     }
-                    if(feeds.size()==5)
-                    {
-                        feedLoadMore.setVisibility(View.VISIBLE);
-                    }
-                    skip=NavActivity.feedList.size();
-                    progressBarFeed.setVisibility(View.GONE);
-                    internetCheck.setVisibility(View.GONE);
-                    swipeRefreshLayout.setRefreshing(false);
-                    feedAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -202,7 +197,7 @@ public class FeedFragment extends Fragment {
             public void onFailure(@NotNull Call<List<FeedObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -217,22 +212,33 @@ public class FeedFragment extends Fragment {
 
     private void loadShared(){
         NavActivity.feedList.clear();
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-        assert json != null;
-        Log.i("GETDATA",json);
-
-        Type type=new TypeToken<List<FeedObject>>(){}.getType();
-        NavActivity.feedList=gson.fromJson(json,type);
-
+        //SharedPreferences sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
+        if(getContext()!=null)
+        {
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+            if(json!=null)
+            {
+                Log.i("GETDATA",json);
+                Type type=new TypeToken<List<FeedObject>>(){}.getType();
+                NavActivity.feedList=gson.fromJson(json,type);
+                internetCheck.setVisibility(View.GONE);
+                feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
+                recyclerView_feed.setAdapter(feedAdapter);
+                internetCheck.setVisibility(View.GONE);
+            }
+            else
+            {
+                internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else
+        {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
         swipeRefreshLayout.setRefreshing(false);
         progressBarFeed.setVisibility(View.GONE);
-        internetCheck.setVisibility(View.GONE);
-        feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
-        recyclerView_feed.setAdapter(feedAdapter);
-
-       NavActivity.sharedFeed = true;
+        NavActivity.sharedFeed = true;
     }
 
 }

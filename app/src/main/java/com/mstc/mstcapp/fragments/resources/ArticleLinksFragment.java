@@ -140,46 +140,56 @@ public class ArticleLinksFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<ArticleLinksObject>> call, @NotNull Response<List<ArticleLinksObject>> response) {
                 if(!response.isSuccessful()){
-                    if(response.code()==400)
+                    swipeRefreshLayout.setRefreshing(false);
+                    articlelinksProgressbar.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                    Snackbar.make(articlelinksRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Log.i("CODE", String.valueOf(response.code()));
+                }
+                else
+                {
+                    List<ArticleLinksObject> articleLinksObjects= response.body();
+                    if(articleLinksObjects!=null)
                     {
-                        loadData(retrofit,domain);
+                        for(ArticleLinksObject articleLinksObject : articleLinksObjects){
+                            String title=articleLinksObject.getArticlelinksTitle();
+                            String link=articleLinksObject.getArticlelinksLink();
+                            String desc=articleLinksObject.getArticlelinksDesc();
+                            articleLinksObjectList.add(new ArticleLinksObject(title,link,desc));
+                        }
+
+                        Gson gson=new Gson();
+                        String json=gson.toJson(articleLinksObjects);
+                        Log.i("JSON",json);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("data",json);
+                        editor.apply();
+                        internetCheck.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+                        articlelinksProgressbar.setVisibility(View.GONE);
+                        ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
+                        articlelinksRecyclerView.setAdapter(adapter);
                     }
                     else {
-                        swipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(articlelinksRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
-                        Log.i("CODE", String.valueOf(response.code()));
+                        if(sharedPreferences.contains("data")){
+                            Log.i("SHARED","Yes Data");
+                            loadShared();
+                        }
+                        else {
+                            swipeRefreshLayout.setRefreshing(false);
+                            articlelinksProgressbar.setVisibility(View.GONE);
+                            internetCheck.setVisibility(View.VISIBLE);
+                        }
                     }
-                    return;
                 }
 
-                List<ArticleLinksObject> articleLinksObjects= response.body();
-                assert articleLinksObjects != null;
-                for(ArticleLinksObject articleLinksObject : articleLinksObjects){
-                    String title=articleLinksObject.getArticlelinksTitle();
-                    String link=articleLinksObject.getArticlelinksLink();
-                    String desc=articleLinksObject.getArticlelinksDesc();
-                    articleLinksObjectList.add(new ArticleLinksObject(title,link,desc));
-
-                }
-
-                Gson gson=new Gson();
-                String json=gson.toJson(articleLinksObjects);
-                Log.i("JSON",json);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("data",json);
-                editor.apply();
-                internetCheck.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
-                articlelinksProgressbar.setVisibility(View.GONE);
-                ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
-                articlelinksRecyclerView.setAdapter(adapter);
 
             }
             @Override
             public void onFailure(@NotNull Call<List<ArticleLinksObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -194,20 +204,29 @@ public class ArticleLinksFragment extends Fragment {
 
     }
     private void loadShared(){
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"article", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-        assert json != null;
-        Log.i("GETDATA ",json);
-        Type type=new TypeToken<List<ArticleLinksObject>>(){}.getType();
-        articleLinksObjectList=gson.fromJson(json,type);
+        //SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"article", Context.MODE_PRIVATE);
+        if(getContext()!=null)
+        {
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+            if(json!=null)
+            {
+                Log.i("GETDATA ",json);
+                Type type=new TypeToken<List<ArticleLinksObject>>(){}.getType();
+                articleLinksObjectList=gson.fromJson(json,type);
+                ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
+                articlelinksRecyclerView.setAdapter(adapter);
+                internetCheck.setVisibility(View.GONE);
+            }
+            else {
+            internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
 
         swipeRefreshLayout.setRefreshing(false);
         articlelinksProgressbar.setVisibility(View.GONE);
-        internetCheck.setVisibility(View.GONE);
-        ArticlelinksAdapter adapter=new ArticlelinksAdapter(articleLinksObjectList,getContext());
-        articlelinksRecyclerView.setAdapter(adapter);
-
-        //if updates are there
     }
 }

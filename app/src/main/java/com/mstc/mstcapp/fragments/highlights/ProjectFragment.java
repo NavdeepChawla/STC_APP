@@ -95,7 +95,7 @@ public class ProjectFragment extends Fragment {
             projectProgressBar.setVisibility(View.GONE);
         }
 
-
+        //Swipe Refresh Layout
         swipeRefreshLayout = view.findViewById(R.id.projectSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -121,6 +121,7 @@ public class ProjectFragment extends Fragment {
             }
         });
     }
+
     private void loadData(Retrofit retrofit) {
         JsonPlaceholderApi jsonPlaceholderApi=retrofit.create(JsonPlaceholderApi.class);
         Call<List<ProjectsObject>> call=jsonPlaceholderApi.getProjects();
@@ -128,39 +129,53 @@ public class ProjectFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<ProjectsObject>> call, @NotNull Response<List<ProjectsObject>> response) {
                 if(!response.isSuccessful()) {
-                    if (response.code() == 400) {
-                        loadData(retrofit);
-                    } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    projectProgressBar.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                    Snackbar.make(projectRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Log.i("CODE", String.valueOf(response.code()));
+                }
+                else
+                {
+                    List<ProjectsObject> projects=response.body();
+                    if(projects!=null)
+                    {
+                        for(ProjectsObject projectsObject1 :projects){
+
+                            String title = projectsObject1.getTitle();
+                            String desc = projectsObject1.getDesc();
+                            String link= projectsObject1.getLink();
+                            List <String> contri = projectsObject1.getContributors();
+                            NavActivity.projectList.add(new ProjectsObject(title,contri,link,desc));
+
+                        }
+                        Gson gson=new Gson();
+                        String json=gson.toJson(NavActivity.projectList);
+                        editor= sharedPreferences.edit();
+                        Log.i("JSON",json);
+                        editor.putString("data",json);
+                        editor.apply();
+
                         swipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(projectRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
-                        Log.i("CODE", String.valueOf(response.code()));
+                        projectProgressBar.setVisibility(View.GONE);
+                        internetCheck.setVisibility(View.GONE);
+                        projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
+                        projectRecyclerView.setAdapter(projectAdapter);
                     }
-                    return;
+                    else
+                    {
+                        if(sharedPreferences.contains("data")){
+                            Log.i("SHARED","Yes Data");
+                            loadShared();
+                        }
+                        else {
+                            swipeRefreshLayout.setRefreshing(false);
+                            projectProgressBar.setVisibility(View.GONE);
+                            internetCheck.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
 
-                List<ProjectsObject> projects=response.body();
-                assert projects != null;
-                for(ProjectsObject projectsObject1 :projects){
-
-                    String title = projectsObject1.getTitle();
-                    String desc = projectsObject1.getDesc();
-                    String link= projectsObject1.getLink();
-                    List <String> contri = projectsObject1.getContributors();
-                    NavActivity.projectList.add(new ProjectsObject(title,contri,link,desc));
-
-                }
-                Gson gson=new Gson();
-                String json=gson.toJson(NavActivity.projectList);
-                editor= sharedPreferences.edit();
-                Log.i("JSON",json);
-                editor.putString("data",json);
-                editor.apply();
-
-                swipeRefreshLayout.setRefreshing(false);
-                projectProgressBar.setVisibility(View.GONE);
-                internetCheck.setVisibility(View.GONE);
-                projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
-                projectRecyclerView.setAdapter(projectAdapter);
 
             }
 
@@ -168,7 +183,7 @@ public class ProjectFragment extends Fragment {
             public void onFailure(@NotNull Call<List<ProjectsObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -184,18 +199,29 @@ public class ProjectFragment extends Fragment {
 
    private void loadShared(){
         NavActivity.projectList.clear();
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-       assert json != null;
-       Log.i("GETDATA ",json);
-        Type type=new TypeToken<List<ProjectsObject>>(){}.getType();
-        NavActivity.projectList=gson.fromJson(json,type);
-
+        if(getContext()!=null)
+        {
+            //SharedPreferences sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+            if(json!=null)
+            {
+                Log.i("GETDATA ",json);
+                Type type=new TypeToken<List<ProjectsObject>>(){}.getType();
+                NavActivity.projectList=gson.fromJson(json,type);
+                projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
+                projectRecyclerView.setAdapter(projectAdapter);
+                internetCheck.setVisibility(View.GONE);
+            }
+            else
+            {
+                internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
         swipeRefreshLayout.setRefreshing(false);
         projectProgressBar.setVisibility(View.GONE);
-        internetCheck.setVisibility(View.GONE);
-        projectAdapter=new ProjectAdapter(getContext(),NavActivity.projectList);
-        projectRecyclerView.setAdapter(projectAdapter);
     }
 }

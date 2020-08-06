@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -61,17 +60,16 @@ public class ResourcesFolderFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         context=getContext();
-
         domain=domain.replaceAll("\\s","");
         retrofit=new Retrofit.Builder()
                 .baseUrl(base_url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
-        editor= sharedPreferences.edit();
-        super.onCreate(savedInstanceState);
+
+
     }
 
     @Nullable
@@ -90,7 +88,7 @@ public class ResourcesFolderFragment extends Fragment {
         internetCheck=view.findViewById(R.id.internetcheckResourcesFolder);
 
 
-        loadData(retrofit,domain,editor);
+        loadData(retrofit,domain);
 
         swipeRefreshLayout = view.findViewById(R.id.resourceFolderSwipeRefresh);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
@@ -107,7 +105,7 @@ public class ResourcesFolderFragment extends Fragment {
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {
-                            loadData(retrofit,domain,editor);
+                            loadData(retrofit,domain);
                         }
                     });
                 }
@@ -120,7 +118,8 @@ public class ResourcesFolderFragment extends Fragment {
 
 
 
-    private void loadData(Retrofit retrofit,String domain,final SharedPreferences.Editor editor) {
+    private void loadData(Retrofit retrofit,String domain) {
+
         resourcesFolderObjectsList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
         Call<List<ResourcesFolderObject>> call=jsonPlaceholderApi.getResourcesFolderObject(base_url+domain);
@@ -130,31 +129,50 @@ public class ResourcesFolderFragment extends Fragment {
             public void onResponse(@NotNull Call<List<ResourcesFolderObject>> call, @NotNull Response<List<ResourcesFolderObject>> response) {
                 if(!response.isSuccessful()){
                     swipeRefreshLayout.setRefreshing(false);
+                    resouurcesfolderProgressbar.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
                     Snackbar.make(resourcesfolderRecyclerview,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                     Log.i("CODE", String.valueOf(response.code()));
-                    return;
                 }
-                List<ResourcesFolderObject> resourcesFolderObjects=response.body();
-                editor.clear();
-                assert resourcesFolderObjects != null;
-                for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
-                    String title=resourcesFolderObject.getResourcesfolderTitle();
-                    String desc=resourcesFolderObject.getResourcefolderDesc();
-                    String link= resourcesFolderObject.getResourcefolderLink();
-                    resourcesFolderObjectsList.add(new ResourcesFolderObject(title,link,desc));
+                else
+                {
+                    List<ResourcesFolderObject> resourcesFolderObjects=response.body();
+                    if(resourcesFolderObjects!=null)
+                    {
+                        for(ResourcesFolderObject resourcesFolderObject:resourcesFolderObjects){
+                            String title=resourcesFolderObject.getResourcesfolderTitle();
+                            String desc=resourcesFolderObject.getResourcefolderDesc();
+                            String link= resourcesFolderObject.getResourcefolderLink();
+                            resourcesFolderObjectsList.add(new ResourcesFolderObject(title,link,desc));
 
 
+                        }
+                        Gson gson=new Gson();
+                        String json=gson.toJson(resourcesFolderObjectsList);
+                        Log.i("JSON",json);
+                        editor= sharedPreferences.edit();
+                        editor.putString("data",json);
+                        editor.apply();
+                        internetCheck.setVisibility(View.GONE);
+                        swipeRefreshLayout.setRefreshing(false);
+                        resouurcesfolderProgressbar.setVisibility(View.GONE);
+                        ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
+                        resourcesfolderRecyclerview.setAdapter(adapter);
+                    }
+                    else
+                    {
+                        if(sharedPreferences.contains("data")){
+                            //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                            Log.i("SHARED","Yes Data");
+                            loadShared();
+                        }
+                        else {
+                            swipeRefreshLayout.setRefreshing(false);
+                            resouurcesfolderProgressbar.setVisibility(View.GONE);
+                            internetCheck.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
-                Gson gson=new Gson();
-                String json=gson.toJson(resourcesFolderObjectsList);
-                Log.i("JSON",json);
-                editor.putString("data",json);
-                editor.commit();
-                internetCheck.setVisibility(View.GONE);
-                swipeRefreshLayout.setRefreshing(false);
-                resouurcesfolderProgressbar.setVisibility(View.GONE);
-                ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
-                resourcesfolderRecyclerview.setAdapter(adapter);
 
             }
 
@@ -164,7 +182,7 @@ public class ResourcesFolderFragment extends Fragment {
             public void onFailure(@NotNull Call<List<ResourcesFolderObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -177,18 +195,31 @@ public class ResourcesFolderFragment extends Fragment {
         });
     }
     private void loadShared(){
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-        assert json != null;
-        Log.i("GETDATA ",json);
-        Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
-        resourcesFolderObjectsList=gson.fromJson(json,type);
+        //SharedPreferences sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
+        if(getContext()!=null)
+        {
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+            if(json!=null)
+            {
+                Log.i("GETDATA ",json);
+                Type type=new TypeToken<List<ResourcesFolderObject>>(){}.getType();
+                resourcesFolderObjectsList=gson.fromJson(json,type);
+                ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
+                resourcesfolderRecyclerview.setAdapter(adapter);
+                internetCheck.setVisibility(View.GONE);
+            }
+            else
+            {
+                internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else
+        {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
         swipeRefreshLayout.setRefreshing(false);
-        internetCheck.setVisibility(View.GONE);
         resouurcesfolderProgressbar.setVisibility(View.GONE);
-        ResourcesFolderAdapter adapter=new ResourcesFolderAdapter(resourcesFolderObjectsList,getContext());
-        resourcesfolderRecyclerview.setAdapter(adapter);
 
     }
 

@@ -128,25 +128,6 @@ public class GithubFragment extends Fragment {
         });
     }
 
-    private void loadShared() {
-
-        NavActivity.githubList.clear();
-        SharedPreferences sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
-        Gson gson=new Gson();
-        String json=sharedPreferences.getString("data","");
-        assert json != null;
-        Log.i("GETDATA ",json);
-        Type type=new TypeToken<List<GithubObject>>(){}.getType();
-        NavActivity.githubList =gson.fromJson(json,type);
-
-        swipeRefreshLayout.setRefreshing(false);
-        githubProgressBar.setVisibility(View.GONE);
-        internetCheck.setVisibility(View.GONE);
-        GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
-        githubRecyclerView.setAdapter(adapter);
-
-    }
-
     private void loadData(Retrofit retrofit) {
 
         JsonPlaceholderApi jsonPlaceholderApi = retrofit.create(JsonPlaceholderApi.class);
@@ -155,44 +136,54 @@ public class GithubFragment extends Fragment {
             @Override
             public void onResponse(@NotNull Call<List<GithubObject>> call, @NotNull Response<List<GithubObject>> response) {
                 if(!response.isSuccessful()){
-                    if(response.code()==400)
+                    swipeRefreshLayout.setRefreshing(false);
+                    githubProgressBar.setVisibility(View.GONE);
+                    internetCheck.setVisibility(View.VISIBLE);
+                    Snackbar.make(githubRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Log.i("CODE", String.valueOf(response.code()));
+                }
+                else
+                {
+                    List<GithubObject> githubObjects = response.body();
+                    if(githubObjects!=null)
                     {
-                        loadData(retrofit);
-                    }
-                    else {
+                        for (GithubObject githubObject : githubObjects) {
+                            String title = githubObject.getTitle();
+                            String content = githubObject.getLink();
+                            NavActivity.githubList.add(new GithubObject(title, content));
+                        }
+
+                        Gson gson = new Gson();
+                        String json = gson.toJson(NavActivity.githubList);
+                        Log.i("JSON", json);
+                        editor= sharedPreferences.edit();
+                        editor.putString("data", json);
+                        editor.apply();
                         swipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(githubRecyclerView,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
-                        Log.i("CODE", String.valueOf(response.code()));
+                        githubProgressBar.setVisibility(View.GONE);
+                        internetCheck.setVisibility(View.GONE);
+                        GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
+                        githubRecyclerView.setAdapter(githubAdapter);
                     }
-                    return;
+                    else{
+                        if(sharedPreferences.contains("data")){
+                            Log.i("SHARED","Yes Data");
+                            loadShared();
+                        }
+                        else {
+                            swipeRefreshLayout.setRefreshing(false);
+                            githubProgressBar.setVisibility(View.GONE);
+                            internetCheck.setVisibility(View.VISIBLE);
+                        }
+                    }
                 }
-                List<GithubObject> githubObjects = response.body();
-                assert githubObjects != null;
-                for (GithubObject githubObject : githubObjects) {
-                    String title = githubObject.getTitle();
-                    String content = githubObject.getLink();
-                    NavActivity.githubList.add(new GithubObject(title, content));
-                }
-
-                Gson gson = new Gson();
-                String json = gson.toJson(NavActivity.githubList);
-                Log.i("JSON", json);
-                editor= sharedPreferences.edit();
-                editor.putString("data", json);
-                editor.apply();
-                swipeRefreshLayout.setRefreshing(false);
-                githubProgressBar.setVisibility(View.GONE);
-                internetCheck.setVisibility(View.GONE);
-                GithubAdapter githubAdapter = new GithubAdapter(getContext(), NavActivity.githubList);
-                githubRecyclerView.setAdapter(githubAdapter);
-
             }
 
             @Override
             public void onFailure(@NotNull Call<List<GithubObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
+                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getContext());
                     Log.i("SHARED","Yes Data");
                     loadShared();
                 }
@@ -203,7 +194,36 @@ public class GithubFragment extends Fragment {
                 }
             }
         });
+    }
 
+    private void loadShared() {
+
+        NavActivity.githubList.clear();
+        if(getContext()!=null)
+        {
+            //sharedPreferences= requireContext().getSharedPreferences("github", Context.MODE_PRIVATE);
+            Gson gson=new Gson();
+            String json=sharedPreferences.getString("data",null);
+            if(json!=null)
+            {
+                Log.i("GETDATA ",json);
+                Type type=new TypeToken<List<GithubObject>>(){}.getType();
+                NavActivity.githubList =gson.fromJson(json,type);
+                GithubAdapter adapter=new GithubAdapter(getContext(), NavActivity.githubList);
+                githubRecyclerView.setAdapter(adapter);
+                internetCheck.setVisibility(View.GONE);
+            }
+            else
+            {
+                internetCheck.setVisibility(View.VISIBLE);
+            }
+        }
+        else
+        {
+            internetCheck.setVisibility(View.VISIBLE);
+        }
+        swipeRefreshLayout.setRefreshing(false);
+        githubProgressBar.setVisibility(View.GONE);
 
     }
 

@@ -4,12 +4,15 @@
     android:id="@+id/projectSwipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="16dp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp">
+    android:padding="16dp">
     <ProgressBar
         android:id="@+id/progressbarProject"
         android:layout_width="wrap_content"
@@ -23,7 +26,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/projectRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:overScrollMode="never"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -32,9 +36,10 @@
         android:text="Check your internet !"
         android:textColor="@color/colorPrimary"
         android:layout_centerInParent="true"
-        android:visibility="invisible"
+        android:visibility="gone"
         android:id="@+id/internetcheckProject"/>
 
 
 </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
