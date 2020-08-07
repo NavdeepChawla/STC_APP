@@ -47,15 +47,20 @@ public class ResourcesActivity extends AppCompatActivity {
 
         Intent i =getIntent();
         String domain = i.getStringExtra("domain");
-        resappbarTitle.setText(domain);
+        if(domain!=null)
+        {
+            resappbarTitle.setText(domain.toUpperCase());
+        }
 
 
         ViewPagerResourcesAdapter adapter=new ViewPagerResourcesAdapter(getSupportFragmentManager());
-        assert domain != null;
-        adapter.addFragment(new RoadmapFragment(domain.toLowerCase()),"Roadmap");
-        adapter.addFragment(new ResourcesFolderFragment(domain.toLowerCase()),"Resources");
-        adapter.addFragment(new ArticleLinksFragment(domain.toLowerCase()),"Articles");
-        resourcesViewPager.setOffscreenPageLimit(3);
+        if(domain!=null)
+        {
+            adapter.addFragment(new RoadmapFragment(domain.toLowerCase()),"Roadmap");
+            adapter.addFragment(new ResourcesFolderFragment(domain.toLowerCase()),"Resources");
+            adapter.addFragment(new ArticleLinksFragment(domain.toLowerCase()),"Articles");
+            resourcesViewPager.setOffscreenPageLimit(3);
+        }
 
         resourcesViewPager.setAdapter(adapter);
         resourcesTablayout.setupWithViewPager(resourcesViewPager);

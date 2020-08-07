@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
+            android:layout_margin="8dp"
             android:adjustViewBounds="true"
              />
 
@@ -29,7 +30,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/eventPicture"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:fontFamily="@font/montserrat"
             android:text="This is the text"
             android:textColor="@color/black"
@@ -41,6 +44,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/eventTitle"
             android:layout_marginTop="4dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:id="@+id/eventDesc"
             android:fontFamily="@font/montserrat"
             android:textColor="@color/gray"
@@ -52,9 +57,12 @@
             android:layout_below="@+id/eventDesc"
             android:id="@+id/eventLink"
             android:layout_marginTop="4dp"
-        android:fontFamily="@font/montserrat"
-        android:textColor="@color/link_blue"
-        android:textSize="16dp"/>
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/montserrat"
+            android:textColor="@color/link_blue"
+            android:layout_marginBottom="8dp"
+            android:textSize="16dp"/>
 
 
     </RelativeLayout>

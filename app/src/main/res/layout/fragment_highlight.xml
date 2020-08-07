@@ -28,7 +28,7 @@
             app:tabIndicatorColor=" #332CAB"
             app:tabMode="fixed"
             app:tabTextAppearance="@style/tab_font"
-            app:tabTextColor="#727272">
+            app:tabTextColor="@color/tabFont">
 
             <com.google.android.material.tabs.TabItem
                 android:layout_width="wrap_content"
