@@ -28,6 +28,7 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.ProjectAdapter;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -45,7 +46,6 @@ public class ProjectFragment extends Fragment {
 
     RecyclerView projectRecyclerView;
     ProgressBar projectProgressBar;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -61,7 +61,7 @@ public class ProjectFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
          retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.HIGHLIGHT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         sharedPreferences= requireContext().getSharedPreferences("project", Context.MODE_PRIVATE);

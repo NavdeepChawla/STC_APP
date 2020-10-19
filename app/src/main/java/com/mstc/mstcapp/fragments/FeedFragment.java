@@ -27,6 +27,7 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.FeedAdapter;
 import com.mstc.mstcapp.model.FeedObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -42,30 +43,48 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FeedFragment extends Fragment {
 
-    RecyclerView recyclerView_feed;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/feeds/";
-    Retrofit retrofit;
-    ProgressBar progressBarFeed;
-    FeedAdapter feedAdapter;
-    TextView feedLoadMore;
+    //Views
+    private RecyclerView recyclerViewFeed;
+    private TextView internetCheck;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBarFeed;
+
+    //Adapter
+    private FeedAdapter feedAdapter;
+    private LinearLayoutManager linearLayoutManager;
+
+    //SharedPreference
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+
+    //Network
+    private Retrofit retrofit;
+
+    //Check Variables
     private int skip;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    LinearLayoutManager linearLayoutManager;
-    TextView internetCheck;
-    SwipeRefreshLayout swipeRefreshLayout;
 
     public FeedFragment(){}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        //Network Initialization
         retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.FEED_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
+
+        //Check variable Initialization
         skip=0;
+        NavActivity.loadData=true;
+
+        //SharedPreference Initialization
         sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
-        linearLayoutManager=new LinearLayoutManager(getActivity());
+
+        //Adapter Initialization
+        linearLayoutManager=new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false);
+        feedAdapter = new FeedAdapter(NavActivity.feedList,getContext());
+
         return inflater.inflate(R.layout.fragment_feed, container, false);
     }
 
@@ -73,34 +92,39 @@ public class FeedFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NavActivity.appBar.setElevation(4.0f);
-        NavActivity.appBarTitle.setText("HOME");
+        //Connect Views to Layout
+        findViewById(view);
 
-        progressBarFeed=view.findViewById(R.id.progressbarFeed);
-        recyclerView_feed = (RecyclerView) view.findViewById(R.id.recyclerview_feed);
-        feedLoadMore = view.findViewById(R.id.feedLoadMore);
-        internetCheck=view.findViewById(R.id.internetcheckFeed);
-        feedLoadMore.setVisibility(View.GONE);
+        //Connect RecyclerView to Adapter
+        recyclerViewFeed.setAdapter(feedAdapter);
+        recyclerViewFeed.setLayoutManager(linearLayoutManager);
 
-        recyclerView_feed.setLayoutManager(linearLayoutManager);
-
-        if(NavActivity.feedList.size()==0)
-        {
+        //First Load
+        if(NavActivity.feedList.size()==0) {
+            NavActivity.loadData=true;
+            skip=0;
             loadData(retrofit);
         }
+        //Not First Load
         else {
-            feedAdapter = new FeedAdapter(NavActivity.feedList,getContext());
-            recyclerView_feed.setAdapter(feedAdapter);
             progressBarFeed.setVisibility(View.GONE);
-            if(!NavActivity.sharedFeed)
-            {
-                feedLoadMore.setVisibility(View.VISIBLE);
+            if(!NavActivity.sharedFeed) {
                 skip = NavActivity.feedList.size();
             }
         }
 
-        //SwipeRefreshLayout
+        setSwipeRefreshLayout();
+        loadOnScroll();
+    }
+
+    private void findViewById(View view){
+        progressBarFeed=view.findViewById(R.id.progressbarFeed);
+        recyclerViewFeed = (RecyclerView) view.findViewById(R.id.recyclerview_feed);
+        internetCheck=view.findViewById(R.id.internetcheckFeed);
         swipeRefreshLayout = view.findViewById(R.id.feedSwipeRefresh);
+    }
+
+    private void setSwipeRefreshLayout(){
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorPrimary));
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -108,9 +132,9 @@ public class FeedFragment extends Fragment {
                 if(progressBarFeed.getVisibility()==View.GONE)
                 {
                     NavActivity.feedList.clear();
-                    if(recyclerView_feed.getAdapter()!=null)
+                    if(recyclerViewFeed.getAdapter()!=null)
                     {
-                        Objects.requireNonNull(recyclerView_feed.getAdapter()).notifyDataSetChanged();
+                        Objects.requireNonNull(recyclerViewFeed.getAdapter()).notifyDataSetChanged();
                     }
                     skip = 0;
                     new Handler().post(new Runnable() {
@@ -125,39 +149,50 @@ public class FeedFragment extends Fragment {
                 }
             }
         });
+    }
 
-        feedLoadMore.setOnClickListener(new View.OnClickListener() {
+    private void loadOnScroll(){
+        recyclerViewFeed.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onClick(View v) {
-                NavActivity.sharedFeed=false;
-                swipeRefreshLayout.setRefreshing(true);
-                loadData(retrofit);
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if(newState==RecyclerView.SCROLL_STATE_IDLE
+                        &&!NavActivity.sharedFeed
+                        &&!swipeRefreshLayout.isRefreshing()
+                        &&NavActivity.loadData){
+                            if(!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)){
+                                swipeRefreshLayout.setRefreshing(true);
+                                loadData(retrofit);
+                            }
+                }
             }
         });
     }
 
-    private void loadData(Retrofit retrofit)
-    {
-        feedLoadMore.setVisibility(View.GONE);
+    private void loadData(Retrofit retrofit) {
+
         JsonPlaceholderApi jsonPlaceholderapi=retrofit.create(JsonPlaceholderApi.class);
-        Call<List<FeedObject>> call= jsonPlaceholderapi.getFeed(base_url+skip);
+        Call<List<FeedObject>> call= jsonPlaceholderapi.getFeed(Utils.FEED_URL +skip);
+
         call.enqueue(new Callback<List<FeedObject>>() {
             @Override
             public void onResponse(@NotNull Call<List<FeedObject>> call, @NotNull Response<List<FeedObject>> response) {
+
+                //Unsuccessful Response
                 if(!response.isSuccessful()){
                     swipeRefreshLayout.setRefreshing(false);
                     progressBarFeed.setVisibility(View.GONE);
                     internetCheck.setVisibility(View.VISIBLE);
-                    Snackbar.make(recyclerView_feed,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                    Snackbar.make(recyclerViewFeed,"ErrorCode " + response.code(),Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                     Log.i("CODE", String.valueOf(response.code()));
                 }
                 else
                 {
                     List<FeedObject> feeds=response.body();
                     if(feeds==null||feeds.size()==0){
-                        feedLoadMore.setVisibility(View.GONE);
                         swipeRefreshLayout.setRefreshing(false);
-                        Snackbar.make(feedLoadMore,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
+                        NavActivity.loadData=false;
+                        Snackbar.make(recyclerViewFeed,"No More Posts To Show.",Snackbar.LENGTH_SHORT).setAnchorView(R.id.nav_view).setBackgroundTint(requireContext().getColor(R.color.colorPrimary)).setTextColor(requireContext().getColor(R.color.permWhite)).show();
                     }
                     else
                     {
@@ -184,11 +219,7 @@ public class FeedFragment extends Fragment {
                             editor.putString("data",json);
                             editor.apply();
 
-                            recyclerView_feed.setAdapter(feedAdapter);
-                        }
-                        if(feeds.size()==5)
-                        {
-                            feedLoadMore.setVisibility(View.VISIBLE);
+                            recyclerViewFeed.setAdapter(feedAdapter);
                         }
                         skip=NavActivity.feedList.size();
                         progressBarFeed.setVisibility(View.GONE);
@@ -203,9 +234,10 @@ public class FeedFragment extends Fragment {
             public void onFailure(@NotNull Call<List<FeedObject>> call, @NotNull Throwable t) {
                 Log.i("FAILED : ", Objects.requireNonNull(t.getMessage()));
                 if(sharedPreferences.contains("data")){
-                    //sharedPreferences= PreferenceManager.getDefaultSharedPreferences(getActivity());
-                    Log.i("SHARED","Yes Data");
-                    loadShared();
+                    if(!NavActivity.sharedFeed){
+                        Log.i("SHARED","Yes Data");
+                        loadShared();
+                    }
                 }
                 else {
                     swipeRefreshLayout.setRefreshing(false);
@@ -218,7 +250,6 @@ public class FeedFragment extends Fragment {
 
     private void loadShared(){
         NavActivity.feedList.clear();
-        //SharedPreferences sharedPreferences= requireContext().getSharedPreferences("feed", Context.MODE_PRIVATE);
         if(getContext()!=null)
         {
             Gson gson=new Gson();
@@ -231,7 +262,7 @@ public class FeedFragment extends Fragment {
                 NavActivity.feedList=gson.fromJson(json,type);
                 internetCheck.setVisibility(View.GONE);
                 feedAdapter=new FeedAdapter(NavActivity.feedList,getContext());
-                recyclerView_feed.setAdapter(feedAdapter);
+                recyclerViewFeed.setAdapter(feedAdapter);
                 internetCheck.setVisibility(View.GONE);
             }
             else

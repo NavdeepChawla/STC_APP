@@ -23,10 +23,12 @@ import java.util.List;
 public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
     List<FeedObject> mData_feed;
     Context mContext;
+    int position;
 
     public FeedAdapter(List<FeedObject> mData, Context context) {
         mData_feed = mData;
         mContext = context;
+        position=0;
     }
 
     @NonNull
@@ -43,6 +45,7 @@ public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
         //used to set everything in the feed page
         holder.desc_textView.setText(mData_feed.get(position).getFeedDesc());
         holder.title_textView.setText(mData_feed.get(position).getFeedTitle());
+        this.position=position;
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -74,6 +77,8 @@ public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
         return mData_feed.size();
     }
 
+
+
     public static class FeedView extends RecyclerView.ViewHolder {
 
         ImageView feed_imageView;
@@ -85,7 +90,6 @@ public class FeedAdapter extends RecyclerView.Adapter <FeedAdapter.FeedView> {
             desc_textView = itemView.findViewById(R.id.feed_description);
             title_textView = itemView.findViewById(R.id.feed_title);
             link_textView = itemView.findViewById(R.id.feed_link);
-
         }
     }
 }

@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +27,11 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.EventAdapter;
 import com.mstc.mstcapp.model.highlights.EventObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -46,7 +45,6 @@ public class EventFragment extends Fragment {
 
     RecyclerView eventRecyclerView;
     ProgressBar eventProgressbar;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -59,7 +57,7 @@ public class EventFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.HIGHLIGHT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

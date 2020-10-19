@@ -31,18 +31,26 @@ public class ForgotPasswordActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_forgot_password);
 
-        resetEmail =findViewById(R.id.resetEmail);
-        buttonReset =findViewById(R.id.resetButton);
-        resetLayout =findViewById(R.id.resetLayout);
         firebaseAuth =FirebaseAuth.getInstance();
+
+        findViewById();
+        onClickListener();
 
         //USER ALREADY LOGGED IN
         if(firebaseAuth.getCurrentUser()!=null){
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            startActivity(new Intent(getApplicationContext(), StartActivity.class));
             finish();
         }
 
+    }
 
+    private void findViewById(){
+        resetEmail =findViewById(R.id.resetEmail);
+        buttonReset =findViewById(R.id.resetButton);
+        resetLayout =findViewById(R.id.resetLayout);
+    }
+
+    private void onClickListener(){
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,7 +91,6 @@ public class ForgotPasswordActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     @Override

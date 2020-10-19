@@ -36,9 +36,6 @@ public class HighlightFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NavActivity.appBar.setElevation(0.0f);
-        NavActivity.appBarTitle.setText("HIGHLIGHTS");
-
         highlightViewPager=view.findViewById(R.id.viewPager2);
         highlightTabLayout=view.findViewById(R.id.tabLayout2);
         highlightTabLayout.setupWithViewPager(highlightViewPager);

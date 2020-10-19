@@ -25,6 +25,7 @@ import com.mstc.mstcapp.JsonPlaceholderApi;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -52,7 +53,6 @@ public class ResourcesFolderFragment extends Fragment {
     List<ResourcesFolderObject> resourcesFolderObjectsList;
     Retrofit retrofit;
     Context context;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/resources/";
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     TextView internetCheck;
@@ -64,7 +64,7 @@ public class ResourcesFolderFragment extends Fragment {
         context=getContext();
         domain=domain.replaceAll("\\s","");
         retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.RESOURCES_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         sharedPreferences= requireContext().getSharedPreferences(domain+"resource",Context.MODE_PRIVATE);
@@ -122,7 +122,7 @@ public class ResourcesFolderFragment extends Fragment {
 
         resourcesFolderObjectsList=new ArrayList<>();
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
-        Call<List<ResourcesFolderObject>> call=jsonPlaceholderApi.getResourcesFolderObject(base_url+domain);
+        Call<List<ResourcesFolderObject>> call=jsonPlaceholderApi.getResourcesFolderObject(Utils.RESOURCES_URL+domain);
         call.enqueue(new Callback<List<ResourcesFolderObject>>() {
 
             @Override

@@ -35,9 +35,6 @@ public class ResourcesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NavActivity.appBar.setElevation(4.0f);
-        NavActivity.appBarTitle.setText("RESOURCES");
-
         List<ResourceModel> domainList = new ArrayList<>();
         domainList.add(new ResourceModel("Android",R.drawable.ic_android_bg));
         domainList.add(new ResourceModel("Flutter",R.drawable.ic_flutter_bg ));

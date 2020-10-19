@@ -30,6 +30,7 @@ import com.mstc.mstcapp.adapter.resources.ArticlelinksAdapter;
 import com.mstc.mstcapp.adapter.resources.ResourcesFolderAdapter;
 import com.mstc.mstcapp.model.resources.ArticleLinksObject;
 import com.mstc.mstcapp.model.resources.ResourcesFolderObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -60,7 +61,6 @@ public class ArticleLinksFragment extends Fragment {
     RecyclerView articlelinksRecyclerView;
     ProgressBar articlelinksProgressbar;
     String domain;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/articles/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     TextView internetCheck;
@@ -79,7 +79,7 @@ public class ArticleLinksFragment extends Fragment {
 
         domain=domain.replaceAll("\\s","");
         retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.ARTICLE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -135,7 +135,7 @@ public class ArticleLinksFragment extends Fragment {
     private void loadData(Retrofit retrofit, String domain) {
 
         JsonPlaceholderApi jsonPlaceholderApi= retrofit.create(JsonPlaceholderApi.class);
-        Call<List<ArticleLinksObject>> call=jsonPlaceholderApi.getArticleLinksObject(base_url+domain);
+        Call<List<ArticleLinksObject>> call=jsonPlaceholderApi.getArticleLinksObject(Utils.ARTICLE_URL+domain);
         call.enqueue(new Callback<List<ArticleLinksObject>>() {
             @Override
             public void onResponse(@NotNull Call<List<ArticleLinksObject>> call, @NotNull Response<List<ArticleLinksObject>> response) {

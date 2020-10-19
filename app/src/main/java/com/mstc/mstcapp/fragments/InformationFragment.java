@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
+import com.mstc.mstcapp.util.Utils;
 
 import java.util.Objects;
 
@@ -51,9 +52,6 @@ public class InformationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NavActivity.appBar.setElevation(4.0f);
-        NavActivity.appBarTitle.setText("INFORMATION");
-
         findViewById(view);
         onClickListener();
 
@@ -62,8 +60,7 @@ public class InformationFragment extends Fragment {
 
     }
 
-    private void findViewById(View view)
-    {
+    private void findViewById(View view) {
         infoLinkFacebook = view.findViewById(R.id.button_facebook);
         infoLinkInstagram = view.findViewById(R.id.button_instagram);
         infoLinkMedium = view.findViewById(R.id.button_medium);
@@ -74,9 +71,9 @@ public class InformationFragment extends Fragment {
 
         infoLinkPresident =view.findViewById(R.id.linkedinPresident);
         infoLinkTechHead =view.findViewById(R.id.linkedinTechHead);
-        infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLead);
-        infoLinkTechMentor=view.findViewById(R.id.linkedinTechMentor);
-        infoLinkMgmtLead = view.findViewById(R.id.linkedinMgmtLead);
+        infoLinkProjectLead =view.findViewById(R.id.linkedinProjectLeadOne);
+        infoLinkTechMentor=view.findViewById(R.id.linkedinTechMentorOne);
+        infoLinkMgmtLead = view.findViewById(R.id.linkedinOperationLead);
 
     }
 
@@ -85,45 +82,35 @@ public class InformationFragment extends Fragment {
         infoLinkInstagram.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData((Uri.parse("https://www.instagram.com/mstcvit/")));
-                startActivity(intent);
+                urlIntent(Utils.INSTAGRAM_URL);
             }
         });
 
         infoLinkLinkedIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData((Uri.parse("https://www.linkedin.com/company/micvitvellore/")));
-                startActivity(intent);
+                urlIntent(Utils.LINKEDIN_URL);
             }
         });
 
         infoLinkFacebook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData((Uri.parse("https://www.facebook.com/mstcvit/")));
-                startActivity(intent);
+                urlIntent(Utils.FACEBOOK_URL);
             }
         });
 
         infoLinkMedium.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData((Uri.parse("https://medium.com/student-technical-community-vit-vellore")));
-                startActivity(intent);
+                urlIntent(Utils.MEDIUM_URL);
             }
         });
 
         infoPrivacyPolicy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData((Uri.parse("https://navdeepchawla.github.io/STC_APP_Privacy_Policy/")));
-                startActivity(intent);
+                urlIntent(Utils.PRIVACY_URL);
             }
         });
 
@@ -173,6 +160,12 @@ public class InformationFragment extends Fragment {
                 startActivity(intent);
             }
         });
+    }
+
+    private void urlIntent(String url){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData((Uri.parse(url)));
+        startActivity(intent);
     }
 
     private void setUpTabHost()

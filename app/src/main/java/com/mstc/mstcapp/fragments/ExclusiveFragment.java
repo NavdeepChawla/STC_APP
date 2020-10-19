@@ -33,9 +33,6 @@ public class ExclusiveFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        NavActivity.appBar.setElevation(0.0f);
-        NavActivity.appBarTitle.setText("EXCLUSIVE");
-
         ViewPager exclusiveViewPager = view.findViewById(R.id.exclusiveViewPager);
         TabLayout exclusiveTabLayout = view.findViewById(R.id.exclusiveTabLayout);
 

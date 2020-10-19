@@ -29,6 +29,7 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.activity.NavActivity;
 import com.mstc.mstcapp.adapter.highlights.GithubAdapter;
 import com.mstc.mstcapp.model.highlights.GithubObject;
+import com.mstc.mstcapp.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -47,7 +48,6 @@ public class GithubFragment extends Fragment {
 
     RecyclerView githubRecyclerView;
     ProgressBar githubProgressBar;
-    String base_url = "https://stc-app-backend.herokuapp.com/api/";
     Retrofit retrofit;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -65,7 +65,7 @@ public class GithubFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         retrofit=new Retrofit.Builder()
-                .baseUrl(base_url)
+                .baseUrl(Utils.HIGHLIGHT_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

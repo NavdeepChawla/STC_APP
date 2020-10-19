@@ -5,7 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
@@ -41,22 +45,22 @@ import java.util.ArrayList;
 
 public class NavActivity extends AppCompatActivity {
 
-    public static TextView appBarTitle;
-    public static ConstraintLayout appBar;
-    public static CircularImageView appBarProfilePicture;
-    public static ImageView stcLogo;
+    private TextView appBarTitle;
+    private ConstraintLayout appBar;
+    private CircularImageView appBarProfilePicture;
+    private ImageView stcLogo;
+    private BottomNavigationView bottomNavigationView;
+    private FirebaseAuth firebaseAuth;
 
     private int backButtonCount = 0;
-    private int prevPage=0;
-    private int currentPage=0;
 
     //Feed Fragment
     public static ArrayList<FeedObject> feedList = new ArrayList<>();
     public static boolean sharedFeed=false;
+    public static boolean loadData=true;
 
     //Project Fragment
     public static ArrayList<ProjectsObject> projectList = new ArrayList<>();
-
 
     //Github Fragment
     public static ArrayList<GithubObject> githubList = new ArrayList<>();
@@ -64,24 +68,81 @@ public class NavActivity extends AppCompatActivity {
     //Events Fragment
     public static ArrayList<EventObject> eventList = new ArrayList<>();
 
+    //Fragments
+    private Fragment activeFragment;
+    private FeedFragment feedFragment=new FeedFragment();
+    private ResourcesFragment resourcesFragment =new ResourcesFragment();
+    private HighlightFragment highlightFragment =new HighlightFragment();
+    private ExclusiveFragment exclusiveFragment =new ExclusiveFragment();
+    private InformationFragment informationFragment=new InformationFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        findViewById();
+        onClickListener();
+        profilePicture();
+        bottomNavigation();
+
+        Intent intent = getIntent();
+        boolean resource = intent.getBooleanExtra("Resource", false);
+        if(resource)
+        {
+            bottomNavigationView.setSelectedItemId(R.id.nav_resources);
+        }
+
+    }
+
+    private void findViewById(){
         appBarProfilePicture=findViewById(R.id.appBarProfilePicture);
         stcLogo=findViewById(R.id.stcLogo);
         appBarTitle = findViewById(R.id.appBarTitle);
         appBar = findViewById(R.id.appBar);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.nav_view);
+        bottomNavigationView = findViewById(R.id.nav_view);
+    }
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private void onClickListener(){
 
+        appBarProfilePicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+            }
+        });
+
+        stcLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(firebaseAuth.getCurrentUser()==null){
+                    new AlertDialog.Builder(NavActivity.this)
+                            .setMessage("Are you STC-VIT Member?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    SharedPreferences.Editor tempEditor = getSharedPreferences(getPackageName(),MODE_PRIVATE).edit();
+                                    tempEditor.putBoolean(getPackageName(),false);
+                                    tempEditor.apply();
+                                    Intent intent = new Intent(NavActivity.this,LoginActivity.class);
+                                    startActivity(intent);
+                                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                                }
+                            })
+                            .setNegativeButton("No", null)
+                            .show();
+                }
+            }
+        });
+    }
+
+    private void profilePicture(){
         if(firebaseAuth.getCurrentUser()==null)
         {
             bottomNavigationView.getMenu().removeItem(R.id.nav_exclusive);
             appBarProfilePicture.setVisibility(View.INVISIBLE);
-            stcLogo.setEnabled(false);
         }
         else
         {
@@ -105,91 +166,70 @@ public class NavActivity extends AppCompatActivity {
                 }
             });
         }
-        Log.i("RETROFIT :","Starting");
+    }
 
-
-        //Intent To Profile Activity
-        appBarProfilePicture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
-                overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
-            }
-        });
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.nav_host_fragment, new FeedFragment())
-                .commit();
+    private void bottomNavigation(){
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,informationFragment).hide(informationFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,exclusiveFragment).hide(exclusiveFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,highlightFragment).hide(highlightFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,resourcesFragment).hide(resourcesFragment).commit();
+        getSupportFragmentManager().beginTransaction().add(R.id.nav_host_fragment,feedFragment).commit();
+        activeFragment=feedFragment;
         bottomNavigationView.setSelectedItemId(R.id.nav_home);
+        appBar.setElevation(4.0f);
+        appBarTitle.setText("HOME");
+
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull final MenuItem item)
             {
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                Fragment selectedFragment= new FeedFragment();
-                                backButtonCount = 0;
-                                switch (item.getItemId()){
-                                    case R.id.nav_home:
-                                        selectedFragment = new FeedFragment();
-                                        currentPage=0;
-                                        break;
-                                    case R.id.nav_resources:
-                                        selectedFragment = new ResourcesFragment();
-                                        currentPage=1;
-                                        break;
-                                    case R.id.nav_archive:
-                                        selectedFragment = new HighlightFragment();
-                                        currentPage=2;
-                                        break;
-                                    case R.id.nav_exclusive:
-                                        selectedFragment = new ExclusiveFragment();
-                                        currentPage=3;
-                                        break;
-                                    case R.id.nav_info:
-                                        selectedFragment = new InformationFragment();
-                                        currentPage=4;
-                                        break;
-                                }
-
-                               if(prevPage<currentPage)
-                                {
-                                    prevPage=currentPage;
-                                    getSupportFragmentManager()
-                                            .beginTransaction()
-                                            .setCustomAnimations(R.anim.slide_in_right,R.anim.slide_out_left)
-                                            .replace(R.id.nav_host_fragment, selectedFragment)
-                                            .commit();
-                                }
-                                else if(currentPage<prevPage)
-                                {
-                                    prevPage=currentPage;
-                                    getSupportFragmentManager()
-                                            .beginTransaction()
-                                            .setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right)
-                                            .replace(R.id.nav_host_fragment, selectedFragment)
-                                            .commit();
-                                }
-
-                            }
-                        });
+                new Handler().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Fragment selectedFragment= feedFragment;
+                        backButtonCount = 0;
+                        switch (item.getItemId()){
+                            case R.id.nav_home:
+                                appBar.setElevation(4.0f);
+                                appBarTitle.setText("HOME");
+                                selectedFragment = feedFragment;
+                                break;
+                            case R.id.nav_resources:
+                                selectedFragment = resourcesFragment;
+                                appBar.setElevation(4.0f);
+                                appBarTitle.setText("RESOURCES");
+                                break;
+                            case R.id.nav_archive:
+                                selectedFragment = highlightFragment;
+                                appBar.setElevation(0.0f);
+                                appBarTitle.setText("HIGHLIGHTS");
+                                break;
+                            case R.id.nav_exclusive:
+                                selectedFragment = exclusiveFragment;
+                                appBar.setElevation(0.0f);
+                                appBarTitle.setText("EXCLUSIVE");
+                                break;
+                            case R.id.nav_info:
+                                selectedFragment = informationFragment;
+                                appBar.setElevation(4.0f);
+                                appBarTitle.setText("INFORMATION");
+                                break;
+                        }
+                        if(selectedFragment!=activeFragment){
+                            getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .show(selectedFragment)
+                                    .hide(activeFragment)
+                                    .commit();
+                            activeFragment=selectedFragment;
+                        }
+                    }
+                });
                 return true;
             }
         });
-
-        Intent intent = getIntent();
-        boolean resource = intent.getBooleanExtra("Resource", false);
-        if(resource)
-        {
-            bottomNavigationView.setSelectedItemId(R.id.nav_resources);
-        }
-
     }
-
-
 
     @Override
     public void onBackPressed() {
@@ -211,4 +251,5 @@ public class NavActivity extends AppCompatActivity {
         startActivity(intent);
         super.onConfigurationChanged(newConfig);
     }
+
 }
