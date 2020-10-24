@@ -1,5 +1,6 @@
 package com.mstc.mstcapp.adapter.highlights;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,7 +9,9 @@ import android.text.Html;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -44,6 +47,7 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder holder, final int position) {
 
@@ -82,7 +86,26 @@ public class ProjectAdapter extends RecyclerView.Adapter<ProjectAdapter.myViewHo
                 intent.setData((Uri.parse(link)));
                 mContext1.startActivity(intent);
             }
+        });
+        holder.proj_mediumLink.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
 
+                SpannableString ss = new SpannableString(holder.proj_mediumLink.getText().toString());
+                ss.setSpan(new UnderlineSpan(),0,ss.length(),0);
+                ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), 0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    holder.proj_mediumLink.setText(ss);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+
+                    holder.proj_mediumLink.setText(ss.toString());
+
+                }
+                return false;
+            }
         });
 
     }

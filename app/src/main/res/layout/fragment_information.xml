@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:overScrollMode="never">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -378,7 +379,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_tech_lead"
+                                android:src="@drawable/ic_mgmt_head"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -469,7 +470,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_tech_lead"
+                                android:src="@drawable/ic_tech_head"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -560,7 +561,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_project_head"
+                                android:src="@drawable/ic_project_lead_one"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -651,7 +652,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_project_head"
+                                android:src="@drawable/ic_project_lead_two"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -742,7 +743,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_project_head"
+                                android:src="@drawable/ic_design_lead"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -833,7 +834,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_mgmt_lead"
+                                android:src="@drawable/ic_web_lead"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -923,7 +924,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_mgmt_lead"
+                                android:src="@drawable/ic_pr_lead"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -1013,7 +1014,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_mgmt_lead"
+                                android:src="@drawable/ic_operation_lead"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -1103,7 +1104,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_mgmt_lead"
+                                android:src="@drawable/ic_video_lead"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -1194,7 +1195,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_tech_mentor"
+                                android:src="@drawable/ic_tech_mentor_one"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>
@@ -1285,7 +1286,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:contentDescription="@string/contentDescription"
-                                android:src="@drawable/ic_tech_mentor"
+                                android:src="@drawable/ic_tech_mentor_two"
                                 tools:ignore="TooDeepLayout" />
 
                         </androidx.cardview.widget.CardView>

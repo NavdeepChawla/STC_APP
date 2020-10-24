@@ -1,12 +1,18 @@
 package com.mstc.mstcapp.adapter.highlights;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.util.Base64;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -39,6 +45,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.myViewHolder
         return vHolder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull final myViewHolder holder, final int position) {
 
@@ -60,6 +67,26 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.myViewHolder
         }).start();
         //holder.image_event.setImageResource(mData.get(position).getEventPicture());
         holder.eventLink.setText(mData.get(position).getEventLink());
+        holder.eventLink.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                SpannableString ss = new SpannableString(holder.eventLink.getText().toString());
+                ss.setSpan(new UnderlineSpan(),0,ss.length(),0);
+                ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), 0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    holder.eventLink.setText(ss);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+
+                    holder.eventLink.setText(ss.toString());
+
+                }
+                return false;
+            }
+        });
         holder.eventLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

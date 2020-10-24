@@ -1,9 +1,15 @@
 package com.mstc.mstcapp.adapter.highlights;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -39,7 +45,7 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
     }
 
 
-
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull myViewHolder holder, final int position) {
         holder.githubProj_link.setText(mData2.get(position).getLink());
@@ -53,6 +59,26 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.myViewHold
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 intent.setData((Uri.parse(link)));
                 mContext2.startActivity(intent);
+            }
+        });
+        holder.githubProj_link.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                SpannableString ss = new SpannableString(holder.githubProj_link.getText().toString());
+                ss.setSpan(new UnderlineSpan(),0,ss.length(),0);
+                ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), 0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    holder.githubProj_link.setText(ss);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+
+                    holder.githubProj_link.setText(ss.toString());
+
+                }
+                return false;
             }
         });
         final boolean isExpanded = position==mExpandedPosition;

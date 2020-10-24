@@ -1,9 +1,15 @@
 package com.mstc.mstcapp.adapter.resources;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,6 +44,7 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
 
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull ResourcesFolderView holder, final int position) {
         holder.resourcesfolderTitle.setText(resourcesFolderObjects_list.get(position).getResourcesfolderTitle());
@@ -60,6 +67,26 @@ public class ResourcesFolderAdapter extends RecyclerView.Adapter<ResourcesFolder
                 mExpandedPosition = isExpanded ? -1:position;
                 notifyItemChanged(previousExpandedPosition);
                 notifyItemChanged(position);
+            }
+        });
+        holder.resourcesfolderLink.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                SpannableString ss = new SpannableString(holder.resourcesfolderLink.getText().toString());
+                ss.setSpan(new UnderlineSpan(),0,ss.length(),0);
+                ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), 0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    holder.resourcesfolderLink.setText(ss);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+
+                    holder.resourcesfolderLink.setText(ss.toString());
+
+                }
+                return false;
             }
         });
         holder.resourcesfolderLink.setOnClickListener(new View.OnClickListener() {

@@ -1,9 +1,15 @@
 package com.mstc.mstcapp.adapter.resources;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -38,6 +44,7 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
     }
 
     @Override
+    @SuppressLint("ClickableViewAccessibility")
     public void onBindViewHolder(@NonNull ArticlelinkView holder, final int position) {
         holder.articlelinksTitle.setText(articleLinksObject_list.get(position).getArticlelinksTitle());
         holder.articleslinkTitleSecond.setText(articleLinksObject_list.get(position).getArticlelinksTitle());
@@ -67,6 +74,26 @@ public class ArticlelinksAdapter extends  RecyclerView.Adapter<ArticlelinksAdapt
                 mExpandedPosition = isExpanded ? -1:position;
                 notifyItemChanged(previousExpandedPosition);
                 notifyItemChanged(position);
+            }
+        });
+        holder.articlelinksLink.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                SpannableString ss = new SpannableString(holder.articlelinksLink.getText().toString());
+                ss.setSpan(new UnderlineSpan(),0,ss.length(),0);
+                ss.setSpan(new StyleSpan(Typeface.BOLD), 0, ss.length(), 0);
+                if(event.getAction() == MotionEvent.ACTION_DOWN)
+                {
+                    holder.articlelinksLink.setText(ss);
+                }
+                else if(event.getAction() == MotionEvent.ACTION_UP)
+                {
+
+                    holder.articlelinksLink.setText(ss.toString());
+
+                }
+                return false;
             }
         });
         holder.articlelinksLink.setOnClickListener(new View.OnClickListener() {

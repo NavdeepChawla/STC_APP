@@ -137,6 +137,7 @@ public class FeedFragment extends Fragment {
                         Objects.requireNonNull(recyclerViewFeed.getAdapter()).notifyDataSetChanged();
                     }
                     skip = 0;
+                    NavActivity.loadData=true;
                     new Handler().post(new Runnable() {
                         @Override
                         public void run() {

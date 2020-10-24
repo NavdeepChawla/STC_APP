@@ -22,7 +22,6 @@
             android:name=".activity.StartActivity"
             android:screenOrientation="portrait"
             android:configChanges="uiMode">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
