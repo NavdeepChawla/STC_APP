@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.exclusive;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.highlights.EventObject;
+import com.mstc.mstcapp.model.exclusive.MOM;
 
 import java.util.List;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
+public class MOMAdapter extends RecyclerView.Adapter<MOMAdapter.ViewHolder> {
 
-    private List<EventObject> mValues;
+    private List<MOM> mValues;
 
-    public EventAdapter(List<EventObject> items) {
+    public MOMAdapter(List<MOM> items) {
         mValues = items;
     }
 
@@ -33,7 +33,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getDescription());
+        holder.mContentView.setText(mValues.get(position).getContent());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return mValues.size();
     }
 
-    public void setList(List<EventObject> list) {
+    public void setList(List<MOM> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public EventObject mItem;
+        public MOM mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,7 +59,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
             mContentView = view.findViewById(R.id.content);
         }
 
-        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

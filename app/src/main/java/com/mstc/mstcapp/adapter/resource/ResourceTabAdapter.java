@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.resource;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.exclusive.MOM;
+import com.mstc.mstcapp.model.resources.Resource;
 
 import java.util.List;
 
-public class MOMAdapter extends RecyclerView.Adapter<MOMAdapter.ViewHolder> {
+public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.ViewHolder> {
 
-    private List<MOM> mValues;
+    private List<Resource> mValues;
 
-    public MOMAdapter(List<MOM> items) {
+    public ResourceTabAdapter(List<Resource> items) {
         mValues = items;
     }
 
@@ -33,7 +33,7 @@ public class MOMAdapter extends RecyclerView.Adapter<MOMAdapter.ViewHolder> {
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getContent());
+        holder.mContentView.setText(mValues.get(position).getDescription());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MOMAdapter extends RecyclerView.Adapter<MOMAdapter.ViewHolder> {
         return mValues.size();
     }
 
-    public void setList(List<MOM> list) {
+    public void setList(List<Resource> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class MOMAdapter extends RecyclerView.Adapter<MOMAdapter.ViewHolder> {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public MOM mItem;
+        public Resource mItem;
 
         public ViewHolder(View view) {
             super(view);

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.EventAdapter;
+import com.mstc.mstcapp.adapter.highlight.EventAdapter;
 import com.mstc.mstcapp.model.highlights.EventObject;
 
 import java.util.ArrayList;

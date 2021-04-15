@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.exclusive;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,22 +9,24 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.resources.Article;
+import com.mstc.mstcapp.model.exclusive.Attendance;
+import com.mstc.mstcapp.util.Converters;
 
 import java.util.List;
 
-public class ArticleTabAdapter extends RecyclerView.Adapter<ArticleTabAdapter.ViewHolder> {
+public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
 
-    private List<Article> mValues;
+    private List<Attendance> mValues;
 
-    public ArticleTabAdapter(List<Article> items) {
+    public AttendanceAdapter(List<Attendance> items) {
         mValues = items;
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_resource_details, parent, false);
+                .inflate(R.layout.item_event, parent, false);
         return new ViewHolder(view);
     }
 
@@ -32,7 +34,7 @@ public class ArticleTabAdapter extends RecyclerView.Adapter<ArticleTabAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getDescription());
+        holder.mContentView.setText(Converters.fromArrayList(mValues.get(position).getContent()));
     }
 
     @Override
@@ -40,7 +42,7 @@ public class ArticleTabAdapter extends RecyclerView.Adapter<ArticleTabAdapter.Vi
         return mValues.size();
     }
 
-    public void setList(List<Article> list) {
+    public void setList(List<Attendance> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -49,7 +51,7 @@ public class ArticleTabAdapter extends RecyclerView.Adapter<ArticleTabAdapter.Vi
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Article mItem;
+        public Attendance mItem;
 
         public ViewHolder(View view) {
             super(view);

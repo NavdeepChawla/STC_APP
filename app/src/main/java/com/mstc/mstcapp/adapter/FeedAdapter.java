@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.BoardMember;
+import com.mstc.mstcapp.model.FeedObject;
 
 import java.util.List;
 
-public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.ViewHolder> {
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
 
-    private List<BoardMember> mValues;
+    private List<FeedObject> mValues;
 
-    public BoardMemberAdapter(List<BoardMember> items) {
+    public FeedAdapter(List<FeedObject> items) {
         mValues = items;
     }
 
@@ -25,15 +25,15 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_resource_details, parent, false);
+                .inflate(R.layout.item_event, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getName());
-        holder.mContentView.setText(mValues.get(position).getPosition());
+        holder.mIdView.setText(mValues.get(position).getTitle());
+        holder.mContentView.setText(mValues.get(position).getLink());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
         return mValues.size();
     }
 
-    public void setList(List<BoardMember> list) {
+    public void setList(List<FeedObject> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public BoardMember mItem;
+        public FeedObject mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,7 +59,6 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
             mContentView = view.findViewById(R.id.content);
         }
 
-        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

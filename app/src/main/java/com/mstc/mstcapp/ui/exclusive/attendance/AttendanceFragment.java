@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.AttendanceAdapter;
+import com.mstc.mstcapp.adapter.exclusive.AttendanceAdapter;
 import com.mstc.mstcapp.model.exclusive.Attendance;
 
 import java.util.ArrayList;

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.UpdatesAdapter;
+import com.mstc.mstcapp.adapter.exclusive.UpdatesAdapter;
 import com.mstc.mstcapp.model.exclusive.Updates;
 
 import java.util.ArrayList;

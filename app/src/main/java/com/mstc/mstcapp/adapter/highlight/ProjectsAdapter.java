@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.highlight;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.FeedObject;
+import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
 import java.util.List;
 
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
+public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
-    private List<FeedObject> mValues;
+    private List<ProjectsObject> mValues;
 
-    public FeedAdapter(List<FeedObject> items) {
+    public ProjectsAdapter(List<ProjectsObject> items) {
         mValues = items;
     }
 
@@ -41,7 +41,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         return mValues.size();
     }
 
-    public void setList(List<FeedObject> list) {
+    public void setList(List<ProjectsObject> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public FeedObject mItem;
+        public ProjectsObject mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,6 +59,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.ViewHolder> {
             mContentView = view.findViewById(R.id.content);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

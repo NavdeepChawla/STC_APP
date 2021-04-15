@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.highlights.ProjectsObject;
+import com.mstc.mstcapp.model.BoardMember;
 
 import java.util.List;
 
-public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
+public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.ViewHolder> {
 
-    private List<ProjectsObject> mValues;
+    private List<BoardMember> mValues;
 
-    public ProjectsAdapter(List<ProjectsObject> items) {
+    public BoardMemberAdapter(List<BoardMember> items) {
         mValues = items;
     }
 
@@ -32,8 +32,8 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getLink());
+        holder.mIdView.setText(mValues.get(position).getName());
+        holder.mContentView.setText(mValues.get(position).getPosition());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         return mValues.size();
     }
 
-    public void setList(List<ProjectsObject> list) {
+    public void setList(List<BoardMember> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public ProjectsObject mItem;
+        public BoardMember mItem;
 
         public ViewHolder(View view) {
             super(view);

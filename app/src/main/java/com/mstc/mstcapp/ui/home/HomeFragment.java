@@ -17,7 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.mstc.mstcapp.MainActivity;
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.FeedAdapter;
+import com.mstc.mstcapp.adapter.FeedAdapter;
 import com.mstc.mstcapp.model.FeedObject;
 
 import java.util.ArrayList;

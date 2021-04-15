@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.ResourceTabAdapter;
+import com.mstc.mstcapp.adapter.resource.ResourceTabAdapter;
 import com.mstc.mstcapp.model.resources.Resource;
 
 import java.util.ArrayList;

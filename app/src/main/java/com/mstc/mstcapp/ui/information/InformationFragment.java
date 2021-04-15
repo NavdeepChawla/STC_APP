@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.BoardMemberAdapter;
+import com.mstc.mstcapp.adapter.BoardMemberAdapter;
 import com.mstc.mstcapp.model.BoardMember;
 
 import java.util.ArrayList;

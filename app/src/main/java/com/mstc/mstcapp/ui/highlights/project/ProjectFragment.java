@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.ProjectsAdapter;
+import com.mstc.mstcapp.adapter.highlight.ProjectsAdapter;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
 
 import java.util.ArrayList;

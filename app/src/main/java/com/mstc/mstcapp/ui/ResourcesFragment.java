@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.ResourceAdapter;
+import com.mstc.mstcapp.adapter.ResourceAdapter;
 import com.mstc.mstcapp.model.ResourceModel;
 import com.mstc.mstcapp.util.ClickListener;
 import com.mstc.mstcapp.util.RecyclerTouchListener;

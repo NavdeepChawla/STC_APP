@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.highlight;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,15 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.highlights.GithubObject;
+import com.mstc.mstcapp.model.highlights.EventObject;
 
 import java.util.List;
 
-public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.ViewHolder> {
+public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
 
-    private List<GithubObject> mValues;
+    private List<EventObject> mValues;
 
-    public GithubAdapter(List<GithubObject> items) {
+    public EventAdapter(List<EventObject> items) {
         mValues = items;
     }
 
@@ -33,7 +33,7 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.ViewHolder
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getLink());
+        holder.mContentView.setText(mValues.get(position).getDescription());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.ViewHolder
         return mValues.size();
     }
 
-    public void setList(List<GithubObject> list) {
+    public void setList(List<EventObject> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +50,7 @@ public class GithubAdapter extends RecyclerView.Adapter<GithubAdapter.ViewHolder
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public GithubObject mItem;
+        public EventObject mItem;
 
         public ViewHolder(View view) {
             super(view);

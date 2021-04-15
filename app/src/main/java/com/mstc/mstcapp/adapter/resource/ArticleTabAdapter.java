@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.resource;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,23 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.resources.Article;
 
 import java.util.List;
 
-public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.ViewHolder> {
+public class ArticleTabAdapter extends RecyclerView.Adapter<ArticleTabAdapter.ViewHolder> {
 
-    private List<Resource> mValues;
+    private List<Article> mValues;
 
-    public ResourceTabAdapter(List<Resource> items) {
+    public ArticleTabAdapter(List<Article> items) {
         mValues = items;
     }
 
-    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_resource_details, parent, false);
+                .inflate(R.layout.item_event, parent, false);
         return new ViewHolder(view);
     }
 
@@ -41,7 +40,7 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
         return mValues.size();
     }
 
-    public void setList(List<Resource> list) {
+    public void setList(List<Article> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -50,7 +49,7 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Resource mItem;
+        public Article mItem;
 
         public ViewHolder(View view) {
             super(view);
@@ -59,6 +58,7 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
             mContentView = view.findViewById(R.id.content);
         }
 
+        @NonNull
         @Override
         public String toString() {
             return super.toString() + " '" + mContentView.getText() + "'";

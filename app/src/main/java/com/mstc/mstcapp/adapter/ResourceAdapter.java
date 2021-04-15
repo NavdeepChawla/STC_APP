@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

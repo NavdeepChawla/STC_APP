@@ -14,7 +14,7 @@
         android:id="@+id/navigation_resources"
         android:name="com.mstc.mstcapp.ui.ResourcesFragment"
         android:label="@string/title_resources"
-        tools:layout="@layout/fragment_dashboard" >
+        tools:layout="@layout/fragment_resources" >
         <action
             android:id="@+id/action_navigation_resources_to_fragment_view_resource"
             app:destination="@id/fragment_view_resource" />

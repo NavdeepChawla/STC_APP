@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.GithubAdapter;
+import com.mstc.mstcapp.adapter.highlight.GithubAdapter;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.adapters;
+package com.mstc.mstcapp.adapter.exclusive;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,16 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.exclusive.Attendance;
-import com.mstc.mstcapp.util.Converters;
+import com.mstc.mstcapp.model.exclusive.Updates;
 
 import java.util.List;
 
-public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder> {
+public class UpdatesAdapter extends RecyclerView.Adapter<UpdatesAdapter.ViewHolder> {
 
-    private List<Attendance> mValues;
+    private List<Updates> mValues;
 
-    public AttendanceAdapter(List<Attendance> items) {
+    public UpdatesAdapter(List<Updates> items) {
         mValues = items;
     }
 
@@ -34,7 +33,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(Converters.fromArrayList(mValues.get(position).getContent()));
+        holder.mContentView.setText(mValues.get(position).getContent());
     }
 
     @Override
@@ -42,7 +41,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         return mValues.size();
     }
 
-    public void setList(List<Attendance> list) {
+    public void setList(List<Updates> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }
@@ -51,7 +50,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         public final View mView;
         public final TextView mIdView;
         public final TextView mContentView;
-        public Attendance mItem;
+        public Updates mItem;
 
         public ViewHolder(View view) {
             super(view);

@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapters.MOMAdapter;
+import com.mstc.mstcapp.adapter.exclusive.MOMAdapter;
 import com.mstc.mstcapp.model.exclusive.MOM;
 
 import java.util.ArrayList;
