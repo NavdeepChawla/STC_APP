@@ -1,56 +1,76 @@
 package com.mstc.mstcapp.model.highlights;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
-public class EventObject
-{
+@Entity(tableName = "EVENTS")
+public class EventObject {
+    @PrimaryKey
+    @NonNull
+    @SerializedName("_id")
+    private String id;
 
     @SerializedName("title")
-    private String eventTitle;
-    @SerializedName("pic")
-    private String eventPicture;
+    private String title;
+
+    @SerializedName("image")
+    private String image;
+
     @SerializedName("link")
-    private String eventLink;
-    @SerializedName("desc")
-    private String eventDesc;
+    private String link;
 
-    public EventObject(String eventTitle, String eventDesc, String eventLink, String eventPicture) {
-        this.eventTitle = eventTitle;
-        this.eventDesc = eventDesc;
-        this.eventLink = eventLink;
-        this.eventPicture = eventPicture;
+    @SerializedName("description")
+    private String description;
+
+    public EventObject(String title, String description, String link, String image) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.image = image;
     }
 
-    public String getEventTitle() {
-        return eventTitle;
+    @NonNull
+    public String getId() {
+        return id;
     }
 
-    public void setEventTitle(String eventTitle) {
-        this.eventTitle = eventTitle;
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
-    public String getEventDesc() {
-        return eventDesc;
+    public String getTitle() {
+        return title;
     }
 
-    public void setEventDesc(String eventDesc) {
-        this.eventDesc = eventDesc;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getEventLink() {
-        return eventLink;
+    public String getDescription() {
+        return description;
     }
 
-    public void setEventLink(String eventLink) {
-        this.eventLink = eventLink;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getEventPicture() {
-        return eventPicture;
+    public String getLink() {
+        return link;
     }
 
-    public void setEventPicture(String eventPicture) {
-        this.eventPicture = eventPicture;
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
 }

@@ -2,27 +2,37 @@ package com.mstc.mstcapp.model;
 
 public class ResourceModel {
 
-    private String resourceTitle;
-    private int resourcePicture;
+    private String title;
+    private int image;
+    private String domain;
 
-    public ResourceModel(String resourceTitle, int resourcePicture) {
-        this.resourceTitle = resourceTitle;
-        this.resourcePicture = resourcePicture;
+    public ResourceModel(String domain, String title, int image) {
+        this.domain = domain;
+        this.title = title;
+        this.image = image;
     }
 
-    public String getResourceTitle() {
-        return resourceTitle;
+    public String getDomain() {
+        return domain;
     }
 
-    public void setResourceTitle(String resourceTitle) {
-        this.resourceTitle = resourceTitle;
+    public void setDomain(String domain) {
+        this.domain = domain;
     }
 
-    public int getResourcePicture() {
-        return resourcePicture;
+    public String getTitle() {
+        return title;
     }
 
-    public void setResourcePicture(int resourcePicture) {
-        this.resourcePicture = resourcePicture;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getImage() {
+        return image;
+    }
+
+    public void setImage(int image) {
+        this.image = image;
     }
 }

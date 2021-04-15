@@ -1,22 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#4B41F8</color>
-    <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
 
     <color name="background_color">#222222</color>
     <color name="log_bg_color">#332CAB</color>
-    <color name="link_blue">#0C65FA</color>
-    <color name="tabUnChecked">#E9E9E9</color>
-    <color name="tabFont">#FFFFFF</color>
     <color name="rippleColor">#80332CAB</color>
 
-
-    <color name="edittexthint">#80E5E5E5</color>
     <color name="black">#FFFFFF</color>
     <color name="white">#010101</color>
-    <color name="gray">#FFFFFF</color>
 
     <color name="cardColor">#010101</color>
-    <color name="permWhite">#FFFFFF</color>
+
+    <color name="textColorPrimary">#EEEEEE</color>
 </resources>

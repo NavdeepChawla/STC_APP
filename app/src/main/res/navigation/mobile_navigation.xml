@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.mstc.mstcapp.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/navigation_resources"
+        android:name="com.mstc.mstcapp.ui.ResourcesFragment"
+        android:label="@string/title_resources"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_resources_to_fragment_view_resource"
+            app:destination="@id/fragment_view_resource" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_highlights"
+        android:name="com.mstc.mstcapp.ui.highlights.HighlightFragment"
+        android:label="@string/title_highlights"
+        tools:layout="@layout/fragment_tabbed" />
+
+    <fragment
+        android:id="@+id/navigation_exclusive"
+        android:name="com.mstc.mstcapp.ui.exclusive.ExclusiveFragment"
+        android:label="@string/title_exclusive"
+        tools:layout="@layout/fragment_tabbed" />
+
+    <fragment
+        android:id="@+id/navigation_information"
+        android:name="com.mstc.mstcapp.ui.information.InformationFragment"
+        android:label="@string/title_information"
+        tools:layout="@layout/fragment_recycler_view" />
+    <fragment
+        android:id="@+id/fragment_view_resource"
+        android:name="com.mstc.mstcapp.ui.resources.ViewResourceFragment"
+        android:label="@string/resources"
+        tools:layout="@layout/fragment_tabbed" >
+        <argument
+            android:name="domain"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragment_view_resource_to_navigation_resources"
+            app:destination="@id/navigation_resources" />
+    </fragment>
+</navigation>

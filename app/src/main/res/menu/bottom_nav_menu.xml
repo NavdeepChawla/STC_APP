@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/ic_home"
-        android:title="Home"/>
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
 
     <item
-        android:id="@+id/nav_resources"
-        android:icon="@drawable/ic_resources"
-        android:title="Resources" />
+        android:id="@+id/navigation_resources"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_resources" />
 
     <item
-        android:id="@+id/nav_archive"
-        android:icon="@drawable/ic_highlight"
-        android:title="Highlights" />
+        android:id="@+id/navigation_highlights"
+        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:title="@string/title_highlights" />
 
     <item
-        android:id="@+id/nav_exclusive"
-        android:icon="@drawable/ic_exclusive"
-        android:title="Exclusive" />
-
+        android:id="@+id/navigation_exclusive"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_exclusive"
+        android:visible="false"/>
 
     <item
-        android:id="@+id/nav_info"
-        android:icon="@drawable/ic_info"
-        android:title="Information" />
+        android:id="@+id/navigation_information"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="@string/title_information" />
 
 </menu>

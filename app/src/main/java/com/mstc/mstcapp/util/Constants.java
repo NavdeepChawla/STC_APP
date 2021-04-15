@@ -1,0 +1,13 @@
+package com.mstc.mstcapp.util;
+
+public class Constants {
+    public static final String BASE_URL = "https://stcbackendnode.herokuapp.com/";
+
+    //SOCIAL MEDIA URL
+    public static final String INSTAGRAM_URL = "https://www.instagram.com/mstcvit/";
+    public static final String FACEBOOK_URL = "https://www.facebook.com/mstcvit/";
+    public static final String LINKEDIN_URL = "https://www.linkedin.com/company/micvitvellore/";
+    public static final String MEDIUM_URL = "https://medium.com/student-technical-community-vit-vellore";
+    public static final String PRIVACY_URL = "https://navdeepchawla.github.io/STC_APP_Privacy_Policy/";
+
+}

@@ -1,24 +1,47 @@
 package com.mstc.mstcapp.model.highlights;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
+import java.util.ArrayList;
 
+@Entity(tableName = "PROJECTS")
 public class ProjectsObject {
+
+    @PrimaryKey
+    @NonNull
+    @SerializedName("_id")
+    private String id;
+
     @SerializedName("title")
     private String title;
+
     @SerializedName("contributors")
-    private List<String> contributors = null;
+    private ArrayList<String> contributorsList;
+
     @SerializedName("link")
     private String link;
-    @SerializedName("desc")
-    private String desc;
 
-    public ProjectsObject(String title, List<String> contributors, String link, String desc) {
+    @SerializedName("description")
+    private String description;
+
+    public ProjectsObject(String title, ArrayList<String> contributorsList, String link, String description) {
         this.title = title;
-        this.contributors = contributors;
+        this.contributorsList = contributorsList;
         this.link = link;
-        this.desc = desc;
+        this.description = description;
+    }
+
+    @NonNull
+    public String getId() {
+        return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -29,12 +52,12 @@ public class ProjectsObject {
         this.title = title;
     }
 
-    public List<String> getContributors() {
-        return contributors;
+    public ArrayList<String> getContributorsList() {
+        return contributorsList;
     }
 
-    public void setContributors(List<String> contributors) {
-        this.contributors = contributors;
+    public void setContributorsList(ArrayList<String> contributorsList) {
+        this.contributorsList = contributorsList;
     }
 
     public String getLink() {
@@ -45,12 +68,13 @@ public class ProjectsObject {
         this.link = link;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescription(String description) {
+        this.description = description;
     }
+
 
 }

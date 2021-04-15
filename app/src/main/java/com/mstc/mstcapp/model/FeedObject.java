@@ -1,57 +1,76 @@
 package com.mstc.mstcapp.model;
 
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
 import com.google.gson.annotations.SerializedName;
 
+@Entity(tableName = "FEED")
 public class FeedObject {
 
-    @SerializedName("title")
-    private String feedTitle;
+    @PrimaryKey
+    @NonNull
+    @SerializedName("_id")
+    private String id;
 
-    @SerializedName("desc")
-    private String feedDesc;
+    @SerializedName("title")
+    private String title;
+
+    @SerializedName("description")
+    private String description;
 
     @SerializedName("link")
-    private String feedLink;
+    private String link;
 
-    @SerializedName("pic")
-    private String feedPicture;
+    @SerializedName("image")
+    private String image;
 
-    public FeedObject(String feedTitle, String feedDesc, String feedLink, String feedPicture) {
-        this.feedTitle = feedTitle;
-        this.feedDesc = feedDesc;
-        this.feedLink = feedLink;
-        this.feedPicture = feedPicture;
+    public FeedObject(String title, String description, String link, String image) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.image = image;
     }
 
-    public String getFeedTitle() {
-        return feedTitle;
+    @NonNull
+    public String getId() {
+        return id;
     }
 
-    public void setFeedTitle(String feedTitle) {
-        this.feedTitle = feedTitle;
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
-    public String getFeedDesc() {
-        return feedDesc;
+    public String getTitle() {
+        return title;
     }
 
-    public void setFeedDesc(String feedDesc) {
-        this.feedDesc = feedDesc;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getFeedLink() {
-        return feedLink;
+    public String getDescription() {
+        return description;
     }
 
-    public void setFeedLink(String feedLink) {
-        this.feedLink = feedLink;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getFeedPicture() {
-        return feedPicture;
+    public String getLink() {
+        return link;
     }
 
-    public void setFeedPicture(String feedPicture) {
-        this.feedPicture = feedPicture;
+    public void setLink(String link) {
+        this.link = link;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

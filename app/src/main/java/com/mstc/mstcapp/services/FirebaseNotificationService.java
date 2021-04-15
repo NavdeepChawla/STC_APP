@@ -17,12 +17,12 @@ import androidx.core.app.NotificationManagerCompat;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.RemoteMessage;
+import com.mstc.mstcapp.MainActivity;
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.activity.NavActivity;
 
 import java.util.Objects;
 
-public class FirebaseNotificationService extends com.google.firebase.messaging.FirebaseMessagingService{
+public class FirebaseNotificationService extends com.google.firebase.messaging.FirebaseMessagingService {
 
     private static final String TAG = "NotificationService";
     private static final String CHANNEL_ID = "PushNotifications";
@@ -46,19 +46,18 @@ public class FirebaseNotificationService extends com.google.firebase.messaging.F
     }
 
     @Override
-    public void onMessageReceived( RemoteMessage remoteMessage) {
+    public void onMessageReceived(RemoteMessage remoteMessage) {
         //ONLY WHEN APP IS IN FOREGROUND
         String title = Objects.requireNonNull(remoteMessage.getNotification()).getTitle();
         String content = remoteMessage.getNotification().getBody();
         assert title != null;
-        if(title.contains(":")){
-            if(FirebaseAuth.getInstance().getCurrentUser()!=null){
-                title=title.split(":")[1];
-                sendNotification(title,content);
+        if (title.contains(":")) {
+            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+                title = title.split(":")[1];
+                sendNotification(title, content);
             }
-        }
-        else{
-            sendNotification(title,content);
+        } else {
+            sendNotification(title, content);
         }
 
     }
@@ -70,21 +69,21 @@ public class FirebaseNotificationService extends com.google.firebase.messaging.F
 
     @Override
     public void onNewToken(@NonNull String token) {
-        Log.d(TAG, "Refreshed token : "+token);
+        Log.d(TAG, "Refreshed token : " + token);
         //send token to your app server
     }
 
     @SuppressLint("InvalidWakeLockTag")
     private void sendNotification(String title, String messageBody) {
 
-        Intent intent = new Intent(this, NavActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0 , intent,
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
 
-        Uri defaultSoundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this,CHANNEL_ID)
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_stc_white)
                 //.setBadgeIconType(13)
                 .setContentTitle(title)
@@ -97,12 +96,12 @@ public class FirebaseNotificationService extends com.google.firebase.messaging.F
                 .setContentIntent(pendingIntent);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(this);
-        notificationManagerCompat.notify(0,notificationBuilder.build());
+        notificationManagerCompat.notify(0, notificationBuilder.build());
 
     }
 
     //ANDROID 8.0 AND ABOVE
-    private void createNotificationChannel(){
+    private void createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             CharSequence name = "MyNotifications";
             String description = "All MyNotifications";
@@ -110,7 +109,7 @@ public class FirebaseNotificationService extends com.google.firebase.messaging.F
 
             NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
             channel.setDescription(description);
-            NotificationManager notificationManager =(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             notificationManager.createNotificationChannel(channel);
         }
     }
