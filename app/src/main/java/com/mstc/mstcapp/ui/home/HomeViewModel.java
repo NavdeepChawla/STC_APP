@@ -15,7 +15,6 @@ import com.mstc.mstcapp.model.FeedObject;
 import com.mstc.mstcapp.util.RetrofitInstance;
 import com.mstc.mstcapp.util.RetrofitInterface;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,7 +29,6 @@ public class HomeViewModel extends AndroidViewModel {
     RetrofitInterface retrofitInterface;
     Repository repository;
     Context context;
-    List<FeedObject> feedList = new ArrayList<>();
     private LiveData<List<FeedObject>> listFeed;
 
     public HomeViewModel(@NonNull Application application) {

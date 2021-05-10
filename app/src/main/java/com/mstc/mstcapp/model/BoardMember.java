@@ -18,7 +18,6 @@ public class BoardMember {
     @SerializedName("position")
     String position;
     @SerializedName("link")
-
     String link;
 
     public BoardMember(String image, String name, String position, String link) {

@@ -18,9 +18,6 @@ import com.mstc.mstcapp.database.DatabaseDao;
 import com.mstc.mstcapp.database.STCDatabase;
 import com.mstc.mstcapp.model.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.exclusive.Attendance;
-import com.mstc.mstcapp.model.exclusive.MOM;
-import com.mstc.mstcapp.model.exclusive.Updates;
 import com.mstc.mstcapp.model.highlights.EventObject;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
@@ -269,71 +266,6 @@ public class Repository {
             });
         }
         return databaseDao.getArticles(domain);
-    }
-
-    public LiveData<List<MOM>> getMOM() {
-        if (isNetworkAvailable(context)) {
-            databaseReference.child("Mom").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String content = getString(dataSnapshot, "Content");
-                        String title = getString(dataSnapshot, "Title");
-                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertMOM(new MOM(dataSnapshot.getKey(), content, title)));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "Couldn't fetch MOMs", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onCancelled: " + error);
-                }
-            });
-        }
-        return databaseDao.getMOM();
-    }
-
-    public LiveData<List<Updates>> getUpdates() {
-        if (isNetworkAvailable(context)) {
-            databaseReference.child("Updates").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String content = getString(dataSnapshot, "Content");
-                        String title = getString(dataSnapshot, "Title");
-                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertUpdate(new Updates(dataSnapshot.getKey(), content, title)));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "Couldn't fetch MOMs", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onCancelled: " + error);
-                }
-            });
-        }
-        return databaseDao.getUpdates();
-    }
-
-    public LiveData<List<Attendance>> getAttendance() {
-        if (isNetworkAvailable(context)) {
-            databaseReference.child("Attendance").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String title = getString(dataSnapshot, "Title");
-                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertAttendance(new Attendance(dataSnapshot.getKey(), (ArrayList<String>) dataSnapshot.child("Content").getValue(), title)));
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "Couldn't fetch Attendance", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onCancelled: " + error);
-                }
-            });
-        }
-        return databaseDao.getAttendance();
     }
 
     private String listToString(ArrayList<String> list) {

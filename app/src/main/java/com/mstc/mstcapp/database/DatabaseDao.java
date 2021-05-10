@@ -7,9 +7,6 @@ import androidx.room.Query;
 
 import com.mstc.mstcapp.model.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.exclusive.Attendance;
-import com.mstc.mstcapp.model.exclusive.MOM;
-import com.mstc.mstcapp.model.exclusive.Updates;
 import com.mstc.mstcapp.model.highlights.EventObject;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
@@ -95,35 +92,5 @@ public interface DatabaseDao {
 
     @Query("DELETE FROM ARTICLES WHERE domain=:domain")
     void deleteArticles(String domain);
-
-    //MOM
-    @Insert(onConflict = REPLACE)
-    void insertMOM(MOM mom);
-
-    @Query("SELECT * FROM MOM")
-    LiveData<List<MOM>> getMOM();
-
-    @Query("DELETE FROM MOM")
-    void deleteMOM();
-
-    //ATTENDANCE
-    @Insert(onConflict = REPLACE)
-    void insertAttendance(Attendance attendance);
-
-    @Query("SELECT * FROM ATTENDANCE ORDER BY title")
-    LiveData<List<Attendance>> getAttendance();
-
-    @Query("DELETE FROM ATTENDANCE")
-    void deleteAttendance();
-
-    //UPDATES
-    @Insert(onConflict = REPLACE)
-    void insertUpdate(Updates update);
-
-    @Query("SELECT * FROM UPDATES")
-    LiveData<List<Updates>> getUpdates();
-
-    @Query("DELETE FROM UPDATES")
-    void deleteUpdates();
 
 }

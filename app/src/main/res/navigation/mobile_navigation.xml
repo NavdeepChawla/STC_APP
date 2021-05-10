@@ -27,12 +27,6 @@
         tools:layout="@layout/fragment_tabbed" />
 
     <fragment
-        android:id="@+id/navigation_exclusive"
-        android:name="com.mstc.mstcapp.ui.exclusive.ExclusiveFragment"
-        android:label="@string/title_exclusive"
-        tools:layout="@layout/fragment_tabbed" />
-
-    <fragment
         android:id="@+id/navigation_information"
         android:name="com.mstc.mstcapp.ui.information.InformationFragment"
         android:label="@string/title_information"

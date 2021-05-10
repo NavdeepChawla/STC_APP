@@ -11,9 +11,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 
 import com.mstc.mstcapp.model.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.exclusive.Attendance;
-import com.mstc.mstcapp.model.exclusive.MOM;
-import com.mstc.mstcapp.model.exclusive.Updates;
+
 import com.mstc.mstcapp.model.highlights.EventObject;
 import com.mstc.mstcapp.model.highlights.GithubObject;
 import com.mstc.mstcapp.model.highlights.ProjectsObject;
@@ -32,10 +30,7 @@ import java.util.concurrent.Executors;
                 ProjectsObject.class,
                 BoardMember.class,
                 Article.class,
-                Resource.class,
-                MOM.class,
-                Updates.class,
-                Attendance.class
+                Resource.class
         },
         version = 1,
         exportSchema = false)
