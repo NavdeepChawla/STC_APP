@@ -22,17 +22,11 @@ public class ViewResourceFragment extends Fragment {
     private ViewPagerAdapter viewPagerAdapter;
 
     public ViewResourceFragment() {
-        // Required empty public constructor
-    }
-
-    public static ViewResourceFragment newInstance() {
-        return new ViewResourceFragment();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_explore, container, false);
     }
 

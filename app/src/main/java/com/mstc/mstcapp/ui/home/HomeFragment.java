@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,64 +14,122 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.mstc.mstcapp.MainActivity;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.FeedAdapter;
-import com.mstc.mstcapp.model.FeedObject;
+import com.mstc.mstcapp.model.FeedModel;
+import com.mstc.mstcapp.util.RetrofitInstance;
+import com.mstc.mstcapp.util.RetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.mstc.mstcapp.util.Functions.isNetworkAvailable;
+
 public class HomeFragment extends Fragment {
-    private static final String TAG = "HomeFragment";
     RecyclerView recyclerView;
     HomeViewModel mViewModel;
     FeedAdapter adapter;
-    List<FeedObject> feedList;
+    List<FeedModel> feedList;
     int skip = 1;
-    ProgressBar load;
+    boolean isLoading = false;
     SwipeRefreshLayout swipeRefreshLayout;
+    private Context context;
 
     public HomeFragment() {
     }
 
-    public static HomeFragment newInstance() {
-        return new HomeFragment();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_home, container, false);
+        return inflater.inflate(R.layout.fragment_swipe_recycler, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Context context = view.getContext();
         mViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        context = view.getContext();
         recyclerView = view.findViewById(R.id.recyclerView);
-        load = view.findViewById(R.id.load);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         feedList = new ArrayList<>();
         adapter = new FeedAdapter(context, feedList);
         recyclerView.setAdapter(adapter);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getData(1, 0);
+        });
         mViewModel.getList().observe(getViewLifecycleOwner(), list -> {
-            swipeRefreshLayout.setRefreshing(!MainActivity.isAppRunning);
             feedList = list;
             adapter.setList(feedList);
         });
+
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-                    if (!recyclerView.canScrollVertically(RecyclerView.FOCUS_DOWN)) {
-                        mViewModel.more(++skip, swipeRefreshLayout);
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading) {
+                    if (linearLayoutManager != null &&
+                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == feedList.size() - 1) {
+                        loadMore(++skip);
+                        isLoading = true;
                     }
                 }
+            }
+        });
+    }
+
+    private void loadMore(int skip) {
+        if (isNetworkAvailable(context)) {
+            isLoading = true;
+            feedList.add(null);
+            recyclerView.post(() -> {
+                adapter.notifyItemInserted(feedList.size() - 1);
+            });
+            getData(skip, 1);
+
+        } else {
+            isLoading = false;
+            swipeRefreshLayout.setRefreshing(false);
+            Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    private void getData(int skip, int flag) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<List<FeedModel>> call = retrofitInterface.getFeed(skip);
+        call.enqueue(new Callback<List<FeedModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<FeedModel>> call, @NonNull Response<List<FeedModel>> response) {
+                if (response.isSuccessful()) {
+                    isLoading = false;
+                    swipeRefreshLayout.setRefreshing(false);
+                    if (flag == 1) {
+                        feedList.remove(feedList.size() - 1);
+                        adapter.notifyItemRemoved(feedList.size());
+                    }
+                    List<FeedModel> list = response.body();
+                    assert list != null;
+                    mViewModel.insertFeeds(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<FeedModel>> call, Throwable t) {
+                isLoading = false;
+                feedList.remove(feedList.size() - 1);
+                swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
             }
         });
     }

@@ -12,35 +12,43 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.explore.EventAdapter;
-import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.EventModel;
+import com.mstc.mstcapp.util.RetrofitInstance;
+import com.mstc.mstcapp.util.RetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A fragment representing a list of Items.
- */
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+import static com.mstc.mstcapp.util.Functions.isNetworkAvailable;
+
 public class EventsFragment extends Fragment {
-    RecyclerView recyclerView;
-    EventViewModel mViewModel;
-    EventAdapter eventAdapter;
-    List<EventObject> list;
+    int skip = 1;
+    boolean isLoading = false;
+    private RecyclerView recyclerView;
+    private EventViewModel mViewModel;
+    private EventAdapter eventAdapter;
+    private List<EventModel> eventList;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Context context;
 
     public EventsFragment() {
     }
 
-    public static EventsFragment newInstance(int columnCount) {
-        return new EventsFragment();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_swipe_recycler, container, false);
     }
 
     @Override
@@ -48,15 +56,81 @@ public class EventsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(EventViewModel.class);
         recyclerView = view.findViewById(R.id.recyclerView);
-        Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
+        context = view.getContext();
+        recyclerView = view.findViewById(R.id.recyclerView);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        list = new ArrayList<>();
-        eventAdapter = new EventAdapter(context, list);
+        eventList = new ArrayList<>();
+        eventAdapter = new EventAdapter(context, eventList);
         recyclerView.setAdapter(eventAdapter);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            getData(1, 0);
+        });
         mViewModel.getList().observe(getViewLifecycleOwner(), eventObjects -> {
-            list = eventObjects;
-            eventAdapter.setList(list);
+            eventList = eventObjects;
+            eventAdapter.setList(eventList);
+        });
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                if (!isLoading) {
+                    if (linearLayoutManager != null &&
+                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == eventList.size() - 1) {
+                        loadMore(++skip);
+                        isLoading = true;
+                    }
+                }
+            }
+        });
+    }
+
+    private void loadMore(int skip) {
+        if (isNetworkAvailable(context)) {
+            isLoading = true;
+            eventList.add(null);
+            recyclerView.post(() -> {
+                eventAdapter.notifyItemInserted(eventList.size() - 1);
+            });
+            getData(skip, 1);
+
+        } else {
+            isLoading = false;
+            swipeRefreshLayout.setRefreshing(false);
+            Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    private void getData(int skip, int flag) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<List<EventModel>> call = retrofitInterface.getEvents(skip);
+        call.enqueue(new Callback<List<EventModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<EventModel>> call, @NonNull Response<List<EventModel>> response) {
+                if (response.isSuccessful()) {
+                    isLoading = false;
+                    swipeRefreshLayout.setRefreshing(false);
+                    if (flag == 1) {
+                        eventList.remove(eventList.size() - 1);
+                        eventAdapter.notifyItemRemoved(eventList.size());
+                    }
+                    List<EventModel> list = response.body();
+                    assert list != null;
+                    mViewModel.insertEvents(list);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<EventModel>> call, Throwable t) {
+                isLoading = false;
+                eventList.remove(eventList.size() - 1);
+                swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
         });
     }
 }

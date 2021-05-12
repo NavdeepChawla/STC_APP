@@ -10,15 +10,17 @@ import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.database.DatabaseDao;
 import com.mstc.mstcapp.database.STCDatabase;
-import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.explore.BoardMember;
-import com.mstc.mstcapp.model.explore.EventObject;
-import com.mstc.mstcapp.model.explore.ProjectsObject;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.FeedModel;
+import com.mstc.mstcapp.model.explore.BoardMemberModel;
+import com.mstc.mstcapp.model.explore.EventModel;
+import com.mstc.mstcapp.model.explore.ProjectsModel;
+import com.mstc.mstcapp.model.resources.DetailModel;
+import com.mstc.mstcapp.model.resources.ResourceModel;
+import com.mstc.mstcapp.model.resources.RoadmapModel;
+import com.mstc.mstcapp.util.Constants;
 import com.mstc.mstcapp.util.RetrofitInstance;
 import com.mstc.mstcapp.util.RetrofitInterface;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +33,6 @@ import retrofit2.Retrofit;
 import static com.mstc.mstcapp.util.Functions.isNetworkAvailable;
 
 public class Repository {
-    public static final String STC_SHARED_PREFERENCES = "STC_shared_preferences";
     private static final String TAG = "Repository";
     public DatabaseDao databaseDao;
     RetrofitInterface retrofitInterface;
@@ -45,41 +46,31 @@ public class Repository {
         databaseDao = STCDatabase.getInstance(context).databaseDao();
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
         retrofitInterface = retrofit.create(RetrofitInterface.class);
-        sharedPreferences = context.getSharedPreferences(STC_SHARED_PREFERENCES, Context.MODE_PRIVATE);
+        sharedPreferences = context.getSharedPreferences(Constants.STC_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
     }
-//
-//    public static Repository getInstance(Context context) {
-//        if (instance == null) {
-//            instance = new Repository(context);
-//        }
-//        return instance;
-//    }
 
     @MainThread
-    public LiveData<List<EventObject>> getEvents() {
+    public LiveData<List<EventModel>> getEvents() {
         if (isNetworkAvailable(context)) {
-            Call<List<EventObject>> call = retrofitInterface.getEvents();
-            call.enqueue(new Callback<List<EventObject>>() {
+            Call<List<EventModel>> call = retrofitInterface.getEvents(1);
+            call.enqueue(new Callback<List<EventModel>>() {
                 @Override
-                public void onResponse(@NonNull Call<List<EventObject>> call, @NonNull Response<List<EventObject>> response) {
+                public void onResponse(@NonNull Call<List<EventModel>> call, @NonNull Response<List<EventModel>> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<EventObject> events = response.body();
+                        List<EventModel> events = response.body();
                         STCDatabase.databaseWriteExecutor.execute(() -> {
                             databaseDao.insertEvents(events);
                         });
-                        for (EventObject event : events) {
-                            Log.i(TAG, "onResponse: " + event.getDescription());
-                        }
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<EventObject>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<List<EventModel>> call, @NonNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
@@ -89,29 +80,26 @@ public class Repository {
 
 
     @MainThread
-    public LiveData<List<ProjectsObject>> getProjects() {
+    public LiveData<List<ProjectsModel>> getProjects() {
         if (isNetworkAvailable(context)) {
-            Call<List<ProjectsObject>> call = retrofitInterface.getProjects();
+            Call<List<ProjectsModel>> call = retrofitInterface.getProjects();
 
-            call.enqueue(new Callback<List<ProjectsObject>>() {
+            call.enqueue(new Callback<List<ProjectsModel>>() {
                 @Override
-                public void onResponse(@NonNull Call<List<ProjectsObject>> call, @NonNull Response<List<ProjectsObject>> response) {
+                public void onResponse(@NonNull Call<List<ProjectsModel>> call, @NonNull Response<List<ProjectsModel>> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<ProjectsObject> projectsObjects = response.body();
-                        assert projectsObjects != null;
-                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertProjects(projectsObjects));
-                        for (ProjectsObject object : projectsObjects) {
-                            Log.i(TAG, "onResponse: " + object.getTitle());
-                        }
+                        List<ProjectsModel> projectsModels = response.body();
+                        assert projectsModels != null;
+                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertProjects(projectsModels));
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<ProjectsObject>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<List<ProjectsModel>> call, @NonNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
@@ -127,7 +115,7 @@ public class Repository {
      * @return List of board members from the database
      */
     @MainThread
-    public LiveData<List<BoardMember>> getBoardMembers() {
+    public LiveData<List<BoardMemberModel>> getBoardMembers() {
         long lastChecked = sharedPreferences.getLong("lastChecked", -1);
         long nextCheck = System.currentTimeMillis();
         if (lastChecked != -1) {
@@ -137,56 +125,59 @@ public class Repository {
             nextCheck = cal.getTime().getTime();
         }
         if (lastChecked == -1 || nextCheck <= new Date().getTime()) {
-//            databaseReference.child("Board").addListenerForSingleValueEvent(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-//                        String name = getString(dataSnapshot, "name");
-//                        String link = getString(dataSnapshot, "link");
-//                        String position = getString(dataSnapshot, "position");
-//                        String image = getString(dataSnapshot, "image");
-//                        Log.d(TAG, "onDataChange() returned: " + name + " " + link + " " + position + " " + image);
-//                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertBoardMember(new BoardMember(image, name, position, link)));
-//                    }
-//                    editor.putLong("lastChecked", new Date().getTime());
-//                    editor.apply();
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//                    Toast.makeText(context, "Couldn't fetch list of board members", Toast.LENGTH_SHORT).show();
-//                    Log.e(TAG, "onCancelled: " + error);
-//                }
-//            });
+            if (isNetworkAvailable(context)) {
+                Call<List<BoardMemberModel>> call = retrofitInterface.getBoard();
+                call.enqueue(new Callback<List<BoardMemberModel>>() {
+                    @Override
+                    public void onResponse(Call<List<BoardMemberModel>> call, Response<List<BoardMemberModel>> response) {
+                        if (response.isSuccessful()) {
+                            Log.i(TAG, "onResponse: successfull");
+                            Log.d(TAG, "onResponse() returned: " + response.body());
+                            List<BoardMemberModel> boardMembers = response.body();
+                            assert boardMembers != null;
+                            STCDatabase.databaseWriteExecutor.execute(() -> {
+                                databaseDao.deleteBoard();
+                                databaseDao.insertBoard(boardMembers);
+                            });
+                            editor.putLong("lastChecked", new Date().getTime());
+                            editor.apply();
+                        } else {
+                            Log.d(TAG, "onResponse() returned: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<BoardMemberModel>> call, Throwable t) {
+                    }
+                });
+            }
+
         }
         return databaseDao.getBoardMembers();
     }
 
-    public LiveData<List<Resource>> getResources(String domain) {
+    public LiveData<List<ResourceModel>> getResources(String domain) {
         if (isNetworkAvailable(context)) {
-            Call<List<Resource>> call = retrofitInterface.getResources(domain);
-            call.enqueue(new Callback<List<Resource>>() {
+            Call<List<ResourceModel>> call = retrofitInterface.getResources(domain);
+            call.enqueue(new Callback<List<ResourceModel>>() {
                 @Override
-                public void onResponse(@NonNull Call<List<Resource>> call, @NonNull Response<List<Resource>> response) {
+                public void onResponse(@NonNull Call<List<ResourceModel>> call, @NonNull Response<List<ResourceModel>> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<Resource> resources = response.body();
-                        assert resources != null;
+                        List<ResourceModel> resourceModels = response.body();
+                        assert resourceModels != null;
                         STCDatabase.databaseWriteExecutor.execute(() -> {
                             databaseDao.deleteResources(domain);
-                            databaseDao.insertResources(resources);
+                            databaseDao.insertResources(resourceModels);
                         });
-                        for (Resource resource : resources) {
-                            Log.i(TAG, "onResponse: " + resource.getTitle());
-                        }
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<Resource>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<List<ResourceModel>> call, @NonNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
@@ -194,29 +185,45 @@ public class Repository {
         return databaseDao.getResources(domain);
     }
 
-
-    private String listToString(ArrayList<String> list) {
-        String content = "";
-        for (String str : list) {
-            content += str + "\n";
-        }
-        return content;
-    }
-
-//    private String getString(DataSnapshot dataSnapshot, String child) {
-//        return Objects.requireNonNull(dataSnapshot.child(child).getValue()).toString();
-//    }
-
-    public LiveData<List<FeedObject>> getSavedFeedList() {
+    public LiveData<RoadmapModel> getRoadmap(String domain) {
         if (isNetworkAvailable(context)) {
-            Call<List<FeedObject>> call = retrofitInterface.getFeed("1");
-            call.enqueue(new Callback<List<FeedObject>>() {
+            Call<RoadmapModel> call = retrofitInterface.getRoadmap(domain);
+            call.enqueue(new Callback<RoadmapModel>() {
                 @Override
-                public void onResponse(@NonNull Call<List<FeedObject>> call, @NonNull Response<List<FeedObject>> response) {
+                public void onResponse(@NonNull Call<RoadmapModel> call, @NonNull Response<RoadmapModel> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<FeedObject> feeds = response.body();
+                        RoadmapModel roadmap = response.body();
+                        assert roadmap != null;
+                        STCDatabase.databaseWriteExecutor.execute(() -> {
+                            databaseDao.deleteRoadmap(domain);
+                            databaseDao.insertRoadmap(roadmap);
+                        });
+                    } else {
+                        Log.d(TAG, "onResponse() returned: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<RoadmapModel> call, @NonNull Throwable t) {
+                    Log.e(TAG, "onFailure: ", t);
+                }
+            });
+        }
+        return databaseDao.getRoadmap(domain);
+    }
+
+    public LiveData<List<FeedModel>> getSavedFeedList() {
+        if (isNetworkAvailable(context)) {
+            Call<List<FeedModel>> call = retrofitInterface.getFeed(1);
+            call.enqueue(new Callback<List<FeedModel>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<FeedModel>> call, @NonNull Response<List<FeedModel>> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "onResponse: successfull");
+                        Log.d(TAG, "onResponse() returned: " + response.body());
+                        List<FeedModel> feeds = response.body();
                         STCDatabase.databaseWriteExecutor.execute(() -> {
                             if (!MainActivity.isAppRunning) {
                                 databaseDao.deleteFeed();
@@ -230,7 +237,7 @@ public class Repository {
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<FeedObject>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<List<FeedModel>> call, @NonNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
@@ -238,7 +245,40 @@ public class Repository {
         return databaseDao.getFeedList();
     }
 
-    public void insertFeed(FeedObject feedObject) {
-        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertFeed(feedObject));
+    public void insertFeeds(List<FeedModel> list) {
+        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertFeeds(list));
+    }
+
+    public void insertEvents(List<EventModel> list) {
+        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertEvents(list));
+    }
+
+    public LiveData<DetailModel> getDetails(String domain) {
+        if (isNetworkAvailable(context)) {
+            Call<DetailModel> call = retrofitInterface.getDetails(domain);
+            call.enqueue(new Callback<DetailModel>() {
+                @Override
+                public void onResponse(@NonNull Call<DetailModel> call, @NonNull Response<DetailModel> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "onResponse: successfull");
+                        Log.d(TAG, "onResponse() returned: " + response.body());
+                        DetailModel details = response.body();
+                        assert details != null;
+                        STCDatabase.databaseWriteExecutor.execute(() -> {
+                            databaseDao.deleteDetails(domain);
+                            databaseDao.insertDetails(details);
+                        });
+                    } else {
+                        Log.d(TAG, "onResponse() returned: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<DetailModel> call, @NonNull Throwable t) {
+                    Log.e(TAG, "onFailure: ", t);
+                }
+            });
+        }
+        return databaseDao.getDetails(domain);
     }
 }

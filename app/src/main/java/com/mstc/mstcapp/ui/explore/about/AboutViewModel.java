@@ -7,13 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
-import com.mstc.mstcapp.model.explore.BoardMember;
+import com.mstc.mstcapp.model.explore.BoardMemberModel;
 
 import java.util.List;
 
 public class AboutViewModel extends AndroidViewModel {
     Repository repository;
-    LiveData<List<BoardMember>> list;
+    LiveData<List<BoardMemberModel>> list;
 
     public AboutViewModel(@NonNull Application application) {
         super(application);
@@ -21,7 +21,7 @@ public class AboutViewModel extends AndroidViewModel {
         list = repository.getBoardMembers();
     }
 
-    public LiveData<List<BoardMember>> getList() {
+    public LiveData<List<BoardMemberModel>> getList() {
         return list;
     }
 }

@@ -1,6 +1,5 @@
 package com.mstc.mstcapp.ui;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,24 +13,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.adapter.ResourceAdapter;
-import com.mstc.mstcapp.model.ResourceModel;
+import com.mstc.mstcapp.adapter.DomainAdapter;
+import com.mstc.mstcapp.model.DomainModel;
 import com.mstc.mstcapp.util.ClickListener;
 import com.mstc.mstcapp.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
 
-public class ResourcesFragment extends Fragment {
+public class DomainsFragment extends Fragment {
 
-    private ArrayList<ResourceModel> list;
+    private ArrayList<DomainModel> list;
     private RecyclerView recyclerView;
 
-    public ResourcesFragment() {
-        // Required empty public constructor
-    }
-
-    public static ResourcesFragment newInstance(String param1, String param2) {
-        return new ResourcesFragment();
+    public DomainsFragment() {
     }
 
     @Override
@@ -46,20 +40,24 @@ public class ResourcesFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
         list = new ArrayList<>();
+        int color1 = R.style.resources_red;
+        int color2 = R.style.resources_blue;
+        int color3 = R.style.resources_yellow;
 
-        /** ADD A NEW RESOURCE HERE **/
-        list.add(new ResourceModel("Android", R.drawable.ic_app_dev));
-        list.add(new ResourceModel("Frontend", R.drawable.ic_frontend));
-        list.add(new ResourceModel("Backend", R.drawable.ic_backend));
-        list.add(new ResourceModel("Design", R.drawable.ic_design));
-        list.add(new ResourceModel("Machine Learning", R.drawable.ic_app_dev));
-        list.add(new ResourceModel("Competitive Coding", R.drawable.ic_cc));
-        ResourceAdapter resourceAdapter = new ResourceAdapter(getContext(), list);
-        recyclerView.setAdapter(resourceAdapter);
+        /* ADD A NEW RESOURCE HERE */
+        list.add(new DomainModel("Android", R.drawable.ic_app_dev, color1));
+        list.add(new DomainModel("Frontend", R.drawable.ic_frontend, color2));
+        list.add(new DomainModel("Backend", R.drawable.ic_backend, color3));
+        list.add(new DomainModel("Design", R.drawable.ic_design, color1));
+        list.add(new DomainModel("Machine Learning", R.drawable.ic_app_dev, color2));
+        list.add(new DomainModel("Competitive Coding", R.drawable.ic_cc, color3));
+
+        DomainAdapter domainAdapter = new DomainAdapter(getContext(), list);
+        recyclerView.setAdapter(domainAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getContext(), recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                viewResource(list.get(position).getDomain().toLowerCase(), position);
+                viewResource(list.get(position));
             }
 
             @Override
@@ -69,10 +67,9 @@ public class ResourcesFragment extends Fragment {
         }));
     }
 
-    private void viewResource(String type, int position) {
+    private void viewResource(DomainModel domainModel) {
         Bundle bundle = new Bundle();
-        bundle.putString("domain", type);
-        bundle.putInt("position", position);
-        NavHostFragment.findNavController(ResourcesFragment.this).navigate(R.id.action_navigation_resources_to_navigation_view_resource_activity, bundle);
+        bundle.putSerializable("domain", domainModel);
+        NavHostFragment.findNavController(DomainsFragment.this).navigate(R.id.action_navigation_resources_to_navigation_view_resource_activity, bundle);
     }
 }

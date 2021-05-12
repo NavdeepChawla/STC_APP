@@ -1,12 +1,16 @@
 package com.mstc.mstcapp.model;
 
-public class ResourceModel {
+import java.io.Serializable;
+
+public class DomainModel implements Serializable {
     private final String domain;
     private final int drawable;
+    private final int color;
 
-    public ResourceModel(String domain, int drawable) {
+    public DomainModel(String domain, int drawable, int color) {
         this.domain = domain;
         this.drawable = drawable;
+        this.color = color;
     }
 
     public String getDomain() {
@@ -15,6 +19,10 @@ public class ResourceModel {
 
     public int getDrawable() {
         return drawable;
+    }
+
+    public int getColor() {
+        return color;
     }
 }
 

@@ -6,23 +6,24 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "BOARD")
-public class BoardMember {
+public class BoardMemberModel {
 
-    @SerializedName("id")
-    @PrimaryKey(autoGenerate = true)
-    long id;
     @SerializedName("image")
     private final String image;
     @SerializedName("name")
     private final String name;
     @SerializedName("position")
     private final String position;
-    @SerializedName("link")
+    @SerializedName("linkedIn")
     private final String link;
     @SerializedName("phrase")
     private final String phrase;
 
-    public BoardMember(String image, String name, String position, String phrase, String link) {
+    @SerializedName("_id")
+    @PrimaryKey(autoGenerate = true)
+    public long id;
+
+    public BoardMemberModel(String image, String name, String position, String phrase, String link) {
         this.image = image;
         this.name = name;
         this.position = position;

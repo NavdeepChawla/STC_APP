@@ -15,16 +15,16 @@ import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.ResourceModel;
+import com.mstc.mstcapp.model.DomainModel;
 
 import java.util.ArrayList;
 
-public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.ResourceViewHolder> {
+public class DomainAdapter extends RecyclerView.Adapter<DomainAdapter.ResourceViewHolder> {
 
-    private final ArrayList<ResourceModel> list;
+    private final ArrayList<DomainModel> list;
     private final Context context;
 
-    public ResourceAdapter(Context context, ArrayList<ResourceModel> list) {
+    public DomainAdapter(Context context, ArrayList<DomainModel> list) {
         this.list = list;
         this.context = context;
     }
@@ -32,7 +32,7 @@ public class ResourceAdapter extends RecyclerView.Adapter<ResourceAdapter.Resour
     @NonNull
     @Override
     public ResourceViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ResourceViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_resource_head, parent, false));
+        return new ResourceViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_domain, parent, false));
     }
 
     @Override

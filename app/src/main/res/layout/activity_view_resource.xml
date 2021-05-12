@@ -43,7 +43,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_small"
-                    android:text="The best and trusted resources for you to get started"
+                    android:text="The best and trusted resourceModels for you to get started"
                     android:textAppearance="@style/body2" />
 
                 <ImageView

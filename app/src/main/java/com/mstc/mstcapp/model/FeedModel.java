@@ -7,26 +7,22 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "FEED")
-public class FeedObject {
+public class FeedModel {
 
+    @SerializedName("title")
+    private final String title;
+    @SerializedName("description")
+    private final String description;
+    @SerializedName("link")
+    private final String link;
+    @SerializedName("image")
+    private final String image;
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
     private String id;
 
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("description")
-    private String description;
-
-    @SerializedName("link")
-    private String link;
-
-    @SerializedName("image")
-    private String image;
-
-    public FeedObject(String title, String description, String link, String image) {
+    public FeedModel(String title, String description, String link, String image) {
         this.title = title;
         this.description = description;
         this.link = link;
@@ -46,31 +42,16 @@ public class FeedObject {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getLink() {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public String getImage() {
         return image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

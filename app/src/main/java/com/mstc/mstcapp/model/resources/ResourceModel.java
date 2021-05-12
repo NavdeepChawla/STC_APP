@@ -8,16 +8,16 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "RESOURCES")
 
-public class Resource {
+public class ResourceModel {
 
     @SerializedName("title")
-    String title;
+    private final String title;
     @SerializedName("link")
-    String link;
+    private final String link;
     @SerializedName("description")
-    String description;
+    private final String description;
     @SerializedName("domain")
-    String domain;
+    private final String domain;
 
     @PrimaryKey
     @NonNull
@@ -25,7 +25,7 @@ public class Resource {
 
     private String id;
 
-    public Resource(String title, String link, String description, String domain) {
+    public ResourceModel(String title, String link, String description, String domain) {
         this.title = title;
         this.link = link;
         this.description = description;
@@ -45,31 +45,16 @@ public class Resource {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getLink() {
         return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getDomain() {
         return domain;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
 }

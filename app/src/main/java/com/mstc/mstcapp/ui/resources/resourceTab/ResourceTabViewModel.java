@@ -7,20 +7,20 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.resources.ResourceModel;
 
 import java.util.List;
 
 public class ResourceTabViewModel extends AndroidViewModel {
     Repository repository;
-    LiveData<List<Resource>> listLiveData;
+    LiveData<List<ResourceModel>> listLiveData;
 
     public ResourceTabViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
     }
 
-    public LiveData<List<Resource>> getList(String domain) {
+    public LiveData<List<ResourceModel>> getList(String domain) {
         listLiveData = repository.getResources(domain);
         return listLiveData;
     }

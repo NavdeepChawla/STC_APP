@@ -16,9 +16,9 @@ import com.mstc.mstcapp.util.Constants;
 
 public class WelcomeActivity extends AppCompatActivity {
     private static final String TAG = "WelcomeActivity";
+    SharedPreferences.Editor editor;
     private Context context = this;
     private SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
     private int NoOfSlides = 3, position = 0;
     private TextView[] dots;
     private LinearLayout dotsLayout;
@@ -40,10 +40,10 @@ public class WelcomeActivity extends AppCompatActivity {
         findViewById(R.id.next).setOnClickListener(v -> {
             position++;
             if (position < NoOfSlides) {
-                imageView.setImageDrawable(ContextCompat.getDrawable(context,images[position]));
+                imageView.setImageDrawable(ContextCompat.getDrawable(context, images[position]));
                 textView.setText(getString(texts[position]));
                 addBottomDots(position);
-            }else{
+            } else {
                 editor.putBoolean("isFirstLaunch", false);
                 editor.apply();
                 startActivity(new Intent(context, MainActivity.class));
@@ -62,6 +62,7 @@ public class WelcomeActivity extends AppCompatActivity {
             dots[i].setText(Html.fromHtml("&nbsp;&#8226;&nbsp"));
             dots[i].setTextSize(25);
             dots[i].setTextColor(colorsInactive);
+            dots[i].setPadding(15, 15, 15, 15);
             dotsLayout.addView(dots[i]);
         }
         if (dots.length > 0) {

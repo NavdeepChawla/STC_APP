@@ -7,21 +7,26 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
-import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.EventModel;
 
 import java.util.List;
 
 public class EventViewModel extends AndroidViewModel {
-    Repository repository;
-    LiveData<List<EventObject>> list;
+    private Repository repository;
+    private LiveData<List<EventModel>> list;
 
     public EventViewModel(@NonNull Application application) {
         super(application);
         repository = new Repository(application);
         list = repository.getEvents();
+        repository = new Repository(application);
     }
 
-    public LiveData<List<EventObject>> getList() {
+    public LiveData<List<EventModel>> getList() {
         return list;
+    }
+
+    public void insertEvents(List<EventModel> list) {
+        repository.insertEvents(list);
     }
 }

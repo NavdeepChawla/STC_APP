@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.explore.ProjectsAdapter;
-import com.mstc.mstcapp.model.explore.ProjectsObject;
+import com.mstc.mstcapp.model.explore.ProjectsModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class ProjectFragment extends Fragment {
     RecyclerView recyclerView;
     ProjectViewModel mViewModel;
     ProjectsAdapter adapter;
-    List<ProjectsObject> list;
+    List<ProjectsModel> list;
 
     public ProjectFragment() {
     }

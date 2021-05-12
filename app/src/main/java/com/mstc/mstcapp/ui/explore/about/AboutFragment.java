@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.BoardMemberAdapter;
-import com.mstc.mstcapp.model.explore.BoardMember;
+import com.mstc.mstcapp.model.explore.BoardMemberModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,16 +23,11 @@ import java.util.List;
 public class AboutFragment extends Fragment {
     AboutViewModel mViewModal;
     BoardMemberAdapter boardMemberAdapter;
-    List<BoardMember> list;
+    List<BoardMemberModel> list;
     RecyclerView recyclerView;
     Context context;
 
     public AboutFragment() {
-        // Required empty public constructor
-    }
-
-    public static AboutFragment newInstance(String param1, String param2) {
-        return new AboutFragment();
     }
 
     @Override

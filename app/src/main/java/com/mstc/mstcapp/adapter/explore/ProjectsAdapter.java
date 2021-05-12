@@ -12,16 +12,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.explore.ProjectsObject;
+import com.mstc.mstcapp.model.explore.ProjectsModel;
 
 import java.util.List;
 
 public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHolder> {
 
-    private List<ProjectsObject> list;
+    private List<ProjectsModel> list;
     private Context context;
 
-    public ProjectsAdapter(Context context, List<ProjectsObject> items) {
+    public ProjectsAdapter(Context context, List<ProjectsModel> items) {
         this.context = context;
         list = items;
     }
@@ -53,7 +53,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         return list.size();
     }
 
-    public void setList(List<ProjectsObject> list) {
+    public void setList(List<ProjectsModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -63,7 +63,7 @@ public class ProjectsAdapter extends RecyclerView.Adapter<ProjectsAdapter.ViewHo
         public final ImageView image;
         public final TextView title;
         public final TextView description;
-        public ProjectsObject mItem;
+        public ProjectsModel mItem;
 
         public ViewHolder(View view) {
             super(view);

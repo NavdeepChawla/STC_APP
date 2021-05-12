@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -13,30 +14,48 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.EventModel;
 
 import java.util.List;
 
-public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> {
-
+public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final int VIEW_TYPE_ITEM = 0;
+    private final int VIEW_TYPE_LOADING = 1;
     private final Context context;
-    private List<EventObject> list;
+    private List<EventModel> list;
 
-    public EventAdapter(Context context, List<EventObject> items) {
+    public EventAdapter(Context context, List<EventModel> items) {
         this.context = context;
         list = items;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_event, parent, false);
-        return new ViewHolder(view);
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
+        if (viewType == VIEW_TYPE_ITEM) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
+            return new ItemViewHolder(view);
+        } else {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_loading, parent, false);
+            return new LoadingViewHolder(view);
+        }
+
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
+        if (holder instanceof ItemViewHolder)
+            populateItemRows((ItemViewHolder) holder, position);
+        else if (holder instanceof LoadingViewHolder)
+            showLoadingView((LoadingViewHolder) holder, position);
+    }
+
+    private void showLoadingView(LoadingViewHolder holder, int position) {
+
+    }
+
+    private void populateItemRows(ItemViewHolder holder, int position) {
         holder.title.setText(list.get(position).getTitle());
         holder.description.setText(list.get(position).getDescription());
         if (position % 3 == 0)
@@ -52,19 +71,27 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         return list.size();
     }
 
-    public void setList(List<EventObject> list) {
+    public void setList(List<EventModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        if (list.get(position) == null)
+            return VIEW_TYPE_LOADING;
+        else
+            return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
+    }
+
+    public class ItemViewHolder extends RecyclerView.ViewHolder {
         public final CardView cardView;
         public final ImageView image;
         public final TextView status;
         public final TextView title;
         public final TextView description;
 
-        public ViewHolder(View view) {
+        public ItemViewHolder(View view) {
             super(view);
             image = view.findViewById(R.id.image);
             status = view.findViewById(R.id.status);
@@ -77,6 +104,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.ViewHolder> 
         @Override
         public String toString() {
             return super.toString() + " '" + description.getText() + "'";
+        }
+    }
+
+    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+        public ProgressBar progressBar;
+
+        public LoadingViewHolder(@NonNull View itemView) {
+            super(itemView);
+            progressBar = itemView.findViewById(R.id.progressBar);
         }
     }
 }

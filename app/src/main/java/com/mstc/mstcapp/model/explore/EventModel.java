@@ -7,29 +7,35 @@ import androidx.room.PrimaryKey;
 import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "EVENTS")
-public class EventObject {
+public class EventModel {
+    @SerializedName("title")
+    private final String title;
+    @SerializedName("image")
+    private final String image;
+    @SerializedName("link")
+    private final String link;
+    @SerializedName("description")
+    private final String description;
+    @SerializedName("status")
+    private final String status;
+    @SerializedName("startDate")
+    private final String startDate;
+    @SerializedName("endDate")
+    private final String endDate;
+
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
-    private String id;
+    public String id;
 
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("image")
-    private String image;
-
-    @SerializedName("link")
-    private String link;
-
-    @SerializedName("description")
-    private String description;
-
-    public EventObject(String title, String description, String link, String image) {
+    public EventModel(String title, String description, String link, String image, String status, String startDate, String endDate) {
         this.title = title;
         this.description = description;
         this.link = link;
         this.image = image;
+        this.status = status;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     @NonNull
@@ -45,32 +51,28 @@ public class EventObject {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getLink() {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public String getImage() {
         return image;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public String getStatus() {
+        return status;
     }
 
 }

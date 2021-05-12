@@ -12,16 +12,16 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.explore.BoardMember;
+import com.mstc.mstcapp.model.explore.BoardMemberModel;
 
 import java.util.List;
 
 public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.BoardViewHolder> {
 
     private final Context context;
-    private List<BoardMember> list;
+    private List<BoardMemberModel> list;
 
-    public BoardMemberAdapter(Context context, List<BoardMember> items) {
+    public BoardMemberAdapter(Context context, List<BoardMemberModel> items) {
         this.context = context;
         list = items;
     }
@@ -52,7 +52,7 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
         return list.size();
     }
 
-    public void setList(List<BoardMember> list) {
+    public void setList(List<BoardMemberModel> list) {
         this.list = list;
         notifyDataSetChanged();
     }

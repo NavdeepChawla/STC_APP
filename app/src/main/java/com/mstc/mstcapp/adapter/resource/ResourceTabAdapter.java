@@ -10,16 +10,16 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.resources.ResourceModel;
 
 import java.util.List;
 
 public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.ViewHolder> {
 
     private final Context context;
-    private List<Resource> mValues;
+    private List<ResourceModel> mValues;
 
-    public ResourceTabAdapter(Context context, List<Resource> items) {
+    public ResourceTabAdapter(Context context, List<ResourceModel> items) {
         this.context = context;
         mValues = items;
     }
@@ -43,7 +43,7 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
         return mValues.size();
     }
 
-    public void setList(List<Resource> list) {
+    public void setList(List<ResourceModel> list) {
         this.mValues = list;
         notifyDataSetChanged();
     }

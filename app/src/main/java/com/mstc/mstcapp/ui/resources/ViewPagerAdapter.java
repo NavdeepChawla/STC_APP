@@ -8,6 +8,7 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.mstc.mstcapp.ui.resources.detailsTab.DetailsFragment;
 import com.mstc.mstcapp.ui.resources.resourceTab.ResourceTabFragment;
+import com.mstc.mstcapp.ui.resources.roadmapTab.RoadmapTabFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 

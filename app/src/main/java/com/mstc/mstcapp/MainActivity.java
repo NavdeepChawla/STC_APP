@@ -1,7 +1,9 @@
 package com.mstc.mstcapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -12,11 +14,11 @@ import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
 
 import com.google.android.material.chip.Chip;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.mstc.mstcapp.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -34,18 +36,23 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_home, R.id.navigation_resources, R.id.navigation_explore, R.id.navigation_about)
-                .build();
 
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         drawerLayout = findViewById(R.id.drawerLayout);
 
+
+
+        drawerLayout.findViewById(R.id.instagram).setOnClickListener(v -> openURL(Constants.INSTAGRAM_URL));
+        drawerLayout.findViewById(R.id.facebook).setOnClickListener(v -> openURL(Constants.FACEBOOK_URL));
+        drawerLayout.findViewById(R.id.linkedin).setOnClickListener(v -> openURL(Constants.LINKEDIN_URL));
+        drawerLayout.findViewById(R.id.github).setOnClickListener(v -> openURL(Constants.GITHUB_URL));
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
+
         toggle.syncState();
-        toolbar.setNavigationIcon(ContextCompat.getDrawable(context,R.drawable.ic_navigation));
+        toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_navigation));
 
         findViewById(R.id.home).setOnClickListener(v -> {
             selectTab(ids[0]);
@@ -64,8 +71,12 @@ public class MainActivity extends AppCompatActivity {
             navController.popBackStack();
             navController.navigate(R.id.navigation_explore);
         });
-//        NavigationUI.setupWithNavController(navView, navController);
+    }
 
+    public void openURL(String url) {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 
     @Override
@@ -92,21 +103,21 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void selectTab(int id) {
+    private void selectTab(int id) {
         for (int i = 0; i < ids.length; i++) {
             if (ids[i] != id) setUnselected(ids[i]);
         }
         setSelected(id);
     }
 
-    public void setUnselected(int id) {
+    private void setUnselected(int id) {
         Chip chip = findViewById(id);
         chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.white)));
         chip.setTextColor(ContextCompat.getColor(context, R.color.textColorPrimary));
         chip.setChipIconTint(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.textColorPrimary)));
     }
 
-    public void setSelected(int id) {
+    private void setSelected(int id) {
         Chip chip = findViewById(id);
         chip.setChipBackgroundColor(ColorStateList.valueOf(ContextCompat.getColor(context, R.color.colorTertiaryBlue)));
         chip.setTextColor(ContextCompat.getColor(context, R.color.colorPrimary));

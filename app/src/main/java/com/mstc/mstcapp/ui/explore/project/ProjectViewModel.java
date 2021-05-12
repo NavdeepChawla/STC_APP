@@ -7,13 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
-import com.mstc.mstcapp.model.explore.ProjectsObject;
+import com.mstc.mstcapp.model.explore.ProjectsModel;
 
 import java.util.List;
 
 public class ProjectViewModel extends AndroidViewModel {
     Repository repository;
-    LiveData<List<ProjectsObject>> list;
+    LiveData<List<ProjectsModel>> list;
 
     public ProjectViewModel(@NonNull Application application) {
         super(application);
@@ -21,7 +21,7 @@ public class ProjectViewModel extends AndroidViewModel {
         list = repository.getProjects();
     }
 
-    public LiveData<List<ProjectsObject>> getList() {
+    public LiveData<List<ProjectsModel>> getList() {
         return list;
     }
 }

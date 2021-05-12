@@ -9,26 +9,22 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 @Entity(tableName = "PROJECTS")
-public class ProjectsObject {
+public class ProjectsModel {
 
+    @SerializedName("title")
+    private final String title;
+    @SerializedName("contributors")
+    private final ArrayList<String> contributorsList;
+    @SerializedName("link")
+    private final String link;
+    @SerializedName("description")
+    private final String description;
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
     private String id;
 
-    @SerializedName("title")
-    private String title;
-
-    @SerializedName("contributors")
-    private ArrayList<String> contributorsList;
-
-    @SerializedName("link")
-    private String link;
-
-    @SerializedName("description")
-    private String description;
-
-    public ProjectsObject(String title, ArrayList<String> contributorsList, String link, String description) {
+    public ProjectsModel(String title, ArrayList<String> contributorsList, String link, String description) {
         this.title = title;
         this.contributorsList = contributorsList;
         this.link = link;
@@ -48,33 +44,18 @@ public class ProjectsObject {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public ArrayList<String> getContributorsList() {
         return contributorsList;
-    }
-
-    public void setContributorsList(ArrayList<String> contributorsList) {
-        this.contributorsList = contributorsList;
     }
 
     public String getLink() {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
 
     public String getDescription() {
         return description;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
 
 }

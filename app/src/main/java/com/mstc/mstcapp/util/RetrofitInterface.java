@@ -1,9 +1,12 @@
 package com.mstc.mstcapp.util;
 
-import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.explore.EventObject;
-import com.mstc.mstcapp.model.explore.ProjectsObject;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.FeedModel;
+import com.mstc.mstcapp.model.explore.BoardMemberModel;
+import com.mstc.mstcapp.model.explore.EventModel;
+import com.mstc.mstcapp.model.explore.ProjectsModel;
+import com.mstc.mstcapp.model.resources.DetailModel;
+import com.mstc.mstcapp.model.resources.ResourceModel;
+import com.mstc.mstcapp.model.resources.RoadmapModel;
 
 import java.util.List;
 
@@ -14,16 +17,25 @@ import retrofit2.http.Query;
 
 public interface RetrofitInterface {
 
-    @GET("getProject")
-    Call<List<ProjectsObject>> getProjects();
+    @GET("project")
+    Call<List<ProjectsModel>> getProjects();
 
-    @GET("getEvent")
-    Call<List<EventObject>> getEvents();
+    @GET("event")
+    Call<List<EventModel>> getEvents(@Query("skip") int skip);
 
-    @GET("getFeed")
-    Call<List<FeedObject>> getFeed(@Query("skip") String skip);
+    @GET("feed")
+    Call<List<FeedModel>> getFeed(@Query("skip") int skip);
 
-    @GET("getResource/{domain}")
-    Call<List<Resource>> getResources(@Path("domain") String domain);
+    @GET("details/{domain}")
+    Call<DetailModel> getDetails(@Path("domain") String domain);
+
+    @GET("resource/{domain}")
+    Call<List<ResourceModel>> getResources(@Path("domain") String domain);
+
+    @GET("roadmap/{domain}")
+    Call<RoadmapModel> getRoadmap(@Path("domain") String domain);
+
+    @GET("board")
+    Call<List<BoardMemberModel>> getBoard();
 
 }

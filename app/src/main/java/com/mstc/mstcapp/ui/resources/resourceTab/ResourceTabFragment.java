@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.resource.ResourceTabAdapter;
-import com.mstc.mstcapp.model.resources.Resource;
+import com.mstc.mstcapp.model.resources.ResourceModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +25,7 @@ public class ResourceTabFragment extends Fragment {
     private RecyclerView recyclerView;
     private ResourceTabViewModel mViewModel;
     private ResourceTabAdapter adapter;
-    private List<Resource> list;
+    private List<ResourceModel> list;
     private String domain;
 
     public ResourceTabFragment() {
