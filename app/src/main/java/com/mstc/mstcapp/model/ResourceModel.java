@@ -1,38 +1,20 @@
 package com.mstc.mstcapp.model;
 
 public class ResourceModel {
+    private final String domain;
+    private final int drawable;
 
-    private String title;
-    private int image;
-    private String domain;
-
-    public ResourceModel(String domain, String title, int image) {
+    public ResourceModel(String domain, int drawable) {
         this.domain = domain;
-        this.title = title;
-        this.image = image;
+        this.drawable = drawable;
     }
 
     public String getDomain() {
         return domain;
     }
 
-    public void setDomain(String domain) {
-        this.domain = domain;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public int getImage() {
-        return image;
-    }
-
-    public void setImage(int image) {
-        this.image = image;
+    public int getDrawable() {
+        return drawable;
     }
 }
+

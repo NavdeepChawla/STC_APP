@@ -3,25 +3,17 @@ package com.mstc.mstcapp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.MainThread;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.mstc.mstcapp.database.DatabaseDao;
 import com.mstc.mstcapp.database.STCDatabase;
-import com.mstc.mstcapp.model.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.highlights.EventObject;
-import com.mstc.mstcapp.model.highlights.GithubObject;
-import com.mstc.mstcapp.model.highlights.ProjectsObject;
-import com.mstc.mstcapp.model.resources.Article;
+import com.mstc.mstcapp.model.explore.BoardMember;
+import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.ProjectsObject;
 import com.mstc.mstcapp.model.resources.Resource;
 import com.mstc.mstcapp.util.RetrofitInstance;
 import com.mstc.mstcapp.util.RetrofitInterface;
@@ -30,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,7 +38,6 @@ public class Repository {
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     Context context;
-    DatabaseReference databaseReference;
     private Repository instance;
 
     public Repository(Context context) {
@@ -57,7 +47,6 @@ public class Repository {
         retrofitInterface = retrofit.create(RetrofitInterface.class);
         sharedPreferences = context.getSharedPreferences(STC_SHARED_PREFERENCES, Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
     }
 //
 //    public static Repository getInstance(Context context) {
@@ -98,36 +87,6 @@ public class Repository {
         return databaseDao.getEventsList();
     }
 
-    @MainThread
-    public LiveData<List<GithubObject>> getGithub() {
-        if (isNetworkAvailable(context)) {
-            Call<List<GithubObject>> call = retrofitInterface.getGithub();
-            call.enqueue(new Callback<List<GithubObject>>() {
-                @Override
-                public void onResponse(@NonNull Call<List<GithubObject>> call, @NonNull Response<List<GithubObject>> response) {
-                    if (response.isSuccessful()) {
-                        Log.i(TAG, "onResponse: successfull");
-                        Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<GithubObject> githubObjects = response.body();
-                        STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.insertGithub(githubObjects);
-                        });
-                        for (GithubObject githubObject : githubObjects) {
-                            Log.i(TAG, "onResponse: " + githubObject.getTitle());
-                        }
-                    } else {
-                        Log.d(TAG, "onResponse() returned: " + response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<List<GithubObject>> call, @NonNull Throwable t) {
-                    Log.e(TAG, "onFailure: ", t);
-                }
-            });
-        }
-        return databaseDao.getGithub();
-    }
 
     @MainThread
     public LiveData<List<ProjectsObject>> getProjects() {
@@ -178,27 +137,27 @@ public class Repository {
             nextCheck = cal.getTime().getTime();
         }
         if (lastChecked == -1 || nextCheck <= new Date().getTime()) {
-            databaseReference.child("Board").addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        String name = getString(dataSnapshot, "name");
-                        String link = getString(dataSnapshot, "link");
-                        String position = getString(dataSnapshot, "position");
-                        String image = getString(dataSnapshot, "image");
-                        Log.d(TAG, "onDataChange() returned: " + name + " " + link + " " + position + " " + image);
-                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertBoardMember(new BoardMember(image, name, position, link)));
-                    }
-                    editor.putLong("lastChecked", new Date().getTime());
-                    editor.apply();
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(context, "Couldn't fetch list of board members", Toast.LENGTH_SHORT).show();
-                    Log.e(TAG, "onCancelled: " + error);
-                }
-            });
+//            databaseReference.child("Board").addListenerForSingleValueEvent(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+//                        String name = getString(dataSnapshot, "name");
+//                        String link = getString(dataSnapshot, "link");
+//                        String position = getString(dataSnapshot, "position");
+//                        String image = getString(dataSnapshot, "image");
+//                        Log.d(TAG, "onDataChange() returned: " + name + " " + link + " " + position + " " + image);
+//                        STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertBoardMember(new BoardMember(image, name, position, link)));
+//                    }
+//                    editor.putLong("lastChecked", new Date().getTime());
+//                    editor.apply();
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Toast.makeText(context, "Couldn't fetch list of board members", Toast.LENGTH_SHORT).show();
+//                    Log.e(TAG, "onCancelled: " + error);
+//                }
+//            });
         }
         return databaseDao.getBoardMembers();
     }
@@ -235,38 +194,6 @@ public class Repository {
         return databaseDao.getResources(domain);
     }
 
-    public LiveData<List<Article>> getArticles(String domain) {
-        if (isNetworkAvailable(context)) {
-            Call<List<Article>> call = retrofitInterface.getArticles(domain);
-            call.enqueue(new Callback<List<Article>>() {
-                @Override
-                public void onResponse(@NonNull Call<List<Article>> call, @NonNull Response<List<Article>> response) {
-                    if (response.isSuccessful()) {
-                        Log.i(TAG, "onResponse: successfull");
-                        Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<Article> list = response.body();
-                        if (list != null) {
-                            STCDatabase.databaseWriteExecutor.execute(() -> {
-                                databaseDao.deleteArticles(domain);
-                                databaseDao.insertArticles(list);
-                            });
-                        }
-                        for (Article article : list) {
-                            Log.i(TAG, "onResponse: " + article.getTitle());
-                        }
-                    } else {
-                        Log.d(TAG, "onResponse() returned: " + response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<List<Article>> call, @NonNull Throwable t) {
-                    Log.e(TAG, "onFailure: ", t);
-                }
-            });
-        }
-        return databaseDao.getArticles(domain);
-    }
 
     private String listToString(ArrayList<String> list) {
         String content = "";
@@ -276,9 +203,9 @@ public class Repository {
         return content;
     }
 
-    private String getString(DataSnapshot dataSnapshot, String child) {
-        return Objects.requireNonNull(dataSnapshot.child(child).getValue()).toString();
-    }
+//    private String getString(DataSnapshot dataSnapshot, String child) {
+//        return Objects.requireNonNull(dataSnapshot.child(child).getValue()).toString();
+//    }
 
     public LiveData<List<FeedObject>> getSavedFeedList() {
         if (isNetworkAvailable(context)) {

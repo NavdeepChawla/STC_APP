@@ -3,6 +3,7 @@ package com.mstc.mstcapp.util;
 public class Constants {
     public static final String BASE_URL = "https://stcbackendnode.herokuapp.com/";
 
+    public static final String STC_SHARED_PREFERENCES = "STC_SHARED_PREFERENCES";
     //SOCIAL MEDIA URL
     public static final String INSTAGRAM_URL = "https://www.instagram.com/mstcvit/";
     public static final String FACEBOOK_URL = "https://www.facebook.com/mstcvit/";

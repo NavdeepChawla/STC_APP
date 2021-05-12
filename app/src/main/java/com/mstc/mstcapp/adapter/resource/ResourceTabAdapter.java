@@ -1,5 +1,6 @@
 package com.mstc.mstcapp.adapter.resource;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +16,11 @@ import java.util.List;
 
 public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.ViewHolder> {
 
+    private final Context context;
     private List<Resource> mValues;
 
-    public ResourceTabAdapter(List<Resource> items) {
+    public ResourceTabAdapter(Context context, List<Resource> items) {
+        this.context = context;
         mValues = items;
     }
 
@@ -25,15 +28,14 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_event, parent, false);
+                .inflate(R.layout.item_resource, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).getTitle());
-        holder.mContentView.setText(mValues.get(position).getDescription());
+        holder.title.setText(mValues.get(position).getTitle());
+        holder.description.setText(mValues.get(position).getDescription());
     }
 
     @Override
@@ -47,21 +49,18 @@ public class ResourceTabAdapter extends RecyclerView.Adapter<ResourceTabAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public Resource mItem;
+        public final TextView title;
+        public final TextView description;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = view.findViewById(R.id.item_number);
-            mContentView = view.findViewById(R.id.content);
+            title = view.findViewById(R.id.title);
+            description = view.findViewById(R.id.description);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + description.getText() + "'";
         }
     }
 }

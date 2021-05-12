@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -21,11 +22,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ResourceTabFragment extends Fragment {
-    RecyclerView recyclerView;
-    ResourceTabViewModel mViewModel;
-    ResourceTabAdapter adapter;
-    List<Resource> list;
-    String domain;
+    private RecyclerView recyclerView;
+    private ResourceTabViewModel mViewModel;
+    private ResourceTabAdapter adapter;
+    private List<Resource> list;
+    private String domain;
 
     public ResourceTabFragment() {
     }
@@ -49,8 +50,9 @@ public class ResourceTabFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         list = new ArrayList<>();
-        adapter = new ResourceTabAdapter(list);
+        adapter = new ResourceTabAdapter(context, list);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mViewModel.getList(domain).observe(getViewLifecycleOwner(), eventObjects -> {
             list = eventObjects;
             adapter.setList(list);

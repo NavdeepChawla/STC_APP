@@ -36,28 +36,20 @@ public class RoadmapTabFragment extends Fragment {
         imageViewRoadmap = view.findViewById(R.id.roadmapImage);
         switch (domain) {
             case "android":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_bg);
                 break;
             case "backend":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_backend);
                 break;
             case "data science":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_datascience);
                 break;
             case "competitive coding":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_compcc);
                 break;
             case "design":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_design);
                 break;
             case "frontend":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_frontend);
                 break;
             case "flutter":
-                imageViewRoadmap.setImageResource(R.drawable.ic_roadmap_flutter);
                 break;
             default:
-                imageViewRoadmap.setVisibility(View.INVISIBLE);
         }
     }
 }

@@ -5,12 +5,10 @@ import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
 
-import com.mstc.mstcapp.model.BoardMember;
+import com.mstc.mstcapp.model.explore.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-import com.mstc.mstcapp.model.highlights.EventObject;
-import com.mstc.mstcapp.model.highlights.GithubObject;
-import com.mstc.mstcapp.model.highlights.ProjectsObject;
-import com.mstc.mstcapp.model.resources.Article;
+import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.ProjectsObject;
 import com.mstc.mstcapp.model.resources.Resource;
 
 import java.util.List;
@@ -43,16 +41,6 @@ public interface DatabaseDao {
     @Query(value = "SELECT * FROM EVENTS")
     LiveData<List<EventObject>> getEventsList();
 
-    //GITHUB
-    @Insert(entity = GithubObject.class, onConflict = REPLACE)
-    void insertGithub(List<GithubObject> githubObjects);
-
-    @Query(value = "SELECT * FROM GITHUB")
-    LiveData<List<GithubObject>> getGithub();
-
-    @Query("DELETE FROM GITHUB")
-    void deleteGithub();
-
     //PROJECTS
     @Insert(entity = ProjectsObject.class, onConflict = REPLACE)
     void insertProjects(List<ProjectsObject> projectsObjects);
@@ -60,7 +48,7 @@ public interface DatabaseDao {
     @Query(value = "SELECT * FROM PROJECTS")
     LiveData<List<ProjectsObject>> getProjects();
 
-    @Query("DELETE FROM GITHUB")
+    @Query("DELETE FROM PROJECTS")
     void deleteProjects();
 
     //BOARD MEMBERS
@@ -83,14 +71,5 @@ public interface DatabaseDao {
     @Query("SELECT * FROM RESOURCES WHERE domain=:domain")
     LiveData<List<Resource>> getResources(String domain);
 
-    //ARTICLES
-    @Insert(onConflict = REPLACE)
-    void insertArticles(List<Article> list);
-
-    @Query("SELECT * FROM ARTICLES WHERE domain=:domain")
-    LiveData<List<Article>> getArticles(String domain);
-
-    @Query("DELETE FROM ARTICLES WHERE domain=:domain")
-    void deleteArticles(String domain);
 
 }

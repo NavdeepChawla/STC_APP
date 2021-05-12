@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mstc.mstcapp.MainActivity;
 import com.mstc.mstcapp.R;
@@ -51,15 +50,7 @@ public class FirebaseNotificationService extends com.google.firebase.messaging.F
         String title = Objects.requireNonNull(remoteMessage.getNotification()).getTitle();
         String content = remoteMessage.getNotification().getBody();
         assert title != null;
-        if (title.contains(":")) {
-            if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                title = title.split(":")[1];
-                sendNotification(title, content);
-            }
-        } else {
-            sendNotification(title, content);
-        }
-
+        sendNotification(title, content);
     }
 
     @Override

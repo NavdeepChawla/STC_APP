@@ -16,10 +16,10 @@ import com.mstc.mstcapp.R;
 
 public class ViewResourceFragment extends Fragment {
     private static final String TAG = "ViewResourceFragment";
-    String domain;
-    TabLayout tabLayout;
-    ViewPager viewPager;
-    ViewPagerAdapter viewPagerAdapter;
+    private String domain;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
+    private ViewPagerAdapter viewPagerAdapter;
 
     public ViewResourceFragment() {
         // Required empty public constructor
@@ -33,7 +33,7 @@ public class ViewResourceFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tabbed, container, false);
+        return inflater.inflate(R.layout.fragment_explore, container, false);
     }
 
     @Override

@@ -9,13 +9,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
-import com.mstc.mstcapp.model.BoardMember;
+import com.mstc.mstcapp.model.explore.BoardMember;
 import com.mstc.mstcapp.model.FeedObject;
-
-import com.mstc.mstcapp.model.highlights.EventObject;
-import com.mstc.mstcapp.model.highlights.GithubObject;
-import com.mstc.mstcapp.model.highlights.ProjectsObject;
-import com.mstc.mstcapp.model.resources.Article;
+import com.mstc.mstcapp.model.explore.EventObject;
+import com.mstc.mstcapp.model.explore.ProjectsObject;
 import com.mstc.mstcapp.model.resources.Resource;
 import com.mstc.mstcapp.util.Converters;
 
@@ -26,10 +23,8 @@ import java.util.concurrent.Executors;
         entities = {
                 FeedObject.class,
                 EventObject.class,
-                GithubObject.class,
                 ProjectsObject.class,
                 BoardMember.class,
-                Article.class,
                 Resource.class
         },
         version = 1,

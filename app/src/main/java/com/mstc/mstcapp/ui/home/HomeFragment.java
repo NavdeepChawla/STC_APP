@@ -57,7 +57,7 @@ public class HomeFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         feedList = new ArrayList<>();
-        adapter = new FeedAdapter(feedList);
+        adapter = new FeedAdapter(context, feedList);
         recyclerView.setAdapter(adapter);
         mViewModel.getList().observe(getViewLifecycleOwner(), list -> {
             swipeRefreshLayout.setRefreshing(!MainActivity.isAppRunning);

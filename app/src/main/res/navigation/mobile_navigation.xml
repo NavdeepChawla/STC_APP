@@ -10,37 +10,37 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
+
+    <fragment
+        android:id="@+id/navigation_explore"
+        android:name="com.mstc.mstcapp.ui.explore.ExploreFragment"
+        android:label="@string/title_explore"
+        tools:layout="@layout/fragment_explore" />
+
+    <fragment
+        android:id="@+id/navigation_about"
+        android:name="com.mstc.mstcapp.ui.explore.about.AboutFragment"
+        android:label="@string/title_about"
+        tools:layout="@layout/fragment_recycler_view" />
     <fragment
         android:id="@+id/navigation_resources"
         android:name="com.mstc.mstcapp.ui.ResourcesFragment"
         android:label="@string/title_resources"
         tools:layout="@layout/fragment_resources" >
         <action
-            android:id="@+id/action_navigation_resources_to_fragment_view_resource"
-            app:destination="@id/fragment_view_resource" />
+            android:id="@+id/action_navigation_resources_to_navigation_view_resource_activity"
+            app:destination="@id/navigation_view_resource_activity" />
     </fragment>
-
-    <fragment
-        android:id="@+id/navigation_highlights"
-        android:name="com.mstc.mstcapp.ui.highlights.HighlightFragment"
-        android:label="@string/title_highlights"
-        tools:layout="@layout/fragment_tabbed" />
-
-    <fragment
-        android:id="@+id/navigation_information"
-        android:name="com.mstc.mstcapp.ui.information.InformationFragment"
-        android:label="@string/title_information"
-        tools:layout="@layout/fragment_recycler_view" />
-    <fragment
-        android:id="@+id/fragment_view_resource"
-        android:name="com.mstc.mstcapp.ui.resources.ViewResourceFragment"
-        android:label="@string/resources"
-        tools:layout="@layout/fragment_tabbed" >
+    <activity
+        android:id="@+id/navigation_view_resource_activity"
+        android:name="com.mstc.mstcapp.ViewResourceActivity"
+        android:label="View Resources"
+        tools:layout="@layout/activity_view_resource">
         <argument
             android:name="domain"
             app:argType="string" />
-        <action
-            android:id="@+id/action_fragment_view_resource_to_navigation_resources"
-            app:destination="@id/navigation_resources" />
-    </fragment>
+        <argument
+            android:name="position"
+            app:argType="integer" />
+    </activity>
 </navigation>

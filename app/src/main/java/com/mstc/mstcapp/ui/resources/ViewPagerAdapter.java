@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.mstc.mstcapp.ui.resources.articleTab.ArticleTabFragment;
+import com.mstc.mstcapp.ui.resources.detailsTab.DetailsFragment;
 import com.mstc.mstcapp.ui.resources.resourceTab.ResourceTabFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -22,11 +22,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if (position == 0)
-            return new RoadmapTabFragment(domain);
+            return new DetailsFragment(domain);
         else if (position == 1)
-            return new ResourceTabFragment(domain);
+            return new RoadmapTabFragment(domain);
         else
-            return new ArticleTabFragment(domain);
+            return new ResourceTabFragment(domain);
     }
 
     @Override
@@ -37,11 +37,11 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
         if (position == 0)
-            return "Roadmap";
+            return "Details";
         else if (position == 1)
-            return "Resources";
+            return "Roadmap";
         else
-            return "Articles";
+            return "Resources";
     }
 
 }

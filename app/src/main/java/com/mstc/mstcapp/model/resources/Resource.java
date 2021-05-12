@@ -18,9 +18,11 @@ public class Resource {
     String description;
     @SerializedName("domain")
     String domain;
+
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
+
     private String id;
 
     public Resource(String title, String link, String description, String domain) {
