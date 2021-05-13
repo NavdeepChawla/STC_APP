@@ -1,5 +1,6 @@
 package com.mstc.mstcapp.model.explore;
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -8,8 +9,8 @@ import com.google.gson.annotations.SerializedName;
 @Entity(tableName = "BOARD")
 public class BoardMemberModel {
 
-    @SerializedName("image")
-    private final String image;
+    @SerializedName("photo")
+    private final String photo;
     @SerializedName("name")
     private final String name;
     @SerializedName("position")
@@ -19,28 +20,29 @@ public class BoardMemberModel {
     @SerializedName("phrase")
     private final String phrase;
 
+    @PrimaryKey
+    @NonNull
     @SerializedName("_id")
-    @PrimaryKey(autoGenerate = true)
-    public long id;
+    private String id;
 
-    public BoardMemberModel(String image, String name, String position, String phrase, String link) {
-        this.image = image;
+    public BoardMemberModel(String photo, String name, String position, String phrase, String link) {
+        this.photo = photo;
         this.name = name;
         this.position = position;
         this.phrase = phrase;
         this.link = link;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
-    public String getImage() {
-        return image;
+    public String getPhoto() {
+        return photo;
     }
 
     public String getName() {

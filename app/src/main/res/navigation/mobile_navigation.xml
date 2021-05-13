@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_recycler_view" />
     <fragment
         android:id="@+id/navigation_resources"
-        android:name="com.mstc.mstcapp.ui.DomainsFragment"
+        android:name="com.mstc.mstcapp.ui.resources.DomainsFragment"
         android:label="@string/title_resources"
         tools:layout="@layout/fragment_resources" >
         <action

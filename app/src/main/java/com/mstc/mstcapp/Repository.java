@@ -142,16 +142,16 @@ public class Repository {
                             editor.putLong("lastChecked", new Date().getTime());
                             editor.apply();
                         } else {
-                            Log.d(TAG, "onResponse() returned: " + response.message());
+                            Log.e(TAG, "onResponse() returned: " + response);
                         }
                     }
 
                     @Override
                     public void onFailure(Call<List<BoardMemberModel>> call, Throwable t) {
+                        Log.e(TAG, "onFailure: " + t.getLocalizedMessage());
                     }
                 });
             }
-
         }
         return databaseDao.getBoardMembers();
     }

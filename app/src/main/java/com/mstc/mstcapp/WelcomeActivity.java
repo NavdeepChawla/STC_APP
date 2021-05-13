@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Html;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -24,6 +26,7 @@ public class WelcomeActivity extends AppCompatActivity {
     private LinearLayout dotsLayout;
     private ImageView imageView;
     private TextView textView;
+
     private int[] images = {R.drawable.ic_onboarding_1, R.drawable.ic_onboarding_2, R.drawable.ic_onboarding_3};
     private int[] texts = {R.string.onboarding1, R.string.onboarding2, R.string.onboarding3};
 
@@ -36,12 +39,18 @@ public class WelcomeActivity extends AppCompatActivity {
         dotsLayout = findViewById(R.id.layoutDots);
         imageView = findViewById(R.id.imageView);
         textView = findViewById(R.id.textView);
+
+        Animation slide_in_right = AnimationUtils.loadAnimation(this, R.anim.slide_in_right);
+
+
         addBottomDots(position);
         findViewById(R.id.next).setOnClickListener(v -> {
             position++;
             if (position < NoOfSlides) {
                 imageView.setImageDrawable(ContextCompat.getDrawable(context, images[position]));
+                imageView.startAnimation(slide_in_right);
                 textView.setText(getString(texts[position]));
+                textView.startAnimation(slide_in_right);
                 addBottomDots(position);
             } else {
                 editor.putBoolean("isFirstLaunch", false);
@@ -68,7 +77,21 @@ public class WelcomeActivity extends AppCompatActivity {
         if (dots.length > 0) {
             dots[currentPage].setTextColor(colorsActive);
             dots[currentPage].setTextSize(40);
+        }
+    }
 
+    @Override
+    public void onBackPressed() {
+        if (position > 0) {
+            position--;
+            Animation slide_in_left = AnimationUtils.loadAnimation(this, R.anim.slide_in_left);
+            imageView.setImageDrawable(ContextCompat.getDrawable(context, images[position]));
+            imageView.startAnimation(slide_in_left);
+            textView.setText(getString(texts[position]));
+            textView.startAnimation(slide_in_left);
+            addBottomDots(position);
+        } else {
+            super.onBackPressed();
         }
     }
 }

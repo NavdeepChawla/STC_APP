@@ -1,9 +1,15 @@
-package com.mstc.mstcapp.adapter;
+package com.mstc.mstcapp.adapter.explore;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -39,12 +45,27 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
         holder.name.setText(list.get(position).getName());
         holder.position.setText(list.get(position).getPosition());
         holder.phrase.setText(list.get(position).getPhrase());
+
+        new Thread(() -> holder.photo.post(() -> {
+            String pic = list.get(position).getPhoto();
+            byte[] decodedString = Base64.decode(pic, Base64.DEFAULT);
+            Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            holder.photo.setImageBitmap(picture);
+        })).start();
+
         if (position % 3 == 0)
-            holder.image.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryRed));
+            holder.photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryRed));
         else if (position % 3 == 1)
-            holder.image.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryBlue));
+            holder.photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryBlue));
         else
-            holder.image.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryYellow));
+            holder.photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryYellow));
+        holder.linkedIn.setOnClickListener(v -> openURL(list.get(position).getLink()));
+    }
+
+    private void openURL(String link) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(link));
+        context.startActivity(intent);
     }
 
     @Override
@@ -58,17 +79,19 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
     }
 
     public class BoardViewHolder extends RecyclerView.ViewHolder {
-        public final ImageView image;
+        public final ImageView photo;
         public final TextView name;
         public final TextView position;
         public final TextView phrase;
+        public final ImageButton linkedIn;
 
         public BoardViewHolder(View view) {
             super(view);
-            image = view.findViewById(R.id.image);
+            photo = view.findViewById(R.id.image);
             name = view.findViewById(R.id.name);
             position = view.findViewById(R.id.position);
             phrase = view.findViewById(R.id.phrase);
+            linkedIn = view.findViewById(R.id.view);
         }
 
         @NonNull

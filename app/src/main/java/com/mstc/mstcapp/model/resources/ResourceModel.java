@@ -22,7 +22,6 @@ public class ResourceModel {
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
-
     private String id;
 
     public ResourceModel(String title, String link, String description, String domain) {

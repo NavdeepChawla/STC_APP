@@ -14,10 +14,11 @@ public class DetailModel {
     private final String domain;
     @SerializedName("expectation")
     private final String expectation;
+
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
-    public long id;
+    private String id;
 
     public DetailModel(String description, String domain, String expectation) {
         this.description = description;
@@ -25,7 +26,11 @@ public class DetailModel {
         this.expectation = expectation;
     }
 
-    public long getId() {
+    public void setId(@NonNull String id) {
+        this.id = id;
+    }
+
+    public String getId() {
         return id;
     }
 

@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <RelativeLayout
+            android:id="@+id/share"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="?android:attr/selectableItemBackground"
@@ -32,7 +33,6 @@
                 android:src="@drawable/ic_invitation" />
 
             <TextView
-                android:id="@+id/t1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -59,6 +59,7 @@
             android:background="?android:attr/listDivider" />
 
         <RelativeLayout
+            android:id="@+id/feedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -75,7 +76,6 @@
                 android:src="@drawable/ic_help" />
 
             <TextView
-                android:id="@+id/t2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -102,6 +102,7 @@
             android:background="?android:attr/listDivider" />
 
         <RelativeLayout
+            android:id="@+id/idea"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?android:attr/selectableItemBackground"
@@ -118,7 +119,6 @@
                 android:src="@drawable/ic_message" />
 
             <TextView
-                android:id="@+id/t3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

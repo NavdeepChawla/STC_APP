@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.transition.TransitionInflater;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
@@ -22,8 +23,12 @@ public class ExploreFragment extends Fragment {
     public ExploreFragment() {
     }
 
-    public static ExploreFragment newInstance() {
-        return new ExploreFragment();
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.fade));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Override

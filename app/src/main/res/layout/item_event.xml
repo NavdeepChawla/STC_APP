@@ -12,7 +12,7 @@
         android:id="@+id/image"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:src="@drawable/ic_onboarding_1"
+        android:contentDescription="Event Image"
         app:layout_constraintDimensionRatio="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,6 @@
                 android:id="@+id/status"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="UPCOMING"
                 android:textAppearance="@style/body1"
                 android:textColor="@color/colorPrimary"
                 android:textStyle="bold" />
@@ -49,7 +48,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:text="Snapchat lens studio workshop"
                 android:textAppearance="@style/heading1" />
 
             <TextView
@@ -57,7 +55,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_small"
-                android:text="The event taught  the participants how to create their own personalised Snapchat Lenses via Lens studio thus creating both Face Lenses and World Lenses. The commencement of the event took place with the introduction of the Lens studio (a real time tool)  and explanation of its functionings followed by which usage of 3 types of lens were taught"
                 android:textAppearance="@style/body1" />
 
         </LinearLayout>

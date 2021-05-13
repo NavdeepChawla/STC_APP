@@ -39,3 +39,5 @@ public interface RetrofitInterface {
     Call<List<BoardMemberModel>> getBoard();
 
 }
+
+

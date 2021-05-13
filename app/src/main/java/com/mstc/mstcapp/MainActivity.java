@@ -40,12 +40,17 @@ public class MainActivity extends AppCompatActivity {
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         drawerLayout = findViewById(R.id.drawerLayout);
 
-
+        drawerLayout.findViewById(R.id.share).setOnClickListener(v -> share());
+        drawerLayout.findViewById(R.id.feedback).setOnClickListener(v -> openURL("market://details?id=" + context.getPackageName()));
+        drawerLayout.findViewById(R.id.idea).setOnClickListener(v -> sendMail());
 
         drawerLayout.findViewById(R.id.instagram).setOnClickListener(v -> openURL(Constants.INSTAGRAM_URL));
         drawerLayout.findViewById(R.id.facebook).setOnClickListener(v -> openURL(Constants.FACEBOOK_URL));
         drawerLayout.findViewById(R.id.linkedin).setOnClickListener(v -> openURL(Constants.LINKEDIN_URL));
         drawerLayout.findViewById(R.id.github).setOnClickListener(v -> openURL(Constants.GITHUB_URL));
+
+        drawerLayout.findViewById(R.id.privacy_policy).setOnClickListener(v -> openURL(Constants.PRIVACY_URL));
+        drawerLayout.findViewById(R.id.terms_of_services).setOnClickListener(v -> openURL(Constants.TERMS_OF_USE_URL));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -73,10 +78,26 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void share() {
+        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
+        String message = "Hey check out the STC APP for amazing resources and stuff. You can download the app here - \n\n" + Constants.PLAY_STORE_URL;
+        intent.setType("text/plain");
+        intent.putExtra(android.content.Intent.EXTRA_TEXT, message);
+        startActivity(Intent.createChooser(intent, "Share Using"));
+    }
+
+    private void sendMail() {
+        Intent email = new Intent(Intent.ACTION_SEND);
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"mstcvit@outlook.com"});
+        email.putExtra(Intent.EXTRA_SUBJECT, "New Idea");
+        email.setType("message/rfc822");
+        startActivity(Intent.createChooser(email, "Choose an Email client :"));
+    }
+
     public void openURL(String url) {
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     @Override

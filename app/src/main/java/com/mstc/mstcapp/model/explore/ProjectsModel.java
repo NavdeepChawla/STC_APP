@@ -19,6 +19,7 @@ public class ProjectsModel {
     private final String link;
     @SerializedName("description")
     private final String description;
+
     @PrimaryKey
     @NonNull
     @SerializedName("_id")

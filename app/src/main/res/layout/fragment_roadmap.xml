@@ -1,56 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingStart="8dp"
-    android:paddingEnd="8dp">
+    android:layout_height="match_parent">
 
-    <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@color/cardColor"
-        android:backgroundTint="@color/cardColor"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp"
-        app:cardUseCompatPadding="true">
+        android:orientation="vertical">
 
-        <LinearLayout
+        <ImageView
+            android:id="@+id/roadmapImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/contentDescription"
+            android:padding="@dimen/margin_large"/>
 
-            <ImageView
-                android:id="@+id/roadmapImage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/contentDescription"
-                android:scaleType="fitXY" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="8dp"
-                android:padding="4dp"
-                app:cardCornerRadius="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="All done, Practice more to get better at it"
-                    android:textAlignment="center"
-                    android:textSize="12sp" />
-
-            </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
+    </LinearLayout>
 </androidx.core.widget.NestedScrollView>

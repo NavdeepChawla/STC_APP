@@ -1,6 +1,8 @@
 package com.mstc.mstcapp.ui.resources.resourceTab;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.resource.ResourceTabAdapter;
 import com.mstc.mstcapp.model.resources.ResourceModel;
+import com.mstc.mstcapp.util.ClickListener;
+import com.mstc.mstcapp.util.RecyclerTouchListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,5 +61,22 @@ public class ResourceTabFragment extends Fragment {
             list = eventObjects;
             adapter.setList(list);
         });
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(context, recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                openURL(list.get(position).getLink());
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+    }
+
+    public void openURL(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 }

@@ -17,7 +17,7 @@ public class RoadmapModel {
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
-    public String id;
+    private String id;
 
     public RoadmapModel(String domain, String image) {
         this.domain = domain;
@@ -26,6 +26,10 @@ public class RoadmapModel {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(@NonNull String id) {
+        this.id = id;
     }
 
     public String getDomain() {

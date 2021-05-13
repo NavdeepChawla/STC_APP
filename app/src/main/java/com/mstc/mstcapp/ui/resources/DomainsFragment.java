@@ -1,4 +1,4 @@
-package com.mstc.mstcapp.ui;
+package com.mstc.mstcapp.ui.resources;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.transition.TransitionInflater;
 
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.DomainAdapter;
@@ -26,6 +27,14 @@ public class DomainsFragment extends Fragment {
     private RecyclerView recyclerView;
 
     public DomainsFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        TransitionInflater inflater = TransitionInflater.from(requireContext());
+        setEnterTransition(inflater.inflateTransition(R.transition.fade));
+        setExitTransition(inflater.inflateTransition(R.transition.fade));
     }
 
     @Override
