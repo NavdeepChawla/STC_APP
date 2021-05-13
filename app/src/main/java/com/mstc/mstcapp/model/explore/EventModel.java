@@ -22,13 +22,15 @@ public class EventModel {
     private final String startDate;
     @SerializedName("endDate")
     private final String endDate;
+    @SerializedName("createdAt")
+    private final String createdAt;
 
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
     public String id;
 
-    public EventModel(String title, String description, String link, String image, String status, String startDate, String endDate) {
+    public EventModel(String title, String description, String link, String image, String status, String startDate, String endDate, String createdAt) {
         this.title = title;
         this.description = description;
         this.link = link;
@@ -36,6 +38,7 @@ public class EventModel {
         this.status = status;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.createdAt = createdAt;
     }
 
     @NonNull
@@ -75,4 +78,7 @@ public class EventModel {
         return status;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
 }

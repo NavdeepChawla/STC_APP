@@ -17,16 +17,20 @@ public class FeedModel {
     private final String link;
     @SerializedName("image")
     private final String image;
+    @SerializedName("createdAt")
+    private final String createdAt;
+
     @PrimaryKey
     @NonNull
     @SerializedName("_id")
     private String id;
 
-    public FeedModel(String title, String description, String link, String image) {
+    public FeedModel(String title, String description, String link, String image, String createdAt) {
         this.title = title;
         this.description = description;
         this.link = link;
         this.image = image;
+        this.createdAt = createdAt;
     }
 
     @NonNull
@@ -54,4 +58,7 @@ public class FeedModel {
         return image;
     }
 
+    public String getCreatedAt() {
+        return createdAt;
+    }
 }
