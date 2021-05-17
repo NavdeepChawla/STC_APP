@@ -82,6 +82,28 @@ public abstract class STCDatabase extends RoomDatabase {
                         Log.e(TAG, "onFailure: ", t);
                     }
                 });
+                Call<List<EventModel>> call1 = retrofitInterface.getEvents(1);
+                call1.enqueue(new retrofit2.Callback<List<EventModel>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<EventModel>> call, @NonNull Response<List<EventModel>> response) {
+                        if (response.isSuccessful()) {
+                            Log.i(TAG, "onResponse: successfull");
+                            Log.d(TAG, "onResponse() returned: " + response.body());
+                            List<EventModel> events = response.body();
+                            STCDatabase.databaseWriteExecutor.execute(() -> {
+                                databaseDao.insertEvents(events);
+                            });
+                        } else {
+                            Log.d(TAG, "onResponse() returned: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<EventModel>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "onFailure: ", t);
+                    }
+                });
+
             });
         }
     };

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.ArrayMap;
 import android.view.View;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -21,22 +22,42 @@ import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.util.Constants;
 
 public class MainActivity extends AppCompatActivity {
-    private static final String TAG = "MainActivity";
+    public static final ArrayMap<String, Boolean> fetchedData = new ArrayMap();
     public static boolean isAppRunning = false;
+    public static int feed_position = 0;
+    public static boolean isHome = false;
     int exitCount = 0;
     private Context context = this;
     private NavController navController;
     private DrawerLayout drawerLayout;
     private int[] ids = {R.id.home, R.id.resources, R.id.explore};
 
+    public static int getFeed_position() {
+        return feed_position;
+    }
+
+    public static void setFeed_position(int feed_position) {
+        MainActivity.feed_position = feed_position;
+    }
+
+    public static boolean isFetchedData(String domain) {
+        if (fetchedData.containsKey(domain))
+            return fetchedData.get(domain);
+        else
+            return false;
+    }
+
+    public static void setFetchedData(String domain) {
+        fetchedData.put(domain, true);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         drawerLayout = findViewById(R.id.drawerLayout);
 
@@ -60,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(ContextCompat.getDrawable(context, R.drawable.ic_navigation));
 
         findViewById(R.id.home).setOnClickListener(v -> {
+            if (isHome) feed_position = 0;
             selectTab(ids[0]);
             navController.popBackStack();
             navController.navigate(R.id.navigation_home);

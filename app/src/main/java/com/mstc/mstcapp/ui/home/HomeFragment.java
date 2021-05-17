@@ -2,6 +2,7 @@ package com.mstc.mstcapp.ui.home;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import androidx.transition.TransitionInflater;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import com.mstc.mstcapp.MainActivity;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.FeedAdapter;
 import com.mstc.mstcapp.model.FeedModel;
@@ -25,6 +27,7 @@ import com.mstc.mstcapp.util.RetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -34,6 +37,7 @@ import retrofit2.Retrofit;
 import static com.mstc.mstcapp.util.Functions.isNetworkAvailable;
 
 public class HomeFragment extends Fragment {
+    private static final String TAG = "HomeFragment";
     RecyclerView recyclerView;
     HomeViewModel mViewModel;
     FeedAdapter adapter;
@@ -76,22 +80,39 @@ public class HomeFragment extends Fragment {
         mViewModel.getList().observe(getViewLifecycleOwner(), list -> {
             feedList = list;
             adapter.setList(feedList);
+            recyclerView.getLayoutManager().scrollToPosition(MainActivity.getFeed_position());
         });
-
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
+                assert linearLayoutManager != null;
+                int position = linearLayoutManager.findLastCompletelyVisibleItemPosition();
+                if (position != -1) {
+                    MainActivity.setFeed_position(position);
+                    Log.e(TAG, "onScrolled: " + MainActivity.feed_position);
+                }
                 if (!isLoading) {
-                    if (linearLayoutManager != null &&
-                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == feedList.size() - 1) {
+                    if (linearLayoutManager.findLastCompletelyVisibleItemPosition() == feedList.size() - 1) {
                         loadMore(++skip);
                         isLoading = true;
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        MainActivity.isHome = false;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity.isHome = true;
     }
 
     private void loadMore(int skip) {

@@ -35,11 +35,10 @@ import static com.mstc.mstcapp.util.Functions.isNetworkAvailable;
 public class Repository {
     private static final String TAG = "Repository";
     public DatabaseDao databaseDao;
-    RetrofitInterface retrofitInterface;
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
-    Context context;
-    private Repository instance;
+    private RetrofitInterface retrofitInterface;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
+    private Context context;
 
     public Repository(Context context) {
         this.context = context;
@@ -81,7 +80,7 @@ public class Repository {
 
     @MainThread
     public LiveData<List<ProjectsModel>> getProjects() {
-        if (isNetworkAvailable(context)) {
+        if (isNetworkAvailable(context) && !MainActivity.isFetchedData("projects")) {
             Call<List<ProjectsModel>> call = retrofitInterface.getProjects();
 
             call.enqueue(new Callback<List<ProjectsModel>>() {
@@ -93,6 +92,7 @@ public class Repository {
                         List<ProjectsModel> projectsModels = response.body();
                         assert projectsModels != null;
                         STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertProjects(projectsModels));
+                        MainActivity.setFetchedData("projects");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
@@ -103,6 +103,8 @@ public class Repository {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
+        } else {
+            Log.e(TAG, "getResources: Already fetched or no internet");
         }
         return databaseDao.getProjects();
     }
@@ -156,37 +158,42 @@ public class Repository {
         return databaseDao.getBoardMembers();
     }
 
-    public LiveData<List<ResourceModel>> getResources(String domain) {
-        if (isNetworkAvailable(context)) {
-            Call<List<ResourceModel>> call = retrofitInterface.getResources(domain);
-            call.enqueue(new Callback<List<ResourceModel>>() {
+    public LiveData<DetailModel> getDetails(String domain) {
+        Log.d(TAG, "getDetails: ");
+        if (isNetworkAvailable(context) && !MainActivity.isFetchedData(domain + "_details")) {
+            Call<DetailModel> call = retrofitInterface.getDetails(domain);
+            call.enqueue(new Callback<DetailModel>() {
                 @Override
-                public void onResponse(@NonNull Call<List<ResourceModel>> call, @NonNull Response<List<ResourceModel>> response) {
+                public void onResponse(@NonNull Call<DetailModel> call, @NonNull Response<DetailModel> response) {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<ResourceModel> resourceModels = response.body();
-                        assert resourceModels != null;
+                        DetailModel details = response.body();
+                        assert details != null;
                         STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.deleteResources(domain);
-                            databaseDao.insertResources(resourceModels);
+                            databaseDao.deleteDetails(domain);
+                            databaseDao.insertDetails(details);
                         });
+                        MainActivity.setFetchedData(domain + "_details");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
                 }
 
                 @Override
-                public void onFailure(@NonNull Call<List<ResourceModel>> call, @NonNull Throwable t) {
+                public void onFailure(@NonNull Call<DetailModel> call, @NonNull Throwable t) {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
+        } else {
+            Log.e(TAG, "getResources: Already fetched or no internet");
         }
-        return databaseDao.getResources(domain);
+        return databaseDao.getDetails(domain);
     }
 
     public LiveData<RoadmapModel> getRoadmap(String domain) {
-        if (isNetworkAvailable(context)) {
+        Log.d(TAG, "getRoadmap: ");
+        if (isNetworkAvailable(context) && !MainActivity.isFetchedData(domain + "_roadmap")) {
             Call<RoadmapModel> call = retrofitInterface.getRoadmap(domain);
             call.enqueue(new Callback<RoadmapModel>() {
                 @Override
@@ -200,6 +207,7 @@ public class Repository {
                             databaseDao.deleteRoadmap(domain);
                             databaseDao.insertRoadmap(roadmap);
                         });
+                        MainActivity.setFetchedData(domain + "_roadmap");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
                     }
@@ -210,8 +218,43 @@ public class Repository {
                     Log.e(TAG, "onFailure: ", t);
                 }
             });
+        } else {
+            Log.e(TAG, "getResources: Already fetched or no internet");
         }
         return databaseDao.getRoadmap(domain);
+    }
+
+    public LiveData<List<ResourceModel>> getResources(String domain) {
+        Log.d(TAG, "getResources: ");
+        if (isNetworkAvailable(context) && !MainActivity.isFetchedData(domain + "_resources")) {
+            Call<List<ResourceModel>> call = retrofitInterface.getResources(domain);
+            call.enqueue(new Callback<List<ResourceModel>>() {
+                @Override
+                public void onResponse(@NonNull Call<List<ResourceModel>> call, @NonNull Response<List<ResourceModel>> response) {
+                    if (response.isSuccessful()) {
+                        Log.i(TAG, "onResponse: successfull");
+                        Log.d(TAG, "onResponse() returned: " + response.body());
+                        List<ResourceModel> resourceModels = response.body();
+                        assert resourceModels != null;
+                        STCDatabase.databaseWriteExecutor.execute(() -> {
+                            databaseDao.deleteResources(domain);
+                            databaseDao.insertResources(resourceModels);
+                        });
+                        MainActivity.setFetchedData(domain + "_resources");
+                    } else {
+                        Log.d(TAG, "onResponse() returned: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(@NonNull Call<List<ResourceModel>> call, @NonNull Throwable t) {
+                    Log.e(TAG, "onFailure: ", t);
+                }
+            });
+        } else {
+            Log.e(TAG, "getResources: Already fetched or no internet");
+        }
+        return databaseDao.getResources(domain);
     }
 
     public LiveData<List<FeedModel>> getSavedFeedList() {
@@ -251,34 +294,5 @@ public class Repository {
 
     public void insertEvents(List<EventModel> list) {
         STCDatabase.databaseWriteExecutor.execute(() -> databaseDao.insertEvents(list));
-    }
-
-    public LiveData<DetailModel> getDetails(String domain) {
-        if (isNetworkAvailable(context)) {
-            Call<DetailModel> call = retrofitInterface.getDetails(domain);
-            call.enqueue(new Callback<DetailModel>() {
-                @Override
-                public void onResponse(@NonNull Call<DetailModel> call, @NonNull Response<DetailModel> response) {
-                    if (response.isSuccessful()) {
-                        Log.i(TAG, "onResponse: successfull");
-                        Log.d(TAG, "onResponse() returned: " + response.body());
-                        DetailModel details = response.body();
-                        assert details != null;
-                        STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.deleteDetails(domain);
-                            databaseDao.insertDetails(details);
-                        });
-                    } else {
-                        Log.d(TAG, "onResponse() returned: " + response.message());
-                    }
-                }
-
-                @Override
-                public void onFailure(@NonNull Call<DetailModel> call, @NonNull Throwable t) {
-                    Log.e(TAG, "onFailure: ", t);
-                }
-            });
-        }
-        return databaseDao.getDetails(domain);
     }
 }
