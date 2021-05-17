@@ -10,6 +10,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 import androidx.sqlite.db.SupportSQLiteDatabase;
 
+import com.mstc.mstcapp.Repository;
 import com.mstc.mstcapp.model.FeedModel;
 import com.mstc.mstcapp.model.explore.BoardMemberModel;
 import com.mstc.mstcapp.model.explore.EventModel;
@@ -61,8 +62,8 @@ public abstract class STCDatabase extends RoomDatabase {
                 DatabaseDao databaseDao = INSTANCE.databaseDao();
                 Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
                 RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
-                Call<List<FeedModel>> call = retrofitInterface.getFeed(1);
-                call.enqueue(new retrofit2.Callback<List<FeedModel>>() {
+                Call<List<FeedModel>> feed = retrofitInterface.getFeed(1);
+                feed.enqueue(new retrofit2.Callback<List<FeedModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<FeedModel>> call, @NonNull Response<List<FeedModel>> response) {
                         if (response.isSuccessful()) {
@@ -82,8 +83,8 @@ public abstract class STCDatabase extends RoomDatabase {
                         Log.e(TAG, "onFailure: ", t);
                     }
                 });
-                Call<List<EventModel>> call1 = retrofitInterface.getEvents(1);
-                call1.enqueue(new retrofit2.Callback<List<EventModel>>() {
+                Call<List<EventModel>> events = retrofitInterface.getEvents(1);
+                events.enqueue(new retrofit2.Callback<List<EventModel>>() {
                     @Override
                     public void onResponse(@NonNull Call<List<EventModel>> call, @NonNull Response<List<EventModel>> response) {
                         if (response.isSuccessful()) {
@@ -104,6 +105,27 @@ public abstract class STCDatabase extends RoomDatabase {
                     }
                 });
 
+                Call<List<BoardMemberModel>> board = retrofitInterface.getBoard();
+                board.enqueue(new retrofit2.Callback<List<BoardMemberModel>>() {
+                    @Override
+                    public void onResponse(@NonNull Call<List<BoardMemberModel>> call, @NonNull Response<List<BoardMemberModel>> response) {
+                        if (response.isSuccessful()) {
+                            Log.i(TAG, "onResponse: successfull");
+                            Log.d(TAG, "onResponse() returned: " + response.body());
+                            List<BoardMemberModel> list = response.body();
+                            STCDatabase.databaseWriteExecutor.execute(() -> {
+                                databaseDao.insertBoard(list);
+                            });
+                        } else {
+                            Log.d(TAG, "onResponse() returned: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(@NonNull Call<List<BoardMemberModel>> call, @NonNull Throwable t) {
+                        Log.e(TAG, "onFailure: ", t);
+                    }
+                });
             });
         }
     };

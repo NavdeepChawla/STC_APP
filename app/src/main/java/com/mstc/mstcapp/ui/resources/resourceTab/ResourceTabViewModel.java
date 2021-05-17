@@ -24,4 +24,8 @@ public class ResourceTabViewModel extends AndroidViewModel {
         listLiveData = repository.getResources(domain);
         return listLiveData;
     }
+
+    public void insertResources(String domain, List<ResourceModel> list) {
+        repository.insertResources(domain, list);
+    }
 }

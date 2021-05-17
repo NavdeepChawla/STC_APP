@@ -137,12 +137,8 @@ public class Repository {
                             Log.d(TAG, "onResponse() returned: " + response.body());
                             List<BoardMemberModel> boardMembers = response.body();
                             assert boardMembers != null;
-                            STCDatabase.databaseWriteExecutor.execute(() -> {
-                                databaseDao.deleteBoard();
-                                databaseDao.insertBoard(boardMembers);
-                            });
-                            editor.putLong("lastChecked", new Date().getTime());
-                            editor.apply();
+                            insertBoardMembers(boardMembers);
+
                         } else {
                             Log.e(TAG, "onResponse() returned: " + response);
                         }
@@ -170,10 +166,7 @@ public class Repository {
                         Log.d(TAG, "onResponse() returned: " + response.body());
                         DetailModel details = response.body();
                         assert details != null;
-                        STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.deleteDetails(domain);
-                            databaseDao.insertDetails(details);
-                        });
+                        insertDetails(domain, details);
                         MainActivity.setFetchedData(domain + "_details");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
@@ -203,10 +196,7 @@ public class Repository {
                         Log.d(TAG, "onResponse() returned: " + response.body());
                         RoadmapModel roadmap = response.body();
                         assert roadmap != null;
-                        STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.deleteRoadmap(domain);
-                            databaseDao.insertRoadmap(roadmap);
-                        });
+                        insertRoadmap(domain, roadmap);
                         MainActivity.setFetchedData(domain + "_roadmap");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
@@ -234,12 +224,9 @@ public class Repository {
                     if (response.isSuccessful()) {
                         Log.i(TAG, "onResponse: successfull");
                         Log.d(TAG, "onResponse() returned: " + response.body());
-                        List<ResourceModel> resourceModels = response.body();
-                        assert resourceModels != null;
-                        STCDatabase.databaseWriteExecutor.execute(() -> {
-                            databaseDao.deleteResources(domain);
-                            databaseDao.insertResources(resourceModels);
-                        });
+                        List<ResourceModel> list = response.body();
+                        assert list != null;
+                        insertResources(domain, list);
                         MainActivity.setFetchedData(domain + "_resources");
                     } else {
                         Log.d(TAG, "onResponse() returned: " + response.message());
@@ -256,6 +243,7 @@ public class Repository {
         }
         return databaseDao.getResources(domain);
     }
+
 
     public LiveData<List<FeedModel>> getSavedFeedList() {
         if (isNetworkAvailable(context)) {
@@ -286,6 +274,36 @@ public class Repository {
             });
         }
         return databaseDao.getFeedList();
+    }
+
+    public void insertDetails(String domain, DetailModel details) {
+        STCDatabase.databaseWriteExecutor.execute(() -> {
+            databaseDao.deleteDetails(domain);
+            databaseDao.insertDetails(details);
+        });
+    }
+
+    public void insertRoadmap(String domain, RoadmapModel roadmapModel) {
+        STCDatabase.databaseWriteExecutor.execute(() -> {
+            databaseDao.deleteRoadmap(domain);
+            databaseDao.insertRoadmap(roadmapModel);
+        });
+    }
+
+    public void insertResources(String domain, List<ResourceModel> list) {
+        STCDatabase.databaseWriteExecutor.execute(() -> {
+            databaseDao.deleteResources(domain);
+            databaseDao.insertResources(list);
+        });
+    }
+
+    public void insertBoardMembers(List<BoardMemberModel> boardMembers) {
+        STCDatabase.databaseWriteExecutor.execute(() -> {
+            databaseDao.deleteBoard();
+            databaseDao.insertBoard(boardMembers);
+            editor.putLong("lastChecked", new Date().getTime());
+            editor.apply();
+        });
     }
 
     public void insertFeeds(List<FeedModel> list) {

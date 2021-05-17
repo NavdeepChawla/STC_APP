@@ -8,6 +8,9 @@ import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
 import com.mstc.mstcapp.model.resources.DetailModel;
+import com.mstc.mstcapp.model.resources.ResourceModel;
+
+import java.util.List;
 
 public class DetailsViewModel extends AndroidViewModel {
     Repository repository;
@@ -21,5 +24,9 @@ public class DetailsViewModel extends AndroidViewModel {
     public LiveData<DetailModel> getDetails(String domain) {
         liveData = repository.getDetails(domain);
         return liveData;
+    }
+
+    public void insertDetails(String domain, DetailModel details) {
+        repository.insertDetails(domain, details);
     }
 }

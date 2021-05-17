@@ -140,9 +140,12 @@ public interface DatabaseDao {
     @Insert(onConflict = REPLACE)
     void insertResources(List<ResourceModel> list);
 
+
     @Query("SELECT * FROM RESOURCES WHERE domain=:domain")
     LiveData<List<ResourceModel>> getResources(String domain);
 
     @Query("DELETE FROM RESOURCES WHERE domain=:domain")
     void deleteResources(String domain);
+
+
 }

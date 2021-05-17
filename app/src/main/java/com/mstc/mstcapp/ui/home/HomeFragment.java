@@ -44,7 +44,7 @@ public class HomeFragment extends Fragment {
     List<FeedModel> feedList;
     int skip = 1;
     boolean isLoading = false;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
 
     public HomeFragment() {

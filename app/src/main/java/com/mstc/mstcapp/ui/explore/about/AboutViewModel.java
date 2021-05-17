@@ -24,4 +24,8 @@ public class AboutViewModel extends AndroidViewModel {
     public LiveData<List<BoardMemberModel>> getList() {
         return list;
     }
+
+    public void insertBoardMembers(List<BoardMemberModel> list) {
+        repository.insertBoardMembers(list);
+    }
 }

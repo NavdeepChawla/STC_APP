@@ -7,7 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.mstc.mstcapp.Repository;
+import com.mstc.mstcapp.model.resources.ResourceModel;
 import com.mstc.mstcapp.model.resources.RoadmapModel;
+
+import java.util.List;
 
 public class RoadmapTabViewModel extends AndroidViewModel {
     Repository repository;
@@ -21,5 +24,8 @@ public class RoadmapTabViewModel extends AndroidViewModel {
     public LiveData<RoadmapModel> getRoadmap(String domain) {
         roadmap = repository.getRoadmap(domain);
         return roadmap;
+    }
+    public void insertRoadmap(String domain, RoadmapModel roadmapModel) {
+        repository.insertRoadmap(domain, roadmapModel);
     }
 }

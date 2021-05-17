@@ -14,17 +14,26 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.resources.RoadmapModel;
+import com.mstc.mstcapp.util.RetrofitInstance;
+import com.mstc.mstcapp.util.RetrofitInterface;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class RoadmapTabFragment extends Fragment {
 
-    String domain;
-    ImageView imageView;
-    RoadmapTabViewModel mViewModel;
+    private String domain;
+    private ImageView imageView;
+    private RoadmapTabViewModel mViewModel;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public RoadmapTabFragment() {
     }
@@ -44,6 +53,8 @@ public class RoadmapTabFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         imageView = view.findViewById(R.id.roadmapImage);
         mViewModel = new ViewModelProvider(this).get(RoadmapTabViewModel.class);
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(() -> getData(view));
         mViewModel.getRoadmap(domain).observe(getViewLifecycleOwner(), new Observer<RoadmapModel>() {
             @Override
             public void onChanged(RoadmapModel roadmapModel) {
@@ -58,6 +69,34 @@ public class RoadmapTabFragment extends Fragment {
                                 .show();
                     }
                 })).start();
+            }
+        });
+    }
+
+    private void getData(View view) {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<RoadmapModel> call = retrofitInterface.getRoadmap(domain);
+        call.enqueue(new Callback<RoadmapModel>() {
+            @Override
+            public void onResponse(@NonNull Call<RoadmapModel> call, @NonNull Response<RoadmapModel> response) {
+                if (response.isSuccessful()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    RoadmapModel roadmap = response.body();
+                    assert roadmap != null;
+                    mViewModel.insertRoadmap(domain, roadmap);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Snackbar.make(view, "Unable to fetch roadmap", BaseTransientBottomBar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RoadmapModel> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(view, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
             }
         });
     }

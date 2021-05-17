@@ -15,15 +15,25 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.snackbar.BaseTransientBottomBar;
+import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.adapter.resource.ResourceTabAdapter;
 import com.mstc.mstcapp.model.resources.ResourceModel;
 import com.mstc.mstcapp.util.ClickListener;
 import com.mstc.mstcapp.util.RecyclerTouchListener;
+import com.mstc.mstcapp.util.RetrofitInstance;
+import com.mstc.mstcapp.util.RetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ResourceTabFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -31,6 +41,8 @@ public class ResourceTabFragment extends Fragment {
     private ResourceTabAdapter adapter;
     private List<ResourceModel> list;
     private String domain;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private Context context;
 
     public ResourceTabFragment() {
     }
@@ -42,16 +54,16 @@ public class ResourceTabFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_recycler_view, container, false);
+        return inflater.inflate(R.layout.fragment_swipe_recycler, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mViewModel = new ViewModelProvider(this).get(ResourceTabViewModel.class);
+        context = view.getContext();
         recyclerView = view.findViewById(R.id.recyclerView);
-        Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         list = new ArrayList<>();
         adapter = new ResourceTabAdapter(context, list);
@@ -61,6 +73,7 @@ public class ResourceTabFragment extends Fragment {
             list = eventObjects;
             adapter.setList(list);
         });
+        swipeRefreshLayout.setOnRefreshListener(() -> getData());
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(context, recyclerView, new ClickListener() {
             @Override
             public void onClick(View view, int position) {
@@ -78,5 +91,33 @@ public class ResourceTabFragment extends Fragment {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse(url));
         startActivity(intent);
+    }
+
+    private void getData() {
+        Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
+        RetrofitInterface retrofitInterface = retrofit.create(RetrofitInterface.class);
+        Call<List<ResourceModel>> call = retrofitInterface.getResources(domain);
+        call.enqueue(new Callback<List<ResourceModel>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ResourceModel>> call, @NonNull Response<List<ResourceModel>> response) {
+                if (response.isSuccessful()) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    List<ResourceModel> list = response.body();
+                    assert list != null;
+                    mViewModel.insertResources(domain, list);
+                } else {
+                    swipeRefreshLayout.setRefreshing(false);
+                    Snackbar.make(recyclerView, "Unable to fetch resources", BaseTransientBottomBar.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ResourceModel>> call, Throwable t) {
+                swipeRefreshLayout.setRefreshing(false);
+                Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                        .show();
+            }
+        });
     }
 }
