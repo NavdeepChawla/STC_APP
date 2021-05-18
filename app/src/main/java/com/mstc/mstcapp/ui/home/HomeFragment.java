@@ -27,7 +27,6 @@ import com.mstc.mstcapp.util.RetrofitInterface;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +77,8 @@ public class HomeFragment extends Fragment {
             getData(1, 0);
         });
         mViewModel.getList().observe(getViewLifecycleOwner(), list -> {
+            if (list.size() == 0) view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            else view.findViewById(R.id.loading).setVisibility(View.GONE);
             feedList = list;
             adapter.setList(feedList);
             recyclerView.getLayoutManager().scrollToPosition(MainActivity.getFeed_position());

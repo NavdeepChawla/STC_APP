@@ -52,7 +52,13 @@ public class DetailsFragment extends Fragment {
         details = view.findViewById(R.id.details);
         salary = view.findViewById(R.id.salary);
         mViewModel.getDetails(domain).observe(getViewLifecycleOwner(), detailModel -> {
-            if (detailModel != null) {
+            if (detailModel == null) {
+                view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+                view.findViewById(R.id.linearLayout).setVisibility(View.GONE);
+            }
+            else {
+                view.findViewById(R.id.loading).setVisibility(View.GONE);
+                view.findViewById(R.id.linearLayout).setVisibility(View.VISIBLE);
                 details.setText(detailModel.getDescription());
                 salary.setText(detailModel.getExpectation());
             }

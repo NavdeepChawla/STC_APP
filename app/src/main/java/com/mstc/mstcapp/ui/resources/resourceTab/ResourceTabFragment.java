@@ -70,6 +70,8 @@ public class ResourceTabFragment extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(context, DividerItemDecoration.VERTICAL));
         mViewModel.getList(domain).observe(getViewLifecycleOwner(), eventObjects -> {
+            if (eventObjects.size() == 0) view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            else view.findViewById(R.id.loading).setVisibility(View.GONE);
             list = eventObjects;
             adapter.setList(list);
         });

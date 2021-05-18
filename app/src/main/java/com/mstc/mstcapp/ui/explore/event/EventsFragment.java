@@ -38,7 +38,7 @@ public class EventsFragment extends Fragment {
     private RecyclerView recyclerView;
     private EventViewModel mViewModel;
     private EventAdapter eventAdapter;
-    private List<EventModel> eventList;
+    private List<EventModel> list;
     private SwipeRefreshLayout swipeRefreshLayout;
     private Context context;
 
@@ -60,15 +60,17 @@ public class EventsFragment extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerView);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        eventList = new ArrayList<>();
-        eventAdapter = new EventAdapter(context, eventList);
+        list = new ArrayList<>();
+        eventAdapter = new EventAdapter(context, list);
         recyclerView.setAdapter(eventAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> {
             getData(1, 0);
         });
         mViewModel.getList().observe(getViewLifecycleOwner(), eventObjects -> {
-            eventList = eventObjects;
-            eventAdapter.setList(eventList);
+            if (eventObjects.size() == 0) view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            else view.findViewById(R.id.loading).setVisibility(View.GONE);
+            list = eventObjects;
+            eventAdapter.setList(list);
         });
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -77,7 +79,7 @@ public class EventsFragment extends Fragment {
                 LinearLayoutManager linearLayoutManager = (LinearLayoutManager) recyclerView.getLayoutManager();
                 if (!isLoading) {
                     if (linearLayoutManager != null &&
-                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == eventList.size() - 1) {
+                            linearLayoutManager.findLastCompletelyVisibleItemPosition() == list.size() - 1) {
                         loadMore(++skip);
                         isLoading = true;
                     }
@@ -89,9 +91,9 @@ public class EventsFragment extends Fragment {
     private void loadMore(int skip) {
         if (isNetworkAvailable(context)) {
             isLoading = true;
-            eventList.add(null);
+            list.add(null);
             recyclerView.post(() -> {
-                eventAdapter.notifyItemInserted(eventList.size() - 1);
+                eventAdapter.notifyItemInserted(list.size() - 1);
             });
             getData(skip, 1);
 
@@ -114,8 +116,8 @@ public class EventsFragment extends Fragment {
                     isLoading = false;
                     swipeRefreshLayout.setRefreshing(false);
                     if (flag == 1) {
-                        eventList.remove(eventList.size() - 1);
-                        eventAdapter.notifyItemRemoved(eventList.size());
+                        list.remove(list.size() - 1);
+                        eventAdapter.notifyItemRemoved(list.size());
                     }
                     List<EventModel> list = response.body();
                     assert list != null;
@@ -126,7 +128,7 @@ public class EventsFragment extends Fragment {
             @Override
             public void onFailure(Call<List<EventModel>> call, Throwable t) {
                 isLoading = false;
-                eventList.remove(eventList.size() - 1);
+                list.remove(list.size() - 1);
                 swipeRefreshLayout.setRefreshing(false);
                 Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
                         .show();

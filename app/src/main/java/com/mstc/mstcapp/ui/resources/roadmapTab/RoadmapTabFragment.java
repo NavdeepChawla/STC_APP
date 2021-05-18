@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -55,9 +54,10 @@ public class RoadmapTabFragment extends Fragment {
         mViewModel = new ViewModelProvider(this).get(RoadmapTabViewModel.class);
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(() -> getData(view));
-        mViewModel.getRoadmap(domain).observe(getViewLifecycleOwner(), new Observer<RoadmapModel>() {
-            @Override
-            public void onChanged(RoadmapModel roadmapModel) {
+        mViewModel.getRoadmap(domain).observe(getViewLifecycleOwner(), roadmapModel -> {
+            if (roadmapModel==null) view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            else {
+                view.findViewById(R.id.loading).setVisibility(View.GONE);
                 new Thread(() -> imageView.post(() -> {
                     if (roadmapModel != null) {
                         String pic = roadmapModel.getImage();

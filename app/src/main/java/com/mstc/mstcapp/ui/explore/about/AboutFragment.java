@@ -69,6 +69,8 @@ public class AboutFragment extends Fragment {
         recyclerView.setAdapter(boardMemberAdapter);
         swipeRefreshLayout.setOnRefreshListener(() -> loadData(view));
         mViewModel.getList().observe(getViewLifecycleOwner(), members -> {
+            if (members.size() == 0) view.findViewById(R.id.loading).setVisibility(View.VISIBLE);
+            else view.findViewById(R.id.loading).setVisibility(View.GONE);
             list = members;
             boardMemberAdapter.setList(list);
             startPostponedEnterTransition();
