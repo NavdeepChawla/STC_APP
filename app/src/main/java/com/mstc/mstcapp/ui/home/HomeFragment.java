@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
         } else {
             isLoading = false;
             swipeRefreshLayout.setRefreshing(false);
-            Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+            Snackbar.make(recyclerView, "Please check your internet connection…", BaseTransientBottomBar.LENGTH_SHORT)
                     .show();
         }
     }
@@ -158,7 +158,7 @@ public class HomeFragment extends Fragment {
                 isLoading = false;
                 feedList.remove(feedList.size() - 1);
                 swipeRefreshLayout.setRefreshing(false);
-                Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                Snackbar.make(recyclerView, "Please check your internet connection…", BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
             }
         });

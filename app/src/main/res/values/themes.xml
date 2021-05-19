@@ -29,7 +29,12 @@
         <item name="android:textStyle">normal</item>
     </style>
 
-
+    <style name="subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:textSize">14sp</item>
+        <item name="android:textColor">@color/textColorSecondary</item>
+        <item name="android:fontFamily">@font/dm_sans_italic</item>
+        <item name="android:textStyle">italic</item>
+    </style>
     <style name="AlertDialog" parent="android:Theme.Material.Light.Dialog.Alert">
         <item name="android:colorPrimary">@color/white</item>
         <item name="android:colorAccent">@color/colorPrimary</item>

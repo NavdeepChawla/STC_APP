@@ -21,6 +21,8 @@ import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.mstc.mstcapp.util.Constants;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
     public static final ArrayMap<String, Boolean> fetchedData = new ArrayMap();
     public static boolean isAppRunning = false;
@@ -102,7 +104,16 @@ public class MainActivity extends AppCompatActivity {
 
     private void share() {
         Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        String message = "Hey check out the STC APP for amazing resources and stuff. You can download the app here - \n\n" + Constants.PLAY_STORE_URL;
+        Random rand = new Random();
+
+        String[] messages = {"Are you someone who still cannot find the material to start your journey to become a proficient developer?\n",
+                "On the lookout for study material?\n",
+                "Budding developers! Still on the lookout for study material?\n"
+        };
+        String message = messages[rand.nextInt(3)] +
+                "\nDon’t worry STC has got you covered!\n" +
+                "\nDownload the STC app for latest resources and guidelines from \n" + Constants.PLAY_STORE_URL +
+                "\n\nGuess what, it is FREE!";
         intent.setType("text/plain");
         intent.putExtra(android.content.Intent.EXTRA_TEXT, message);
         startActivity(Intent.createChooser(intent, "Share Using"));

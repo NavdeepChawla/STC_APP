@@ -65,7 +65,7 @@ public class RoadmapTabFragment extends Fragment {
                         Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                         imageView.setImageBitmap(picture);
                     } else {
-                        Snackbar.make(view, "Unable to load roadmap", BaseTransientBottomBar.LENGTH_SHORT)
+                        Snackbar.make(view, "Uh oh! We are unable to load the roadmap. Please try again later.", BaseTransientBottomBar.LENGTH_SHORT)
                                 .show();
                     }
                 })).start();
@@ -87,7 +87,7 @@ public class RoadmapTabFragment extends Fragment {
                     mViewModel.insertRoadmap(domain, roadmap);
                 } else {
                     swipeRefreshLayout.setRefreshing(false);
-                    Snackbar.make(view, "Unable to fetch roadmap", BaseTransientBottomBar.LENGTH_SHORT)
+                    Snackbar.make(view, "Uh oh! We are unable to load the roadmap. Please try again later.\n", BaseTransientBottomBar.LENGTH_SHORT)
                             .show();
                 }
             }
@@ -95,7 +95,7 @@ public class RoadmapTabFragment extends Fragment {
             @Override
             public void onFailure(Call<RoadmapModel> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
-                Snackbar.make(view, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                Snackbar.make(view, "Please check your internet connection…", BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
             }
         });

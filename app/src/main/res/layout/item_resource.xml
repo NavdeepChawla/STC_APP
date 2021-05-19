@@ -4,7 +4,8 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/margin_medium"
     android:foreground="?android:attr/selectableItemBackground"
-    android:clickable="true">
+    android:clickable="true"
+    android:id="@+id/relativeLayout">
 
     <TextView
         android:id="@+id/title"

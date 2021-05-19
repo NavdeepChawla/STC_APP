@@ -59,13 +59,6 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
             holder.photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryBlue));
         else
             holder.photo.setBackgroundColor(ContextCompat.getColor(context, R.color.colorTertiaryYellow));
-        holder.linkedIn.setOnClickListener(v -> openURL(list.get(position).getLink()));
-    }
-
-    private void openURL(String link) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(link));
-        context.startActivity(intent);
     }
 
     @Override
@@ -83,7 +76,6 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
         public final TextView name;
         public final TextView position;
         public final TextView phrase;
-        public final ImageButton linkedIn;
 
         public BoardViewHolder(View view) {
             super(view);
@@ -91,7 +83,6 @@ public class BoardMemberAdapter extends RecyclerView.Adapter<BoardMemberAdapter.
             name = view.findViewById(R.id.name);
             position = view.findViewById(R.id.position);
             phrase = view.findViewById(R.id.phrase);
-            linkedIn = view.findViewById(R.id.view);
         }
 
         @NonNull

@@ -76,24 +76,8 @@ public class ResourceTabFragment extends Fragment {
             adapter.setList(list);
         });
         swipeRefreshLayout.setOnRefreshListener(() -> getData());
-        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(context, recyclerView, new ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                openURL(list.get(position).getLink());
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
     }
 
-    public void openURL(String url) {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setData(Uri.parse(url));
-        startActivity(intent);
-    }
 
     private void getData() {
         Retrofit retrofit = RetrofitInstance.getRetrofitInstance();
@@ -117,7 +101,7 @@ public class ResourceTabFragment extends Fragment {
             @Override
             public void onFailure(Call<List<ResourceModel>> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
-                Snackbar.make(recyclerView, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                Snackbar.make(recyclerView, "Please check your internet connection…", BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
             }
         });

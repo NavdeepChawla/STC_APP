@@ -29,11 +29,6 @@ public class ProjectFragment extends Fragment {
     public ProjectFragment() {
     }
 
-    public static ProjectFragment newInstance(int columnCount) {
-        return new ProjectFragment();
-    }
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

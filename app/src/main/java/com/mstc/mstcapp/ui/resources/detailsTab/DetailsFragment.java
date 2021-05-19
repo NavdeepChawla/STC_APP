@@ -88,7 +88,7 @@ public class DetailsFragment extends Fragment {
             @Override
             public void onFailure(Call<DetailModel> call, Throwable t) {
                 swipeRefreshLayout.setRefreshing(false);
-                Snackbar.make(view, "Unable to connect to the Internet", BaseTransientBottomBar.LENGTH_SHORT)
+                Snackbar.make(view, "Please check your internet connection…", BaseTransientBottomBar.LENGTH_SHORT)
                         .show();
             }
         });
