@@ -11,8 +11,8 @@ public class Constants {
     public static final String LINKEDIN_URL = "https://www.linkedin.com/company/micvitvellore/";
     public static final String GITHUB_URL = "https://github.com/STCVIT";
 
-    public static final String PRIVACY_URL = "https://navdeepchawla.github.io/STC_APP_Privacy_Policy/";
-    public static final String TERMS_OF_USE_URL = "https://navdeepchawla.github.io/STC_APP_Privacy_Policy/";
+    public static final String PRIVACY_URL = "https://stcvit.github.io/STC_APP_PRIVACY_POLICY/";
+    public static final String STC_EMAIL="mstcvit@outlook.com";
 
     public static final String PLAY_STORE_URL = "https://play.google.com/store/apps/details?id=com.mstc.mstcapp&hl=en_IN&gl=US";
 

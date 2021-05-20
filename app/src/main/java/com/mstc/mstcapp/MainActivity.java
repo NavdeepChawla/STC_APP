@@ -73,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         drawerLayout.findViewById(R.id.github).setOnClickListener(v -> openURL(Constants.GITHUB_URL));
 
         drawerLayout.findViewById(R.id.privacy_policy).setOnClickListener(v -> openURL(Constants.PRIVACY_URL));
-        drawerLayout.findViewById(R.id.terms_of_services).setOnClickListener(v -> openURL(Constants.TERMS_OF_USE_URL));
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void sendMail() {
         Intent email = new Intent(Intent.ACTION_SEND);
-        email.putExtra(Intent.EXTRA_EMAIL, new String[]{"mstcvit@outlook.com"});
+        email.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.STC_EMAIL});
         email.putExtra(Intent.EXTRA_SUBJECT, "New Idea");
         email.setType("message/rfc822");
         startActivity(Intent.createChooser(email, "Choose an Email client :"));

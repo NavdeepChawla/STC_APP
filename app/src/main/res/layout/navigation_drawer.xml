@@ -211,50 +211,19 @@
             android:textColor="@color/textColorSecondary"
             android:textFontWeight="500" />
 
-        <RelativeLayout
+
+        <TextView
+            android:id="@+id/privacy_policy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_small">
-
-            <TextView
-                android:id="@+id/privacy_policy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:paddingHorizontal="@dimen/margin_small"
-                android:paddingVertical="@dimen/margin_small"
-                android:text="Privacy policy"
-
-                android:textColor="@color/textColorSecondary"
-                android:textFontWeight="500" />
-
-            <TextView
-                android:id="@+id/pipe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/privacy_policy"
-                android:paddingVertical="@dimen/margin_small"
-                android:text="|"
-                android:textColor="@color/textColorSecondary"
-                android:textFontWeight="500" />
-
-            <TextView
-                android:id="@+id/terms_of_services"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/pipe"
-                android:background="?android:attr/selectableItemBackground"
-                android:clickable="true"
-                android:paddingHorizontal="@dimen/margin_small"
-                android:paddingVertical="@dimen/margin_small"
-                android:text="Terms of services"
-                android:textColor="@color/textColorSecondary"
-                android:textFontWeight="500" />
-        </RelativeLayout>
+            android:layout_centerVertical="true"
+            android:background="?android:attr/selectableItemBackground"
+            android:clickable="true"
+            android:paddingHorizontal="@dimen/margin_small"
+            android:paddingVertical="@dimen/margin_small"
+            android:text="Privacy policy"
+            android:textColor="@color/textColorSecondary"
+            android:textFontWeight="500" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
