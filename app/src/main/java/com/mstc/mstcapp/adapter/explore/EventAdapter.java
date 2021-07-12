@@ -1,10 +1,8 @@
 package com.mstc.mstcapp.adapter.explore;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +20,12 @@ import com.mstc.mstcapp.R;
 import com.mstc.mstcapp.model.explore.EventModel;
 import com.mstc.mstcapp.util.Functions;
 
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
 import java.util.List;
+
+import retrofit2.internal.EverythingIsNonNull;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final int VIEW_TYPE_ITEM = 0;
@@ -35,9 +38,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         list = items;
     }
 
-    @NonNull
+    @NotNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public RecyclerView.ViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View view;
         if (viewType == VIEW_TYPE_ITEM) {
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_event, parent, false);
@@ -50,27 +53,38 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     }
 
     @Override
+    @EverythingIsNonNull
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof ItemViewHolder)
             populateItemRows((ItemViewHolder) holder, position);
-        else if (holder instanceof LoadingViewHolder)
-            showLoadingView((LoadingViewHolder) holder, position);
-    }
-
-    private void showLoadingView(LoadingViewHolder holder, int position) {
-
     }
 
     private void populateItemRows(ItemViewHolder holder, int position) {
+        String status;
+        Date today = new Date();
+        Date startDate = new Date(Functions.timestampToEpochSeconds(list.get(position).getStartDate()));
+        Date endDate = new Date(Functions.timestampToEpochSeconds(list.get(position).getEndDate()));
+
+        if (startDate.after(today)) {
+            holder.status.setTextColor(ContextCompat.getColor(context, R.color.colorSecondaryBlue));
+            status = "UPCOMING";
+        } else if (startDate.before(today) && endDate.after(today)) {
+            holder.status.setTextColor(ContextCompat.getColor(context, R.color.colorSecondaryYellow));
+            status = "ONGOING";
+        } else {
+            holder.status.setTextColor(ContextCompat.getColor(context, R.color.colorSecondaryRed));
+            status = "COMPLETED";
+        }
+        holder.status.setText(status);
         holder.title.setText(list.get(position).getTitle());
         holder.description.setText(list.get(position).getDescription());
         new Thread(() -> holder.image.post(() -> {
-            String pic = list.get(position).getImage();
             try {
-                byte[] decodedString = Base64.decode(pic, Base64.DEFAULT);
+                byte[] decodedString = Base64.decode(list.get(position).getImage(), Base64.DEFAULT);
                 Bitmap picture = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
                 holder.image.setImageBitmap(picture);
             } catch (Exception e) {
+                holder.image.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.ic_error));
                 e.printStackTrace();
             }
         })).start();
@@ -101,7 +115,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             return list.get(position) == null ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
     }
 
-    public class ItemViewHolder extends RecyclerView.ViewHolder {
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
         public final CardView cardView;
         public final ImageView image;
         public final TextView status;
@@ -118,15 +132,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             description = view.findViewById(R.id.description);
             cardView = view.findViewById(R.id.cardView);
         }
-
-        @NonNull
-        @Override
-        public String toString() {
-            return super.toString() + " '" + description.getText() + "'";
-        }
     }
 
-    private class LoadingViewHolder extends RecyclerView.ViewHolder {
+    private static class LoadingViewHolder extends RecyclerView.ViewHolder {
         public ProgressBar progressBar;
 
         public LoadingViewHolder(@NonNull View itemView) {
